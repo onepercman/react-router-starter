@@ -7,6 +7,11 @@ import {
   UiCardTitle,
 } from "~/shared/components";
 
+// Loader function for React Router v7
+export async function loader() {
+  return null;
+}
+
 export function DashboardPage() {
   const stats = [
     {

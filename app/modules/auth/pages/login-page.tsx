@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { UiButton, UiCard, UiCardContent } from "~/shared/components";
 
+// Loader function for React Router v7
+export async function loader() {
+  return null;
+}
+
 export function LoginPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
