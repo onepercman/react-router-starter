@@ -1,10 +1,15 @@
-import { type RouteConfig } from "@react-router/dev/routes";
-import { authRoutes } from "./modules/auth/routes";
-import { dashboardRoutes } from "./modules/dashboard/routes";
-import { productRoutes } from "./modules/products/routes";
+import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  ...dashboardRoutes,
-  ...productRoutes,
-  ...authRoutes,
+  // Home page
+  index("modules/home/home-page/home-page.tsx"),
+
+  // Dashboard routes
+  route("dashboard", "modules/dashboard/dashboard-overview/dashboard-page.tsx"),
+
+  // Product routes
+  route("products", "modules/products/product-list/product-list-page.tsx"),
+
+  // Auth routes
+  route("auth/login", "modules/auth/login/login-page.tsx"),
 ] satisfies RouteConfig;

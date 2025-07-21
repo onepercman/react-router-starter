@@ -1,2 +1,2 @@
 // Dashboard overview feature exports
-export { DashboardPage } from "./dashboard-page";
+export { default as DashboardPage } from "./dashboard-page";

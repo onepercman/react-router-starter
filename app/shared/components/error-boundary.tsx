@@ -2,7 +2,7 @@ import type { ErrorInfo, ReactNode } from "react";
 import type { FallbackProps } from "react-error-boundary";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import { isRouteErrorResponse } from "react-router";
-import { UiButton, UiCard } from "~/shared/components";
+import { Button, UiCard } from "~/shared/components";
 
 // Error logging function
 function logError(error: Error, errorInfo: ErrorInfo & { module?: string }) {
@@ -44,13 +44,12 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
           )}
 
           <div className="flex gap-3 justify-center">
-            <UiButton onClick={resetErrorBoundary}>Try Again</UiButton>
-            <UiButton
-              variant="outline"
-              onClick={() => window.location.reload()}
-            >
+            <Button color="primary" onClick={resetErrorBoundary}>
+              Try Again
+            </Button>
+            <Button variant="outlined" onClick={() => window.location.reload()}>
               Reload Page
-            </UiButton>
+            </Button>
           </div>
         </div>
       </UiCard>
@@ -121,7 +120,9 @@ export function ModuleErrorBoundary({
         <p className="text-gray-600 mb-4">
           Error in {moduleName} module. Please try refreshing.
         </p>
-        <UiButton onClick={resetErrorBoundary}>Retry</UiButton>
+        <Button color="primary" onClick={resetErrorBoundary}>
+          Retry
+        </Button>
       </div>
     ));
 
@@ -147,7 +148,9 @@ export function RouteErrorBoundary({ error }: { error: unknown }) {
               ? "The page you're looking for doesn't exist."
               : error.statusText || "Something went wrong."}
           </p>
-          <UiButton onClick={() => window.history.back()}>Go Back</UiButton>
+          <Button color="primary" onClick={() => window.history.back()}>
+            Go Back
+          </Button>
         </UiCard>
       </div>
     );

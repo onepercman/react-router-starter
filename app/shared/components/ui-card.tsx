@@ -26,7 +26,7 @@ export function UiCard({
     lg: "shadow-lg",
   };
 
-  const classes = `bg-white rounded-lg border border-gray-200 ${paddingClasses[padding]} ${shadowClasses[shadow]} ${className}`;
+  const classes = `bg-card text-card-foreground rounded-lg border border-border ${paddingClasses[padding]} ${shadowClasses[shadow]} ${className}`;
 
   return (
     <div className={classes} {...props}>
@@ -62,7 +62,7 @@ export function UiCardTitle({
 }: UiCardTitleProps) {
   return (
     <h3
-      className={`text-lg font-semibold text-gray-900 ${className}`}
+      className={`text-lg font-semibold text-card-foreground ${className}`}
       {...props}
     >
       {children}

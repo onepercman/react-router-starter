@@ -1,11 +1,14 @@
 // UI Components
+export * from "./button";
+export { ErrorBoundary } from "./error-boundary";
+export * from "./input";
 export { PageHeader } from "./page-header";
-export { UiButton } from "./ui-button";
+export * from "./spinner";
+export { ThemeToggle } from "./theme-toggle";
 export { UiCard, UiCardContent, UiCardHeader, UiCardTitle } from "./ui-card";
 
 // Error Handling (Modern functional approach)
 export {
-  ErrorBoundary,
   ModuleErrorBoundary,
   RouteErrorBoundary,
   useAsyncError,

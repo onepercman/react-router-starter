@@ -1,2 +1,2 @@
 // Product list feature exports
-export { ProductListPage } from "./product-list-page";
+export { default as ProductListPage } from "./product-list-page";

@@ -1,196 +1,301 @@
 import { useState } from "react";
 import {
-  ModuleErrorBoundary,
+  Button,
   PageHeader,
-  UiButton,
   UiCard,
   UiCardContent,
+  UiCardHeader,
+  UiCardTitle,
 } from "~/shared/components";
 
-// Loader function for React Router v7
-export async function loader() {
-  return null;
-}
-
 interface Product {
-  id: number;
+  id: string;
   name: string;
-  description: string;
-  price: number;
   category: string;
+  price: number;
   stock: number;
   image: string;
+  description: string;
 }
 
-export function ProductListPage() {
-  const [products] = useState<Product[]>([
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      description: "High-quality wireless headphones with noise cancellation",
-      price: 199.99,
-      category: "Electronics",
-      stock: 45,
-      image: "🎧",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      description: "Feature-rich smartwatch with health tracking",
-      price: 299.99,
-      category: "Electronics",
-      stock: 23,
-      image: "⌚",
-    },
-    {
-      id: 3,
-      name: "Coffee Maker",
-      description: "Automatic coffee maker with programmable settings",
-      price: 89.99,
-      category: "Kitchen",
-      stock: 12,
-      image: "☕",
-    },
-    {
-      id: 4,
-      name: "Running Shoes",
-      description: "Comfortable running shoes for daily exercise",
-      price: 129.99,
-      category: "Sports",
-      stock: 67,
-      image: "👟",
-    },
-    {
-      id: 5,
-      name: "Laptop Backpack",
-      description: "Durable laptop backpack with multiple compartments",
-      price: 59.99,
-      category: "Accessories",
-      stock: 34,
-      image: "🎒",
-    },
-    {
-      id: 6,
-      name: "Desk Lamp",
-      description: "LED desk lamp with adjustable brightness",
-      price: 39.99,
-      category: "Home",
-      stock: 18,
-      image: "💡",
-    },
-  ]);
-
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+export default function ProductListPage() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = [
     "All",
-    ...Array.from(new Set(products.map(p => p.category))),
+    "Electronics",
+    "Kitchen",
+    "Sports",
+    "Accessories",
+    "Home",
+  ];
+
+  const products: Product[] = [
+    {
+      id: "1",
+      name: "Wireless Bluetooth Headphones",
+      category: "Electronics",
+      price: 79.99,
+      stock: 45,
+      image: "🎧",
+      description:
+        "High-quality noise-canceling wireless headphones with 20-hour battery life.",
+    },
+    {
+      id: "2",
+      name: "Smart Coffee Maker",
+      category: "Kitchen",
+      price: 299.99,
+      stock: 12,
+      image: "☕",
+      description:
+        "WiFi-enabled coffee maker with programmable brewing and mobile app control.",
+    },
+    {
+      id: "3",
+      name: "Yoga Mat Pro",
+      category: "Sports",
+      price: 49.99,
+      stock: 28,
+      image: "🧘",
+      description:
+        "Premium non-slip yoga mat with alignment lines and extra cushioning.",
+    },
+    {
+      id: "4",
+      name: "Leather Laptop Bag",
+      category: "Accessories",
+      price: 129.99,
+      stock: 8,
+      image: "💼",
+      description:
+        "Handcrafted genuine leather laptop bag with multiple compartments.",
+    },
+    {
+      id: "5",
+      name: "Smart Home Hub",
+      category: "Electronics",
+      price: 199.99,
+      stock: 35,
+      image: "🏠",
+      description:
+        "Central hub for controlling all your smart home devices with voice commands.",
+    },
+    {
+      id: "6",
+      name: "Ceramic Dinner Set",
+      category: "Kitchen",
+      price: 89.99,
+      stock: 18,
+      image: "🍽️",
+      description:
+        "Beautiful 16-piece ceramic dinner set, dishwasher and microwave safe.",
+    },
   ];
 
   const filteredProducts =
     selectedCategory === "All"
       ? products
-      : products.filter(p => p.category === selectedCategory);
+      : products.filter(product => product.category === selectedCategory);
+
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      Electronics: "bg-info-muted text-info border-info/30",
+      Kitchen: "bg-warning-muted text-warning border-warning/30",
+      Sports: "bg-success-muted text-success border-success/30",
+      Accessories: "bg-accent-muted text-accent border-accent/30",
+      Home: "bg-primary-muted text-primary border-primary/30",
+    };
+    return colors[category] || "bg-info-muted text-info border-info/30";
+  };
+
+  const getStockStatus = (stock: number) => {
+    if (stock > 30) {
+      return {
+        label: "In Stock",
+        color: "bg-success-muted text-success border-success/30",
+        dotColor: "bg-success",
+      };
+    } else if (stock > 15) {
+      return {
+        label: "Low Stock",
+        color: "bg-warning-muted text-warning border-warning/30",
+        dotColor: "bg-warning",
+      };
+    } else {
+      return {
+        label: "Very Low",
+        color: "bg-error-muted text-error border-error/30",
+        dotColor: "bg-error",
+      };
+    }
+  };
 
   return (
-    <ModuleErrorBoundary moduleName="Products">
-      <div>
-        <PageHeader
-          title="Products"
-          description="Manage your product inventory"
-        >
-          <UiButton>➕ Add Product</UiButton>
-        </PageHeader>
+    <div>
+      <PageHeader
+        title="Product Catalog"
+        description="Manage your product inventory and browse available items"
+      >
+        <div className="flex gap-3">
+          <Button color="success">➕ Add Product</Button>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              // Simulate export functionality
+              alert("Export functionality would be implemented here");
+            }}
+          >
+            📤 Export
+          </Button>
+        </div>
+      </PageHeader>
 
-        {/* Category Filter */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
+      {/* Category Filter */}
+      <UiCard className="mb-6">
+        <UiCardContent className="p-6">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
+            Filter by Category
+          </h3>
+          <div className="flex flex-wrap gap-3">
             {categories.map(category => (
-              <UiButton
+              <button
                 key={category}
-                variant={selectedCategory === category ? "primary" : "outline"}
-                size="sm"
                 onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
+                  selectedCategory === category
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-background text-muted border-border hover:bg-primary-subtle hover:text-foreground"
+                }`}
               >
                 {category}
-              </UiButton>
+              </button>
             ))}
           </div>
-        </div>
+        </UiCardContent>
+      </UiCard>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map(product => (
-            <UiCard
-              key={product.id}
-              shadow="sm"
-              padding="sm"
-              className="hover:shadow-md transition-shadow"
-            >
-              <UiCardContent>
-                <div className="text-center mb-4">
-                  <div className="text-4xl mb-2">{product.image}</div>
-                  <h3 className="font-semibold text-gray-900 mb-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+      {/* Products Grid */}
+      {filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map(product => {
+            const stockStatus = getStockStatus(product.stock);
+
+            return (
+              <UiCard
+                key={product.id}
+                className="overflow-hidden hover:shadow-lg transition-all duration-200 border border-border"
+              >
+                <UiCardContent className="p-0">
+                  {/* Product Image */}
+                  <div className="bg-gradient-to-br from-primary-subtle to-accent-subtle p-8 text-center">
+                    <div className="text-6xl mb-4">{product.image}</div>
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(product.category)}`}
+                    >
                       {product.category}
                     </span>
-                    <span
-                      className={`px-2 py-1 rounded-full ${
-                        product.stock > 20
-                          ? "bg-green-100 text-green-800"
-                          : product.stock > 10
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {product.stock} in stock
-                    </span>
                   </div>
-                </div>
 
-                <div className="border-t pt-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xl font-bold text-gray-900">
-                      ${product.price}
-                    </span>
+                  {/* Product Info */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-foreground mb-2">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-muted mb-4 line-clamp-2">
+                      {product.description}
+                    </p>
+
+                    {/* Price and Stock */}
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-2xl font-bold text-primary">
+                        ${product.price}
+                      </span>
+                      <div className="flex items-center space-x-2">
+                        <div
+                          className={`w-2 h-2 rounded-full ${stockStatus.dotColor}`}
+                        ></div>
+                        <span
+                          className={`text-xs px-2 py-1 rounded border ${stockStatus.color}`}
+                        >
+                          {stockStatus.label}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Stock count */}
+                    <div className="text-xs text-muted mb-4">
+                      {product.stock} units in stock
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outlined" className="flex-1">
+                        👁️ View
+                      </Button>
+                      <Button size="sm" color="info" className="flex-1">
+                        🛒 Add to Cart
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <UiButton size="sm" variant="outline" className="flex-1">
-                      Edit
-                    </UiButton>
-                    <UiButton size="sm" className="flex-1">
-                      View
-                    </UiButton>
-                  </div>
-                </div>
-              </UiCardContent>
-            </UiCard>
-          ))}
+                </UiCardContent>
+              </UiCard>
+            );
+          })}
         </div>
+      ) : (
+        <UiCard className="text-center py-12 border-2 border-dashed border-muted">
+          <UiCardContent>
+            <div className="text-4xl mb-4">📦</div>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              No products found
+            </h3>
+            <p className="text-muted mb-4">
+              No products match the selected category.
+            </p>
+            <Button color="primary" onClick={() => setSelectedCategory("All")}>
+              Show All Products
+            </Button>
+          </UiCardContent>
+        </UiCard>
+      )}
 
-        {filteredProducts.length === 0 && (
-          <UiCard className="text-center py-12">
-            <UiCardContent>
-              <div className="text-4xl mb-4">📦</div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                No products found
-              </h3>
-              <p className="text-gray-600 mb-4">
-                No products match the selected category.
-              </p>
-              <UiButton onClick={() => setSelectedCategory("All")}>
-                Show All Products
-              </UiButton>
-            </UiCardContent>
-          </UiCard>
-        )}
-      </div>
-    </ModuleErrorBoundary>
+      {/* Summary Card */}
+      <UiCard className="mt-8 bg-gradient-to-r from-primary-subtle to-accent-subtle border-primary/30">
+        <UiCardHeader>
+          <UiCardTitle className="text-primary">
+            📊 Inventory Summary
+          </UiCardTitle>
+        </UiCardHeader>
+        <UiCardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-foreground">
+                {products.length}
+              </div>
+              <div className="text-sm text-muted">Total Products</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-success">
+                {products.filter(p => p.stock > 30).length}
+              </div>
+              <div className="text-sm text-muted">In Stock</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-warning">
+                {products.filter(p => p.stock <= 30 && p.stock > 15).length}
+              </div>
+              <div className="text-sm text-muted">Low Stock</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-error">
+                {products.filter(p => p.stock <= 15).length}
+              </div>
+              <div className="text-sm text-muted">Very Low</div>
+            </div>
+          </div>
+        </UiCardContent>
+      </UiCard>
+    </div>
   );
 }
