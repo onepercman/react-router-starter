@@ -7,17 +7,17 @@ import { cn } from "~/shared/utils";
 
 export const input = tv({
   base: [
-    "inline-flex cursor-text items-center gap-2 overflow-hidden rounded-md border transition-all duration-200",
+    "inline-flex cursor-text items-center gap-2 overflow-hidden rounded-lg border transition-all duration-200",
     "bg-background text-foreground",
     "focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:border-ring",
-    "h-[var(--input-size)] min-h-[var(--input-size)] w-full px-3 text-sm",
+    "h-[var(--input-size)] min-h-[var(--input-size)] w-full px-4 text-base",
     "hover:border-border",
-    "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-muted",
+    "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-background",
   ],
   slots: {
     input: [
-      "h-full w-full bg-transparent border-0 outline-none ring-0 focus:outline-none focus:ring-0",
-      "placeholder:text-muted-foreground",
+      "h-full w-full bg-transparent outline-none ring-0 focus:outline-none focus:ring-0",
+      "placeholder:text-secondary",
       "disabled:cursor-not-allowed",
       "[&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(var(--color-background))]",
     ],
@@ -26,15 +26,15 @@ export const input = tv({
   },
   variants: {
     size: {
-      xs: "px-2 text-xs [--input-size:1.25rem]",
-      sm: "px-2 text-sm [--input-size:1.5rem]",
-      md: "px-3 text-sm [--input-size:2.25rem]",
-      lg: "px-4 text-base [--input-size:2.75rem]",
+      xs: "px-3 text-xs [--input-size:1.75rem]",
+      sm: "px-3 text-sm [--input-size:2rem]",
+      md: "px-4 text-sm [--input-size:2.5rem]",
+      lg: "px-4 text-base [--input-size:3rem]",
     },
     variant: {
       outlined: "border-input",
-      filled: "bg-muted border-transparent",
-      ghost: "border-transparent bg-transparent hover:bg-muted",
+      filled: "bg-background border-transparent",
+      ghost: "border-transparent bg-transparent hover:bg-background",
     },
     invalid: {
       true: {
@@ -44,7 +44,7 @@ export const input = tv({
     },
   },
   defaultVariants: {
-    size: "md",
+    size: "lg",
     variant: "outlined",
   },
 });
@@ -124,7 +124,7 @@ export function Input({
       const IconComponent = showPassword ? EyeOff : Eye;
       return (
         <IconComponent
-          className="h-4 w-4 cursor-pointer text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          className="h-4 w-4 cursor-pointer text-secondary hover:text-foreground transition-colors shrink-0"
           onClick={() => {
             setShowPassword(!showPassword);
           }}
@@ -174,7 +174,7 @@ export function Input({
   function _renderPrefix() {
     const element = prefix as React.ReactElement;
     if (!element) return null;
-    return <span className="text-muted-foreground shrink-0">{element}</span>;
+    return <span className="text-secondary shrink-0">{element}</span>;
   }
 
   function _renderSuffix() {
@@ -231,7 +231,9 @@ export function Input({
       <Component
         ref={composedRef}
         onChange={handleChange}
-        className={styles.input({ class: classNames?.input })}
+        className={styles.input({
+          className: cn(className, classNames?.input),
+        })}
         {...props}
         type={inputType}
       />

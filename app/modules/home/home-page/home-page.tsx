@@ -80,23 +80,22 @@ export default function HomePage() {
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
           React Router v7 Starter
         </h1>
-        <p className="text-lg md:text-xl text-muted mb-6 max-w-2xl mx-auto px-4">
+        <p className="text-lg md:text-xl text-secondary mb-6 max-w-2xl mx-auto px-4">
           A modern, scalable foundation for building React applications with
           feature-first architecture
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
           <Button color="primary" size="lg">
-            🚀 Get Started
+            <span>🚀</span> <span>Get Started</span>
           </Button>
           <Link to="/dashboard">
             <Button variant="outlined" size="lg">
-              📖 Documentation
+              <span>📖</span> <span>Documentation</span>
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Project Overview Card */}
       <UiCard className="border-2 border-primary/30 bg-gradient-to-r from-primary-subtle to-accent-subtle">
         <UiCardHeader>
           <UiCardTitle className="text-primary text-xl">
@@ -141,7 +140,6 @@ export default function HomePage() {
         </UiCardContent>
       </UiCard>
 
-      {/* Navigation Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {navigationItems.map(item => (
           <Link key={item.path} to={item.path} className="group">
@@ -161,7 +159,7 @@ export default function HomePage() {
                     >
                       {item.title}
                     </h3>
-                    <p className="text-sm text-muted mb-3 leading-relaxed">
+                    <p className="text-sm text-secondary mb-3 leading-relaxed">
                       {item.description}
                     </p>
                     <Button size="sm" variant="outlined">
@@ -175,7 +173,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* Features Grid */}
       <UiCard>
         <UiCardHeader>
           <UiCardTitle className="text-xl">🌟 Key Features</UiCardTitle>
@@ -190,7 +187,7 @@ export default function HomePage() {
                 <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-muted text-sm leading-relaxed">
+                <p className="text-secondary text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -199,7 +196,6 @@ export default function HomePage() {
         </UiCardContent>
       </UiCard>
 
-      {/* Getting Started */}
       <UiCard>
         <UiCardHeader>
           <UiCardTitle className="text-xl">🚀 Getting Started</UiCardTitle>
@@ -214,7 +210,7 @@ export default function HomePage() {
                 <h4 className="font-semibold text-foreground mb-2">
                   Explore the Dashboard
                 </h4>
-                <p className="text-muted text-sm mb-3 leading-relaxed">
+                <p className="text-secondary text-sm mb-3 leading-relaxed">
                   Check out the analytics and overview functionality with sample
                   data and charts.
                 </p>
@@ -232,7 +228,7 @@ export default function HomePage() {
                 <h4 className="font-semibold text-foreground mb-2">
                   Browse Products
                 </h4>
-                <p className="text-muted text-sm mb-3 leading-relaxed">
+                <p className="text-secondary text-sm mb-3 leading-relaxed">
                   See the product catalog with filtering, categories, and modern
                   card layouts.
                 </p>
@@ -250,7 +246,7 @@ export default function HomePage() {
                 <h4 className="font-semibold text-foreground mb-2">
                   Try Authentication
                 </h4>
-                <p className="text-muted text-sm mb-3 leading-relaxed">
+                <p className="text-secondary text-sm mb-3 leading-relaxed">
                   Experience the login flow with form validation and loading
                   states.
                 </p>

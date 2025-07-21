@@ -1,4 +1,5 @@
 import { useDarkMode } from "~/shared/hooks";
+import { Button } from "./button";
 
 export function ThemeToggle() {
   const { isDark, mounted, toggleTheme } = useDarkMode();
@@ -12,10 +13,11 @@ export function ThemeToggle() {
   const currentIsDark = mounted ? isDark : getInitialDarkState();
 
   return (
-    <button
+    <Button
+      shape="square"
       onClick={toggleTheme}
       disabled={!mounted}
-      className={`relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-card border border-border hover:bg-secondary transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 ${
+      className={`relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background border border-border hover:bg-background transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 ${
         !mounted ? "cursor-wait" : "cursor-pointer"
       }`}
       aria-label={
@@ -46,7 +48,7 @@ export function ThemeToggle() {
         {/* Moon icon */}
         <svg
           className={`absolute inset-0 w-5 h-5 text-accent transition-all duration-300 transform ${
-            isDark
+            currentIsDark
               ? "rotate-0 scale-100 opacity-100"
               : "-rotate-90 scale-0 opacity-0"
           }`}
@@ -61,7 +63,17 @@ export function ThemeToggle() {
             d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
           />
         </svg>
+
+        {/* Loading indicator when not mounted */}
+        {!mounted && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-3 h-3 border border-muted border-t-primary rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
-    </button>
+
+      {/* Ripple effect */}
+      <div className="absolute inset-0 rounded-lg bg-primary/20 scale-0 transition-transform duration-200 group-active:scale-100"></div>
+    </Button>
   );
 }

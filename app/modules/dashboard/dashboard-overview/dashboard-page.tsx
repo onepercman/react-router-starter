@@ -73,14 +73,15 @@ export default function DashboardPage() {
         </div>
       </PageHeader>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
           <UiCard key={index}>
             <UiCardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted">{stat.label}</p>
+                  <p className="text-sm font-medium text-secondary">
+                    {stat.label}
+                  </p>
                   <p className="text-2xl font-bold text-foreground">
                     {stat.value}
                   </p>
@@ -106,22 +107,20 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chart Section */}
         <div className="lg:col-span-2">
           <UiCard>
             <UiCardHeader>
               <UiCardTitle>Analytics Overview</UiCardTitle>
             </UiCardHeader>
             <UiCardContent>
-              <div className="h-[400px] bg-muted rounded-lg flex items-center justify-center">
+              <div className="h-[400px] bg-background rounded-lg flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-4xl mb-4">📊</div>
                   <p className="text-lg font-medium text-foreground">
                     Chart Placeholder
                   </p>
-                  <p className="text-sm text-muted">
+                  <p className="text-sm text-secondary">
                     Analytics chart would go here
                   </p>
                 </div>
@@ -130,7 +129,6 @@ export default function DashboardPage() {
           </UiCard>
         </div>
 
-        {/* Recent Activity */}
         <div>
           <UiCard>
             <UiCardHeader>
@@ -147,9 +145,13 @@ export default function DashboardPage() {
                       <p className="text-sm font-medium text-foreground">
                         {activity.action}
                       </p>
-                      <p className="text-xs text-muted">by {activity.user}</p>
+                      <p className="text-xs text-secondary">
+                        by {activity.user}
+                      </p>
                     </div>
-                    <span className="text-xs text-muted">{activity.time}</span>
+                    <span className="text-xs text-secondary">
+                      {activity.time}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -158,29 +160,28 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Actions */}
       <div className="mt-8">
         <UiCard>
           <UiCardHeader>
             <UiCardTitle>Quick Actions</UiCardTitle>
           </UiCardHeader>
           <UiCardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button variant="outlined" className="h-20 flex-col">
-                <span className="text-2xl mb-2">📦</span>
-                Add Product
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 gap-y-6">
+              <Button variant="outlined" className="h-20 flex-col gap-2">
+                <span className="text-2xl">📦</span>
+                <span>Add Product</span>
               </Button>
-              <Button variant="outlined" className="h-20 flex-col">
-                <span className="text-2xl mb-2">👥</span>
-                Manage Users
+              <Button variant="outlined" className="h-20 flex-col gap-2">
+                <span className="text-2xl">👥</span>
+                <span>Manage Users</span>
               </Button>
-              <Button variant="outlined" className="h-20 flex-col">
-                <span className="text-2xl mb-2">📊</span>
-                View Analytics
+              <Button variant="outlined" className="h-20 flex-col gap-2">
+                <span className="text-2xl">📊</span>
+                <span>View Analytics</span>
               </Button>
-              <Button variant="outlined" className="h-20 flex-col">
-                <span className="text-2xl mb-2">⚙️</span>
-                Settings
+              <Button variant="outlined" className="h-20 flex-col gap-2">
+                <span className="text-2xl">⚙️</span>
+                <span>Settings</span>
               </Button>
             </div>
           </UiCardContent>

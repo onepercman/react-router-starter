@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { ThemeToggle } from "~/shared/components";
+import { Button, ThemeToggle } from "~/shared/components";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                     className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                       location.pathname === item.path
                         ? "bg-primary-muted text-primary border border-primary/30"
-                        : "text-muted hover:text-foreground hover:bg-primary-subtle border border-transparent hover:border-primary/20"
+                        : "text-secondary hover:text-foreground hover:bg-primary-subtle border border-transparent hover:border-primary/20"
                     }`}
                   >
                     <span className="text-base">{item.icon}</span>
@@ -51,12 +51,18 @@ export function MainLayout({ children }: MainLayoutProps) {
               <ThemeToggle />
 
               {/* User Menu */}
-              <button className="text-muted hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20">
+              <Button
+                variant="ghost"
+                className="text-secondary hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20"
+              >
                 <span className="text-lg">👤</span>
-              </button>
+              </Button>
 
               {/* Mobile menu button */}
-              <button className="md:hidden text-muted hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20">
+              <Button
+                variant="ghost"
+                className="md:hidden text-secondary hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20"
+              >
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -70,7 +76,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                     d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -88,7 +94,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
-              <p className="text-sm text-muted">
+              <p className="text-sm text-secondary">
                 © 2024 React Router Starter. Built with React Router v7.
               </p>
             </div>
@@ -97,7 +103,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted hover:text-primary transition-colors"
+                className="text-secondary hover:text-primary transition-colors"
               >
                 <span className="sr-only">GitHub</span>
                 <svg
@@ -112,7 +118,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                 href="https://reactrouter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted hover:text-primary transition-colors"
+                className="text-secondary hover:text-primary transition-colors"
               >
                 <span className="sr-only">React Router</span>
                 <span className="text-sm font-medium">Docs</span>

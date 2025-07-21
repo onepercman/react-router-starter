@@ -159,17 +159,15 @@ export default function ProductListPage() {
           </h3>
           <div className="flex flex-wrap gap-3">
             {categories.map(category => (
-              <button
+              <Button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
-                  selectedCategory === category
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-muted border-border hover:bg-primary-subtle hover:text-foreground"
-                }`}
+                variant={selectedCategory === category ? "default" : "outlined"}
+                color={selectedCategory === category ? "primary" : "default"}
+                size="sm"
               >
                 {category}
-              </button>
+              </Button>
             ))}
           </div>
         </UiCardContent>
@@ -202,7 +200,7 @@ export default function ProductListPage() {
                     <h3 className="text-lg font-semibold text-foreground mb-2">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-muted mb-4 line-clamp-2">
+                    <p className="text-sm text-secondary mb-4 line-clamp-2">
                       {product.description}
                     </p>
 
@@ -224,7 +222,7 @@ export default function ProductListPage() {
                     </div>
 
                     {/* Stock count */}
-                    <div className="text-xs text-muted mb-4">
+                    <div className="text-xs text-secondary mb-4">
                       {product.stock} units in stock
                     </div>
 
@@ -250,7 +248,7 @@ export default function ProductListPage() {
             <h3 className="text-lg font-semibold text-foreground mb-2">
               No products found
             </h3>
-            <p className="text-muted mb-4">
+            <p className="text-secondary mb-4">
               No products match the selected category.
             </p>
             <Button color="primary" onClick={() => setSelectedCategory("All")}>
@@ -273,25 +271,25 @@ export default function ProductListPage() {
               <div className="text-2xl font-bold text-foreground">
                 {products.length}
               </div>
-              <div className="text-sm text-muted">Total Products</div>
+              <div className="text-sm text-secondary">Total Products</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-success">
                 {products.filter(p => p.stock > 30).length}
               </div>
-              <div className="text-sm text-muted">In Stock</div>
+              <div className="text-sm text-secondary">In Stock</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-warning">
                 {products.filter(p => p.stock <= 30 && p.stock > 15).length}
               </div>
-              <div className="text-sm text-muted">Low Stock</div>
+              <div className="text-sm text-secondary">Low Stock</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-error">
                 {products.filter(p => p.stock <= 15).length}
               </div>
-              <div className="text-sm text-muted">Very Low</div>
+              <div className="text-sm text-secondary">Very Low</div>
             </div>
           </div>
         </UiCardContent>

@@ -31,13 +31,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-foreground">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-2 text-sm text-secondary">
             Welcome back! Please enter your details.
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function LoginPage() {
                   onChange={handleInputChange}
                   placeholder="Enter your email"
                   variant="outlined"
-                  size="md"
+                  size="lg"
                 />
               </div>
 
@@ -83,7 +83,7 @@ export default function LoginPage() {
                   onChange={handleInputChange}
                   placeholder="Enter your password"
                   variant="outlined"
-                  size="md"
+                  size="lg"
                 />
               </div>
 
@@ -106,12 +106,14 @@ export default function LoginPage() {
                 </div>
 
                 <div className="text-sm">
-                  <button
-                    type="button"
-                    className="text-primary hover:text-primary-focus"
+                  <Button
+                    variant="ghost"
+                    color="primary"
+                    size="sm"
+                    className="h-auto p-0"
                   >
                     Forgot your password?
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -133,7 +135,7 @@ export default function LoginPage() {
                   <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-card text-muted">
+                  <span className="px-2 bg-card text-secondary">
                     Or continue with
                   </span>
                 </div>
@@ -151,11 +153,16 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <p className="mt-6 text-center text-sm text-muted">
-              Don't have an account?{" "}
-              <button className="text-primary hover:text-primary-focus font-medium">
+            <p className="mt-6 inline-flex items-center justify-center text-sm text-secondary w-full gap-2">
+              <span>Don't have an account?</span>
+              <Button
+                variant="ghost"
+                color="primary"
+                size="sm"
+                className="h-auto p-0 font-medium"
+              >
                 Sign up
-              </button>
+              </Button>
             </p>
           </UiCardContent>
         </UiCard>
