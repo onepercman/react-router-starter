@@ -12,7 +12,28 @@ A modern, production-ready template for building full-stack React applications u
 - 🔄 Data loading and mutations
 - 🔒 TypeScript by default
 - 🎉 TailwindCSS for styling
+- 🏗️ **Feature-First Architecture** - Modern, scalable organization
 - 📖 [React Router docs](https://reactrouter.com/)
+
+## 🏗️ Architecture
+
+This project uses **Feature-First Organization** where each feature contains all related code in a single folder:
+
+```
+app/modules/
+├── auth/login/              ← Login feature (all login code here)
+├── dashboard/dashboard-overview/
+├── products/product-list/
+└── shared/                  ← Shared components, hooks, utils
+```
+
+**Benefits:**
+- 🎯 High cohesion - related code stays together
+- ⚡ Faster development - no folder jumping
+- 🗑️ Easy cleanup - delete feature = delete folder
+- 📦 Self-contained features
+
+> 📋 See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for detailed architecture guide
 
 ## Getting Started
 
@@ -21,7 +42,7 @@ A modern, production-ready template for building full-stack React applications u
 Install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Development
@@ -29,10 +50,10 @@ npm install
 Start the development server with HMR:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+Your application will be available at `http://localhost:3000`.
 
 ## Building for Production
 
