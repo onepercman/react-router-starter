@@ -1,50 +1,39 @@
+"use client";
+
 import React from "react";
-import { tv, type VariantProps } from "tailwind-variants";
-import { cn } from "~/shared/utils";
+import { cn, type ComposedTVProps, forwardRef } from "react-tvcx";
+import { tv } from "tailwind-variants";
 import { Spinner } from "./spinner";
 
 export const button = tv({
   base: [
-    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-bold",
-    "cursor-pointer border-0 border-transparent outline-none ring-2 ring-transparent transition-all duration-200",
-    "h-[var(--button-size)] min-h-[var(--button-size)] min-w-[var(--button-size)] px-4 text-xs",
-    "rounded-xl",
-    "shadow-sm",
-    "focus-visible:ring-4 focus-visible:ring-primary/40 focus-visible:ring-offset-2",
+    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-semibold",
+    "cursor-pointer border-0 border-transparent outline-none ring ring-transparent transition-all transition-colors transition-bg transition-border duration-150",
+    "h-[var(--button-size)] min-h-[var(--button-size)] min-w-[var(--button-size)] px-3 text-xs",
     "[&:not(:disabled)]:active:brightness-105",
-    "[&:not(:disabled)]:hover:shadow-md",
-    "[&:not(:disabled)]:hover:scale-[1.03]",
-    "[&:not(:disabled)]:hover:brightness-105",
-    "disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none disabled:bg-muted disabled:text-secondary",
-    "flex items-center justify-center gap-2 relative",
+    "disabled:cursor-not-allowed disabled:opacity-75 disabled:saturate-0 disabled:data-[loading]:saturate-50",
   ],
   variants: {
     size: {
-      xs: "px-3 text-xs [--button-size:1.75rem]",
-      sm: "px-4 text-sm [--button-size:2rem]",
-      md: "px-5 text-sm [--button-size:2.5rem]",
-      lg: "px-6 text-base [--button-size:3rem]",
+      xs: "px-2 text-xs [--button-size:1.75rem]",
+      sm: "px-3 text-sm [--button-size:2rem]",
+      md: "px-4 text-base [--button-size:2.5rem]",
+      lg: "px-5 text-lg [--button-size:3rem]",
     },
     variant: {
       default: "border-0",
-      outlined: "border-2 bg-transparent",
-      ghost: "border-0 bg-transparent shadow-none",
-      light: "border-0 bg-background text-foreground",
+      outlined: "border-2",
+      ghost: "border-0 bg-transparent",
+      light: "border-0",
     },
     color: {
-      default:
-        "bg-background text-foreground [&:not(:disabled)]:hover:bg-background/80",
-      primary:
-        "bg-primary text-white [&:not(:disabled)]:hover:bg-primary-focus [&:not(:disabled)]:hover:text-white",
-      accent:
-        "bg-accent text-white [&:not(:disabled)]:hover:bg-accent-focus [&:not(:disabled)]:hover:text-white",
-      info: "bg-info text-white [&:not(:disabled)]:hover:bg-info-focus [&:not(:disabled)]:hover:text-white",
-      success:
-        "bg-success text-white [&:not(:disabled)]:hover:bg-success-focus [&:not(:disabled)]:hover:text-white",
-      warning:
-        "bg-warning text-white [&:not(:disabled)]:hover:bg-warning-focus [&:not(:disabled)]:hover:text-white",
-      error:
-        "bg-error text-white [&:not(:disabled)]:hover:bg-error-focus [&:not(:disabled)]:hover:text-white",
+      default: "",
+      primary: "",
+      accent: "",
+      info: "",
+      success: "",
+      warning: "",
+      error: "",
     },
     shape: {
       normal: "rounded-xl",
@@ -54,108 +43,250 @@ export const button = tv({
     },
   },
   compoundVariants: [
-    // Outlined variant colors
+    // default
+    {
+      variant: "default",
+      color: "default",
+      class: ["bg-[var(--color-default)] text-[var(--color-foreground)]"],
+    },
+    {
+      variant: "default",
+      color: "primary",
+      class: [
+        "bg-[var(--color-primary)]",
+        "text-[var(--color-primary-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-primary-hover)]",
+      ],
+    },
+    {
+      variant: "default",
+      color: "info",
+      class: [
+        "bg-[var(--color-info)]",
+        "text-[var(--color-info-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-info-hover)]",
+      ],
+    },
+    {
+      variant: "default",
+      color: "success",
+      class: [
+        "bg-[var(--color-success)]",
+        "text-[var(--color-success-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-success-hover)]",
+      ],
+    },
+    {
+      variant: "default",
+      color: "warning",
+      class: [
+        "bg-[var(--color-warning)]",
+        "text-[var(--color-warning-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-warning-hover)]",
+      ],
+    },
+    {
+      variant: "default",
+      color: "error",
+      class: [
+        "bg-[var(--color-error)]",
+        "text-[var(--color-error-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-error-hover)]",
+      ],
+    },
+    {
+      variant: "default",
+      color: "accent",
+      class: [
+        "bg-[var(--color-accent)]",
+        "text-[var(--color-accent-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-accent-hover)]",
+      ],
+    },
+    // light
+    {
+      variant: "light",
+      color: "default",
+      class: [
+        "bg-[var(--color-default)]/20",
+        "text-[var(--color-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-default)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "primary",
+      class: [
+        "bg-[var(--color-primary)]/20",
+        "text-[var(--color-primary)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-primary)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "info",
+      class: [
+        "bg-[var(--color-info)]/20",
+        "text-[var(--color-info)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-info)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "success",
+      class: [
+        "bg-[var(--color-success)]/20",
+        "text-[var(--color-success)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-success)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "warning",
+      class: [
+        "bg-[var(--color-warning)]/20",
+        "text-[var(--color-warning)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-warning)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "error",
+      class: [
+        "bg-[var(--color-error)]/20",
+        "text-[var(--color-error)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-error)]/50",
+      ],
+    },
+    {
+      variant: "light",
+      color: "accent",
+      class: [
+        "bg-[var(--color-accent)]/20",
+        "text-[var(--color-accent)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-accent)]/50",
+      ],
+    },
+    // outlined
     {
       variant: "outlined",
       color: "default",
       class: [
-        "border border-border text-foreground bg-transparent [&:not(:disabled)]:hover:bg-background",
+        "border-[var(--color-line)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-default)]/10",
       ],
     },
     {
       variant: "outlined",
       color: "primary",
       class: [
-        "border border-primary text-primary bg-transparent [&:not(:disabled)]:hover:border-primary-focus [&:not(:disabled)]:hover:bg-primary/10",
-      ],
-    },
-    {
-      variant: "outlined",
-      color: "accent",
-      class: [
-        "border border-accent text-accent bg-transparent [&:not(:disabled)]:hover:border-accent-focus [&:not(:disabled)]:hover:bg-accent/10",
+        "border-[var(--color-primary)] text-[var(--color-primary)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-primary-hover)] [&:not(:disabled)]:hover:text-[var(--color-primary-hover)]",
       ],
     },
     {
       variant: "outlined",
       color: "info",
       class: [
-        "border border-info text-info bg-transparent [&:not(:disabled)]:hover:border-info-focus [&:not(:disabled)]:hover:bg-info/10",
+        "border-[var(--color-info)] text-[var(--color-info)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-info-hover)] [&:not(:disabled)]:hover:text-[var(--color-info-hover)]",
       ],
     },
     {
       variant: "outlined",
       color: "success",
       class: [
-        "border border-success text-success bg-transparent [&:not(:disabled)]:hover:border-success-focus [&:not(:disabled)]:hover:bg-success/10",
+        "border-[var(--color-success)] text-[var(--color-success)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-success-hover)] [&:not(:disabled)]:hover:text-[var(--color-success-hover)]",
       ],
     },
     {
       variant: "outlined",
       color: "warning",
       class: [
-        "border border-warning text-warning bg-transparent [&:not(:disabled)]:hover:border-warning-focus [&:not(:disabled)]:hover:bg-warning/10",
+        "border-[var(--color-warning)] text-[var(--color-warning)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-warning-hover)] [&:not(:disabled)]:hover:text-[var(--color-warning-hover)]",
       ],
     },
     {
       variant: "outlined",
       color: "error",
       class: [
-        "border border-error text-error bg-transparent [&:not(:disabled)]:hover:border-error-focus [&:not(:disabled)]:hover:bg-error/10",
+        "border-[var(--color-error)] text-[var(--color-error)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-error-hover)] [&:not(:disabled)]:hover:text-[var(--color-error-hover)]",
       ],
     },
-    // Ghost variant colors
+    {
+      variant: "outlined",
+      color: "accent",
+      class: [
+        "border-[var(--color-accent)] text-[var(--color-accent)]",
+        "[&:not(:disabled)]:hover:border-[var(--color-accent-hover)] [&:not(:disabled)]:hover:text-[var(--color-accent-hover)]",
+      ],
+    },
+    // ghost
     {
       variant: "ghost",
       color: "default",
       class: [
-        "text-foreground bg-transparent [&:not(:disabled)]:hover:bg-background",
+        "text-[var(--color-foreground)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-default)]/10",
       ],
     },
     {
       variant: "ghost",
       color: "primary",
       class: [
-        "text-primary bg-transparent [&:not(:disabled)]:hover:bg-primary/10",
-      ],
-    },
-    {
-      variant: "ghost",
-      color: "accent",
-      class: [
-        "text-accent bg-transparent [&:not(:disabled)]:hover:bg-accent/10",
+        "text-[var(--color-primary)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-primary)]/10",
       ],
     },
     {
       variant: "ghost",
       color: "info",
-      class: ["text-info bg-transparent [&:not(:disabled)]:hover:bg-info/10"],
+      class: [
+        "text-[var(--color-info)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-info)]/10",
+      ],
     },
     {
       variant: "ghost",
       color: "success",
       class: [
-        "text-success bg-transparent [&:not(:disabled)]:hover:bg-success/10",
+        "text-[var(--color-success)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-success)]/10",
       ],
     },
     {
       variant: "ghost",
       color: "warning",
       class: [
-        "text-warning bg-transparent [&:not(:disabled)]:hover:bg-warning/10",
+        "text-[var(--color-warning)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-warning)]/10",
       ],
     },
     {
       variant: "ghost",
       color: "error",
-      class: ["text-error bg-transparent [&:not(:disabled)]:hover:bg-error/10"],
+      class: [
+        "text-[var(--color-error)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-error)]/10",
+      ],
+    },
+    {
+      variant: "ghost",
+      color: "accent",
+      class: [
+        "text-[var(--color-accent)]",
+        "[&:not(:disabled)]:hover:bg-[var(--color-accent)]/10",
+      ],
     },
   ],
   defaultVariants: {
-    size: "lg",
+    size: "md",
     variant: "default",
-    shape: "normal",
     color: "default",
+    shape: "normal",
   },
 });
 
@@ -169,77 +300,58 @@ export interface ButtonBaseProps {
 
 export interface ButtonProps
   extends ButtonBaseProps,
-    Omit<
-      React.ButtonHTMLAttributes<HTMLButtonElement>,
-      "color" | "size" | "variant" | "shape"
-    >,
-    VariantProps<typeof button> {
-  ref?: React.Ref<HTMLButtonElement>;
-  as?: React.ElementType;
-}
+    ComposedTVProps<typeof button> {}
 
 function useButton({
   onClick,
   loading,
   disabled,
-  size,
-  variant,
-  color,
-  shape,
-  className,
   ...props
-}: ButtonProps) {
+}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  const className = button(props);
+
   const [asyncLoading, setAsyncLoading] = React.useState(false);
 
-  const isLoading = loading || asyncLoading;
+  async function handleClick(ev: React.MouseEvent<HTMLButtonElement>) {
+    if (!onClick) return;
 
-  const handleClick = React.useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (isLoading || disabled) return;
-
-      if (onClick) {
-        try {
-          setAsyncLoading(true);
-          const result = onClick(event);
-          if (
-            result != null &&
-            typeof result === "object" &&
-            "then" in result &&
-            typeof (result as any).then === "function"
-          ) {
-            await result;
-          }
-        } catch (error) {
-          console.error("Button click error:", error);
-        } finally {
-          setAsyncLoading(false);
-        }
+    if (onClick.constructor.name === "AsyncFunction") {
+      try {
+        setAsyncLoading(true);
+        await onClick(ev);
+      } catch (err) {
+        throw new Error(err as any);
+      } finally {
+        setAsyncLoading(false);
       }
-    },
-    [onClick, isLoading, disabled]
-  );
+    } else {
+      onClick(ev);
+    }
+  }
 
-  const classNameResult = button({ size, variant, color, shape, className });
+  const _loading = Boolean(asyncLoading || loading);
 
   return {
     ...props,
+    className,
     onClick: handleClick,
-    disabled: disabled || isLoading,
-    loading: isLoading,
-    className: classNameResult,
+    loading: _loading,
+    disabled: _loading || disabled,
   };
 }
 
-export function Button({
-  ref,
-  as: Component = "button",
-  children,
-  loadingText,
-  loadingVariant = "transparent",
-  leftIcon,
-  rightIcon,
-  ...props
-}: ButtonProps) {
+export const Button = forwardRef<"button", ButtonProps>(function (
+  {
+    as: Component = "button",
+    children,
+    loadingText,
+    loadingVariant = "transparent",
+    leftIcon,
+    rightIcon,
+    ...props
+  },
+  ref
+) {
   const buttonProps = useButton(props);
 
   return (
@@ -248,12 +360,11 @@ export function Button({
       type="button"
       data-loading={buttonProps.loading}
       {...buttonProps}
-      className={cn(buttonProps.className)}
     >
       {buttonProps.loading && (
-        <span className="absolute left-4 flex items-center justify-center">
-          <Spinner className={loadingVariant === "default" ? "relative" : ""} />
-        </span>
+        <Spinner
+          className={loadingVariant === "default" ? "relative" : "absolute"}
+        />
       )}
       {leftIcon ? (
         buttonProps.loading ? (
@@ -269,9 +380,7 @@ export function Button({
       {children || loadingText ? (
         buttonProps.loading ? (
           <span
-            className={cn("flex-1 flex items-center justify-center", {
-              "opacity-0": loadingVariant === "transparent",
-            })}
+            className={cn({ "opacity-0": loadingVariant === "transparent" })}
           >
             {loadingText || children}
           </span>
@@ -292,6 +401,6 @@ export function Button({
       ) : null}
     </Component>
   );
-}
+});
 
 Button.displayName = "Button";

@@ -63,6 +63,7 @@ export default function LoginPage() {
                   placeholder="Enter your email"
                   variant="outlined"
                   size="lg"
+                  className="w-full"
                 />
               </div>
 
@@ -84,6 +85,7 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   variant="outlined"
                   size="lg"
+                  className="w-full"
                 />
               </div>
 

@@ -1,48 +1,44 @@
-import { Eye, EyeOff, X } from "lucide-react";
+"use client";
+
+import { Eye, EyeOff, X as LuX } from "lucide-react";
 import React from "react";
-import { tv, type VariantProps } from "tailwind-variants";
-import { cn } from "~/shared/utils";
+import { cn, type ComposedTVProps, forwardRef } from "react-tvcx";
+import { tv } from "tailwind-variants";
+import { useComposedRefs } from "use-composed-refs";
 
 export const input = tv({
   base: [
-    "inline-flex cursor-text items-center gap-2 overflow-hidden rounded-lg border transition-all duration-200",
-    "bg-background text-foreground",
-    "focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:border-ring",
-    "h-[var(--input-size)] min-h-[var(--input-size)] w-full px-4 text-base",
-    "hover:border-border",
-    "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-background",
+    "inline-flex cursor-text items-center gap-2 overflow-hidden text-ellipsis rounded-xl border-2 border-transparent px-3 transition-all transition-colors transition-bg transition-border duration-150 focus-within:border-[var(--color-primary)]",
+    "h-[var(--input-size)] min-h-[var(--input-size)] min-w-[var(--input-size)] px-3 text-xs",
   ],
   slots: {
     input: [
-      "h-full w-full bg-transparent outline-none ring-0 focus:outline-none focus:ring-0",
-      "placeholder:text-secondary",
-      "disabled:cursor-not-allowed",
-      "[&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:shadow-[inset_0_0_0px_1000px_rgb(var(--color-background))]",
+      "h-full grow self-stretch overflow-hidden text-ellipsis border-transparent bg-transparent p-0",
+      "placeholder:text-[var(--color-muted)] autofill:[-webkit-background-clip:text] focus:outline-none focus:ring-transparent",
     ],
-    addonBefore: "rounded-r-none border-r-0",
-    addonAfter: "rounded-l-none border-l-0",
+    addonBefore: "rounded-r-none",
+    addonAfter: "rounded-l-none",
   },
   variants: {
     size: {
-      xs: "px-3 text-xs [--input-size:1.75rem]",
+      xs: "px-2 text-xs [--input-size:1.75rem]",
       sm: "px-3 text-sm [--input-size:2rem]",
-      md: "px-4 text-sm [--input-size:2.5rem]",
-      lg: "px-4 text-base [--input-size:3rem]",
+      md: "px-4 text-base [--input-size:2.5rem]",
+      lg: "px-5 text-lg [--input-size:3rem]",
     },
     variant: {
-      outlined: "border-input",
-      filled: "bg-background border-transparent",
-      ghost: "border-transparent bg-transparent hover:bg-background",
+      filled: "bg-[var(--color-default)]",
+      outlined: "border-[var(--color-line)]",
+      blur: "bg-[var(--color-default)]/20 backdrop-blur",
     },
     invalid: {
       true: {
-        base: "border-error bg-error-subtle text-error-foreground focus-within:border-error focus-within:ring-error/20",
-        input: "placeholder:text-error/60",
+        base: "border-2 border-[var(--color-error)] bg-[var(--color-error)]/10 text-[var(--color-error)] focus-within:border-[var(--color-error-hover)]",
       },
     },
   },
   defaultVariants: {
-    size: "lg",
+    size: "md",
     variant: "outlined",
   },
 });
@@ -57,192 +53,176 @@ export interface InputFieldProps {
 }
 
 export interface InputProps
-  extends Omit<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      "size" | "prefix" | "variant" | "invalid"
-    >,
-    InputFieldProps,
-    VariantProps<typeof input> {
-  ref?: React.Ref<HTMLInputElement>;
-  as?: React.ElementType;
-  classNames?: {
-    base?: string;
-    input?: string;
-    addonBefore?: string;
-    addonAfter?: string;
-  };
-}
+  extends InputFieldProps,
+    ComposedTVProps<typeof input> {}
 
-// Simple ref composition helper
-function setRef<T>(ref: React.Ref<T> | undefined, value: T) {
-  if (typeof ref === "function") {
-    ref(value);
-  } else if (ref && typeof ref === "object") {
-    (ref as React.MutableRefObject<T>).current = value;
-  }
-}
-
-export function Input({
-  ref,
-  as: Component = "input",
-  prefix,
-  suffix,
-  addonBefore,
-  addonAfter,
-  size,
-  variant,
-  invalid,
-  clearable,
-  onChange,
-  transform,
-  className,
-  classNames,
-  ...props
-}: InputProps) {
-  const styles = input({ size, variant, invalid });
-
-  const internalRef = React.useRef<HTMLInputElement>(null);
-  const [showClear, setShowClear] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  // Determine the actual input type based on showPassword state
-  const inputType =
-    props.type === "password" && showPassword ? "text" : props.type;
-
-  // Compose refs manually
-  const composedRef = React.useCallback(
-    (element: HTMLInputElement | null) => {
-      internalRef.current = element;
-      setRef(ref, element);
+export const Input = forwardRef<"input", InputProps>(
+  (
+    {
+      as: Component = "input",
+      prefix,
+      suffix,
+      addonBefore,
+      addonAfter,
+      size,
+      variant,
+      invalid,
+      clearable,
+      onChange,
+      transform,
+      className,
+      classNames,
+      ...props
     },
-    [ref]
-  );
+    ref
+  ) => {
+    const styles = input({ size, variant, invalid });
 
-  function getTogglePassword() {
-    if (props.type === "password") {
-      const IconComponent = showPassword ? EyeOff : Eye;
-      return (
-        <IconComponent
-          className="h-4 w-4 cursor-pointer text-secondary hover:text-foreground transition-colors shrink-0"
-          onClick={() => {
-            setShowPassword(!showPassword);
-          }}
-        />
-      );
-    }
-  }
+    const internalRef = React.useRef<HTMLInputElement>(null);
+    const composedRef = useComposedRefs(ref, internalRef);
 
-  function getClear() {
-    if (showClear && clearable) {
-      return (
-        <X
-          className="h-4 w-4 cursor-pointer text-muted-foreground hover:text-foreground transition-colors shrink-0"
-          onClick={() => {
-            if (internalRef.current) {
-              internalRef.current.value = "";
-              setShowClear(false);
-              if (onChange) {
-                const syntheticEvent = {
-                  target: internalRef.current,
-                  currentTarget: internalRef.current,
-                } as React.ChangeEvent<HTMLInputElement>;
-                onChange(syntheticEvent);
+    const [showClear, setShowClear] = React.useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    function getTogglePassword() {
+      if (props.type === "password") {
+        if (showPassword) {
+          return (
+            <Eye
+              className="ml-2"
+              onClick={() => {
+                if (internalRef.current) {
+                  internalRef.current.type = "password";
+                  setShowPassword(false);
+                }
+              }}
+            />
+          );
+        }
+        return (
+          <EyeOff
+            className="ml-2 text-secondary"
+            onClick={() => {
+              if (internalRef.current) {
+                internalRef.current.type = "text";
+                setShowPassword(true);
               }
-            }
-          }}
-        />
+            }}
+          />
+        );
+      }
+    }
+
+    function getClear() {
+      if (showClear && clearable) {
+        return (
+          <LuX
+            className="cursor-pointer text-secondary"
+            onClick={function () {
+              if (internalRef.current) {
+                setShowClear(false);
+                internalRef.current.value = "";
+                const currentTarget = internalRef.current.cloneNode(true);
+                const event = Object.create(new Event("change"), {
+                  target: { value: currentTarget },
+                  currentTarget: { value: currentTarget },
+                });
+                if (onChange) onChange(event);
+              }
+            }}
+          />
+        );
+      }
+    }
+
+    function handleChange(ev: React.ChangeEvent<HTMLInputElement>) {
+      if (transform && internalRef.current) {
+        internalRef.current.value = transform(internalRef.current.value);
+      }
+      if (onChange) onChange(ev);
+      setShowClear(!!ev.target.value);
+    }
+
+    function _renderPrefix() {
+      const element = prefix as React.ReactElement;
+      if (!element) return null;
+
+      if (typeof element === "object" && "type" in element)
+        return React.cloneElement(element);
+      return <span>{element}</span>;
+    }
+
+    function _renderSuffix() {
+      const element = suffix as React.ReactElement;
+      if (!element) return null;
+      if (typeof element === "object" && "type" in element)
+        return React.cloneElement(element);
+      return <span>{element}</span>;
+    }
+
+    function _renderAddonBefore() {
+      const element = addonBefore as React.ReactElement;
+      if (!element) return null;
+      if (React.isValidElement<{ className?: string }>(element))
+        return React.cloneElement(element, {
+          className: styles.addonBefore({
+            class: cn(
+              (element.props as any).className,
+              classNames?.addonBefore
+            ),
+          }),
+        });
+      return (
+        <span
+          className={styles.addonBefore({ class: classNames?.addonBefore })}
+        >
+          {element}
+        </span>
       );
     }
-    return null;
-  }
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    let value = event.target.value;
-    if (transform) {
-      value = transform(value);
-      event.target.value = value;
+    function _renderAddonAfter() {
+      const element = addonAfter as React.ReactElement;
+      if (!element) return null;
+      if (React.isValidElement<{ className?: string }>(element))
+        return React.cloneElement(element, {
+          className: styles.addonAfter({
+            class: cn((element.props as any).className, classNames?.addonAfter),
+          }),
+        });
+      return (
+        <span className={styles.addonAfter({ class: classNames?.addonAfter })}>
+          {element}
+        </span>
+      );
     }
 
-    setShowClear(Boolean(value && clearable));
-
-    if (onChange) {
-      onChange(event);
-    }
-  }
-
-  function _renderPrefix() {
-    const element = prefix as React.ReactElement;
-    if (!element) return null;
-    return <span className="text-secondary shrink-0">{element}</span>;
-  }
-
-  function _renderSuffix() {
-    const element = suffix as React.ReactElement;
-    if (!element) return null;
-    return <span className="text-muted-foreground shrink-0">{element}</span>;
-  }
-
-  function _renderAddonBefore() {
-    const element = addonBefore as React.ReactElement;
-    if (!element) return null;
-    if (React.isValidElement(element))
-      return React.cloneElement(element as React.ReactElement<any>, {
-        className: cn(
-          styles.addonBefore({ class: classNames?.addonBefore }),
-          (element.props as any)?.className
-        ),
-      });
     return (
-      <span className={styles.addonBefore({ class: classNames?.addonBefore })}>
-        {element}
-      </span>
-    );
-  }
-
-  function _renderAddonAfter() {
-    const element = addonAfter as React.ReactElement;
-    if (!element) return null;
-    if (React.isValidElement(element))
-      return React.cloneElement(element as React.ReactElement<any>, {
-        className: cn(
-          styles.addonAfter({ class: classNames?.addonAfter }),
-          (element.props as any)?.className
-        ),
-      });
-    return (
-      <span className={styles.addonAfter({ class: classNames?.addonAfter })}>
-        {element}
-      </span>
-    );
-  }
-
-  return (
-    <label
-      className={styles.base({
-        className: cn(className, classNames?.base, {
-          "pl-0": !!addonBefore,
-          "pr-0": !!addonAfter,
-        }),
-      })}
-    >
-      {_renderAddonBefore()}
-      {_renderPrefix()}
-      <Component
-        ref={composedRef}
-        onChange={handleChange}
-        className={styles.input({
-          className: cn(className, classNames?.input),
+      <label
+        role="input"
+        className={styles.base({
+          className: cn(className, classNames?.base, {
+            "pl-0": !!addonBefore,
+            "pr-0": !!addonAfter,
+          }),
         })}
-        {...props}
-        type={inputType}
-      />
-      {getClear()}
-      {getTogglePassword()}
-      {_renderSuffix()}
-      {_renderAddonAfter()}
-    </label>
-  );
-}
+      >
+        {_renderAddonBefore()}
+        {_renderPrefix()}
+        <Component
+          ref={composedRef}
+          onChange={handleChange}
+          className={styles.input({ class: classNames?.input })}
+          {...props}
+        />
+        {getClear()}
+        {getTogglePassword()}
+        {_renderSuffix()}
+        {_renderAddonAfter()}
+      </label>
+    );
+  }
+);
 
 Input.displayName = "Input";
 
