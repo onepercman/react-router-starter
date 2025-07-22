@@ -39,8 +39,8 @@ importers:
         specifier: ^7.7.0
         version: 7.7.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-tvcx:
-        specifier: ^2.3.0
-        version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwind-variants@1.0.0(tailwindcss@4.1.11))
+        specifier: ^3.0.5
+        version: 3.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwind-variants@1.0.0(tailwindcss@4.1.11))
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.3.1
@@ -48,8 +48,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0(tailwindcss@4.1.11)
       use-composed-refs:
-        specifier: ^0.0.1
-        version: 0.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^0.1.0
+        version: 0.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       '@eslint/js':
         specifier: ^9.31.0
@@ -2501,11 +2501,11 @@ packages:
       react-dom:
         optional: true
 
-  react-tvcx@2.3.0:
-    resolution: {integrity: sha512-z5dIj8ntEFc+RNGcWjzJFioaE7TNKHJWkYlSBaHkyksFr+LrNcwmiVPytBgcWAGxP+VpE4z6zc7xrEqpxhL+sg==}
+  react-tvcx@3.0.5:
+    resolution: {integrity: sha512-hmFBqk7Y4ia1PXTyCsrd1mEESoHXxiGXf4rYUsP2Zmvz9U09Fnrf+tbEWQo/kmeG5HJOi4ITyxoyR6Pl63oNvg==}
     peerDependencies:
-      react: ^18.3.1
-      react-dom: ^18.3.1
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
       tailwind-variants: ^0.2.1
 
   react@19.1.0:
@@ -2858,8 +2858,8 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  use-composed-refs@0.0.1:
-    resolution: {integrity: sha512-PpGOWfTrlx9Jd7Rxljyo93fcI1G4f+JSf8m3xGmNuNTbyzSpgGOZTpG5ek7CmZPC9kogX2dMXgYIqJ5QEEA8bg==}
+  use-composed-refs@0.1.0:
+    resolution: {integrity: sha512-42gw6Tb1vYrCQ++kYEY736fYSlws2zEfPRVSH26fNoMMaJHL0aZg0hGEg3GWPHG4JMEByj1d+JmboU1A5S95NA==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
@@ -5849,7 +5849,7 @@ snapshots:
     optionalDependencies:
       react-dom: 19.1.0(react@19.1.0)
 
-  react-tvcx@2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwind-variants@1.0.0(tailwindcss@4.1.11)):
+  react-tvcx@3.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwind-variants@1.0.0(tailwindcss@4.1.11)):
     dependencies:
       clsx: 2.1.1
       react: 19.1.0
@@ -6291,7 +6291,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-composed-refs@0.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  use-composed-refs@0.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
