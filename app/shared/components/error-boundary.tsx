@@ -2,7 +2,7 @@ import type { ErrorInfo, ReactNode } from "react";
 import type { FallbackProps } from "react-error-boundary";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import { isRouteErrorResponse } from "react-router";
-import { Button, UiCard } from "~/shared/components";
+import { Button, Card } from "~/shared/components";
 
 // Error logging function
 function logError(error: Error, errorInfo: ErrorInfo & { module?: string }) {
@@ -21,7 +21,7 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 
   return (
     <div className="min-h-[400px] flex items-center justify-center p-4">
-      <UiCard className="max-w-lg w-full">
+      <Card className="max-w-lg w-full">
         <div className="text-center space-y-4">
           <div className="text-4xl">😕</div>
           <h2 className="text-xl font-semibold text-gray-900">
@@ -52,7 +52,7 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
             </Button>
           </div>
         </div>
-      </UiCard>
+      </Card>
     </div>
   );
 }
@@ -138,7 +138,7 @@ export function RouteErrorBoundary({ error }: { error: unknown }) {
   if (isRouteErrorResponse(error)) {
     return (
       <div className="min-h-[400px] flex items-center justify-center p-4">
-        <UiCard className="max-w-lg w-full text-center space-y-4">
+        <Card className="max-w-lg w-full text-center space-y-4">
           <div className="text-4xl">{error.status === 404 ? "🔍" : "⚠️"}</div>
           <h2 className="text-xl font-semibold">
             {error.status === 404 ? "Page Not Found" : `Error ${error.status}`}
@@ -151,7 +151,7 @@ export function RouteErrorBoundary({ error }: { error: unknown }) {
           <Button color="primary" onClick={() => window.history.back()}>
             Go Back
           </Button>
-        </UiCard>
+        </Card>
       </div>
     );
   }

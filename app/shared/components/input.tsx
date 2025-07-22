@@ -1,8 +1,6 @@
-"use client";
-
 import { Eye, EyeOff, X } from "lucide-react";
 import React from "react";
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "~/shared/utils";
 
 export const input = tv({
@@ -59,13 +57,14 @@ export interface InputFieldProps {
 }
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix">,
-    InputFieldProps {
+  extends Omit<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      "size" | "prefix" | "variant" | "invalid"
+    >,
+    InputFieldProps,
+    VariantProps<typeof input> {
   ref?: React.Ref<HTMLInputElement>;
   as?: React.ElementType;
-  size?: "xs" | "sm" | "md" | "lg";
-  variant?: "outlined" | "filled" | "ghost";
-  invalid?: boolean;
   classNames?: {
     base?: string;
     input?: string;

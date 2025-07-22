@@ -1,11 +1,11 @@
 import { useState } from "react";
 import {
   Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   PageHeader,
-  UiCard,
-  UiCardContent,
-  UiCardHeader,
-  UiCardTitle,
 } from "~/shared/components";
 
 interface Product {
@@ -152,8 +152,8 @@ export default function ProductListPage() {
       </PageHeader>
 
       {/* Category Filter */}
-      <UiCard className="mb-6">
-        <UiCardContent className="p-6">
+      <Card className="mb-6">
+        <CardContent className="p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">
             Filter by Category
           </h3>
@@ -170,8 +170,8 @@ export default function ProductListPage() {
               </Button>
             ))}
           </div>
-        </UiCardContent>
-      </UiCard>
+        </CardContent>
+      </Card>
 
       {/* Products Grid */}
       {filteredProducts.length > 0 ? (
@@ -180,11 +180,11 @@ export default function ProductListPage() {
             const stockStatus = getStockStatus(product.stock);
 
             return (
-              <UiCard
+              <Card
                 key={product.id}
                 className="overflow-hidden hover:shadow-lg transition-all duration-200 border border-border"
               >
-                <UiCardContent className="p-0">
+                <CardContent className="p-0">
                   {/* Product Image */}
                   <div className="bg-gradient-to-br from-primary-subtle to-accent-subtle p-8 text-center">
                     <div className="text-6xl mb-4">{product.image}</div>
@@ -236,14 +236,14 @@ export default function ProductListPage() {
                       </Button>
                     </div>
                   </div>
-                </UiCardContent>
-              </UiCard>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
       ) : (
-        <UiCard className="text-center py-12 border-2 border-dashed border-muted">
-          <UiCardContent>
+        <Card className="text-center py-12 border-2 border-dashed border-muted">
+          <CardContent>
             <div className="text-4xl mb-4">📦</div>
             <h3 className="text-lg font-semibold text-foreground mb-2">
               No products found
@@ -254,18 +254,16 @@ export default function ProductListPage() {
             <Button color="primary" onClick={() => setSelectedCategory("All")}>
               Show All Products
             </Button>
-          </UiCardContent>
-        </UiCard>
+          </CardContent>
+        </Card>
       )}
 
       {/* Summary Card */}
-      <UiCard className="mt-8 bg-gradient-to-r from-primary-subtle to-accent-subtle border-primary/30">
-        <UiCardHeader>
-          <UiCardTitle className="text-primary">
-            📊 Inventory Summary
-          </UiCardTitle>
-        </UiCardHeader>
-        <UiCardContent>
+      <Card className="mt-8 bg-gradient-to-r from-primary-subtle to-accent-subtle border-primary/30">
+        <CardHeader>
+          <CardTitle className="text-primary">📊 Inventory Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-foreground">
@@ -292,8 +290,8 @@ export default function ProductListPage() {
               <div className="text-sm text-secondary">Very Low</div>
             </div>
           </div>
-        </UiCardContent>
-      </UiCard>
+        </CardContent>
+      </Card>
     </div>
   );
 }

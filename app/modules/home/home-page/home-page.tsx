@@ -1,10 +1,10 @@
 import { Link } from "react-router";
 import {
   Button,
-  UiCard,
-  UiCardContent,
-  UiCardHeader,
-  UiCardTitle,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
 } from "~/shared/components";
 
 export default function HomePage() {
@@ -96,13 +96,13 @@ export default function HomePage() {
         </div>
       </div>
 
-      <UiCard className="border-2 border-primary/30 bg-gradient-to-r from-primary-subtle to-accent-subtle">
-        <UiCardHeader>
-          <UiCardTitle className="text-primary text-xl">
+      <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary-subtle to-accent-subtle">
+        <CardHeader>
+          <CardTitle className="text-primary text-xl">
             🎯 Project Overview
-          </UiCardTitle>
-        </UiCardHeader>
-        <UiCardContent>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-card rounded-lg border border-info/30">
               <div className="text-2xl md:text-3xl font-bold text-info mb-1">
@@ -137,16 +137,16 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </UiCardContent>
-      </UiCard>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {navigationItems.map(item => (
           <Link key={item.path} to={item.path} className="group">
-            <UiCard
+            <Card
               className={`transition-all duration-300 border-2 cursor-pointer h-full ${item.color}`}
             >
-              <UiCardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-6">
                 <div className="flex items-start space-x-3">
                   <div
                     className={`${item.iconBg} p-2 md:p-3 rounded-lg text-white text-lg md:text-xl flex-shrink-0`}
@@ -167,17 +167,17 @@ export default function HomePage() {
                     </Button>
                   </div>
                 </div>
-              </UiCardContent>
-            </UiCard>
+              </CardContent>
+            </Card>
           </Link>
         ))}
       </div>
 
-      <UiCard>
-        <UiCardHeader>
-          <UiCardTitle className="text-xl">🌟 Key Features</UiCardTitle>
-        </UiCardHeader>
-        <UiCardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">🌟 Key Features</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {features.map((feature, index) => (
               <div
@@ -193,14 +193,14 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </UiCardContent>
-      </UiCard>
+        </CardContent>
+      </Card>
 
-      <UiCard>
-        <UiCardHeader>
-          <UiCardTitle className="text-xl">🚀 Getting Started</UiCardTitle>
-        </UiCardHeader>
-        <UiCardContent>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">🚀 Getting Started</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="space-y-6">
             <div className="flex items-start space-x-4">
               <div className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
@@ -256,8 +256,8 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </UiCardContent>
-      </UiCard>
+        </CardContent>
+      </Card>
     </div>
   );
 }

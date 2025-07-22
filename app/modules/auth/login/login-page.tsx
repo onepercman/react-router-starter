@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Button, Input, UiCard, UiCardContent } from "~/shared/components";
+import { Button, Card, CardContent, Input } from "~/shared/components";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -42,8 +42,8 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <UiCard className="p-8 border border-border bg-card">
-          <UiCardContent>
+        <Card className="p-8 border border-border bg-card">
+          <CardContent>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
@@ -164,8 +164,8 @@ export default function LoginPage() {
                 Sign up
               </Button>
             </p>
-          </UiCardContent>
-        </UiCard>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

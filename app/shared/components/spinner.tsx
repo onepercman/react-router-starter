@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 export const Spinner: React.FC<React.SVGAttributes<SVGElement>> = function ({

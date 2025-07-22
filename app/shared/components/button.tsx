@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "~/shared/utils";
 import { Spinner } from "./spinner";
 
@@ -10,14 +8,15 @@ export const button = tv({
     "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-bold",
     "cursor-pointer border-0 border-transparent outline-none ring-2 ring-transparent transition-all duration-200",
     "h-[var(--button-size)] min-h-[var(--button-size)] min-w-[var(--button-size)] px-4 text-xs",
-    "rounded-xl", // border-radius lớn hơn
-    "shadow-sm", // shadow nhẹ mặc định
+    "rounded-xl",
+    "shadow-sm",
     "focus-visible:ring-4 focus-visible:ring-primary/40 focus-visible:ring-offset-2",
     "[&:not(:disabled)]:active:brightness-105",
-    "[&:not(:disabled)]:hover:shadow-md", // shadow lớn hơn khi hover
-    "[&:not(:disabled)]:hover:scale-[1.03]", // scale nhẹ khi hover
-    "[&:not(:disabled)]:hover:brightness-105", // sáng hơn khi hover
+    "[&:not(:disabled)]:hover:shadow-md",
+    "[&:not(:disabled)]:hover:scale-[1.03]",
+    "[&:not(:disabled)]:hover:brightness-105",
     "disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none disabled:bg-muted disabled:text-secondary",
+    "flex items-center justify-center gap-2 relative",
   ],
   variants: {
     size: {
@@ -29,7 +28,7 @@ export const button = tv({
     variant: {
       default: "border-0",
       outlined: "border-2 bg-transparent",
-      ghost: "border-0 bg-transparent shadow-none", // luôn không nền
+      ghost: "border-0 bg-transparent shadow-none",
       light: "border-0 bg-background text-foreground",
     },
     color: {
@@ -170,20 +169,13 @@ export interface ButtonBaseProps {
 
 export interface ButtonProps
   extends ButtonBaseProps,
-    React.ButtonHTMLAttributes<HTMLButtonElement> {
+    Omit<
+      React.ButtonHTMLAttributes<HTMLButtonElement>,
+      "color" | "size" | "variant" | "shape"
+    >,
+    VariantProps<typeof button> {
   ref?: React.Ref<HTMLButtonElement>;
   as?: React.ElementType;
-  size?: "xs" | "sm" | "md" | "lg";
-  variant?: "default" | "outlined" | "ghost" | "light";
-  color?:
-    | "default"
-    | "primary"
-    | "accent"
-    | "info"
-    | "success"
-    | "warning"
-    | "error";
-  shape?: "normal" | "pill" | "circle" | "square";
 }
 
 function useButton({
@@ -256,11 +248,7 @@ export function Button({
       type="button"
       data-loading={buttonProps.loading}
       {...buttonProps}
-      className={cn(
-        buttonProps.className,
-        // Đảm bảo mọi nội dung luôn flex center
-        "flex items-center justify-center gap-2 relative"
-      )}
+      className={cn(buttonProps.className)}
     >
       {buttonProps.loading && (
         <span className="absolute left-4 flex items-center justify-center">
