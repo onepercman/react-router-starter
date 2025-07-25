@@ -19,6 +19,7 @@
     "@ark-ui/react": "^5.17.0",
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
+    "axios": "^1.11.0",
     "clsx": "^2.1.1",
     "isbot": "^5.1.27",
     "lucide-react": "^0.525.0",
