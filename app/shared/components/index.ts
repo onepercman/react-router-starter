@@ -1,5 +1,6 @@
 // UI Components
-export * from "./button";
+export { AuthStatus } from "./auth-status";
+export { Button } from "./button";
 export { Card, CardContent, CardHeader, CardTitle } from "./card";
 export { ErrorBoundary } from "./error-boundary";
 export * from "./input";

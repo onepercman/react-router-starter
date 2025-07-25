@@ -49,7 +49,7 @@ export interface InputFieldProps {
   addonBefore?: React.ReactNode | React.ReactElement;
   addonAfter?: React.ReactNode | React.ReactElement;
   clearable?: boolean;
-  transform?(value: string): string;
+  transform?: (value: string) => string;
 }
 
 export interface InputProps

@@ -89,7 +89,7 @@ export function formatPhoneNumber(phone: string): string {
 // Truncate text
 export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + "...";
+  return `${text.slice(0, maxLength)  }...`;
 }
 
 // Capitalize first letter

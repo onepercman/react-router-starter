@@ -54,6 +54,8 @@ export default [
         { argsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/prefer-function-type": "warn",
+      "@typescript-eslint/method-signature-style": ["warn", "property"],
 
       // React
       "react/react-in-jsx-scope": "off",
@@ -70,6 +72,34 @@ export default [
       "no-unused-vars": "off",
       "prefer-const": "error",
       "no-undef": "off", // TypeScript handles this
+
+      // Function Style Rules - Encourage modern practices (React-friendly)
+      "prefer-arrow-callback": [
+        "warn",
+        {
+          allowNamedFunctions: true,
+          allowUnboundThis: true,
+        },
+      ],
+      "arrow-body-style": ["warn", "as-needed"],
+      "arrow-parens": ["warn", "as-needed"],
+      "arrow-spacing": ["error", { before: true, after: true }],
+      "func-style": [
+        "off", // Allow both function declarations and expressions for React components
+      ],
+      "no-var": "error",
+      "object-shorthand": ["warn", "always"],
+      "prefer-template": ["warn"],
+      "prefer-destructuring": [
+        "warn",
+        {
+          array: false, // Less strict for arrays
+          object: true,
+        },
+        {
+          enforceForRenamedProperties: false,
+        },
+      ],
     },
     settings: {
       react: {

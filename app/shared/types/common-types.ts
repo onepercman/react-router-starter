@@ -5,8 +5,8 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
-// User types
-export interface User extends BaseEntity {
+// Base user types (renamed to avoid conflict with auth User)
+export interface BaseUser extends BaseEntity {
   name: string;
   email: string;
   role: UserRole;

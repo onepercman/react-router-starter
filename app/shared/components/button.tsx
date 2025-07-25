@@ -340,7 +340,7 @@ function useButton({
   };
 }
 
-export const Button = forwardRef<"button", ButtonProps>(function (
+export const Button = forwardRef<"button", ButtonProps>((
   {
     as: Component = "button",
     children,
@@ -351,7 +351,7 @@ export const Button = forwardRef<"button", ButtonProps>(function (
     ...props
   },
   ref
-) {
+) => {
   const buttonProps = useButton(props);
 
   return (

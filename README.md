@@ -1,108 +1,158 @@
-# Welcome to React Router!
+# React Router Starter
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+A modern React application built with React Router, TypeScript, and Zustand for state management.
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 🏗️ **Feature-First Architecture** - Modern, scalable organization
-- 📖 [React Router docs](https://reactrouter.com/)
+- ⚡ **React Router v7** - File-based routing with type safety
+- 🎨 **Tailwind CSS v4** - Modern utility-first CSS framework
+- 📱 **Responsive Design** - Mobile-first approach
+- 🌙 **Dark Mode** - Built-in theme switching
+- 🔒 **Authentication** - Complete auth system with Zustand
+- 📊 **State Management** - Zustand for predictable state management
+- 🛠️ **TypeScript** - Full type safety
+- 🎯 **ESLint & Prettier** - Code quality and formatting
 
-## 🏗️ Architecture
+## State Management
 
-This project uses **Feature-First Organization** where each feature contains all related code in a single folder:
+This project uses **Zustand v5** for state management with the following stores:
 
-```
-app/modules/
-├── auth/login/              ← Login feature (all login code here)
-├── dashboard/dashboard-overview/
-├── products/product-list/
-└── shared/                  ← Shared components, hooks, utils
-```
+### Auth Store (`useAuthStore`)
+- User authentication (login/register/logout)
+- Token management with automatic refresh
+- Persistent storage with localStorage
+- Error handling and loading states
 
-**Benefits:**
-- 🎯 High cohesion - related code stays together
-- ⚡ Faster development - no folder jumping
-- 🗑️ Easy cleanup - delete feature = delete folder
-- 📦 Self-contained features
+### User Store (`useUserStore`)
+- User profile management
+- Preferences and settings
+- Profile updates and customization
 
-> 📋 See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for detailed architecture guide
+### Custom Hooks
+- `useAuth()` - Enhanced auth functionality
+- `useUserProfile()` - User profile management
+
+## Demo Credentials
+
+For testing the authentication system:
+- **Email**: test@example.com
+- **Password**: password
 
 ## Getting Started
 
+### Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
+
 ### Installation
 
-Install the dependencies:
-
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd react-router-starter
+
+# Install dependencies
 pnpm install
-```
 
-### Development
-
-Start the development server with HMR:
-
-```bash
+# Start development server
 pnpm dev
 ```
 
-Your application will be available at `http://localhost:3000`.
-
-## Building for Production
-
-Create a production build:
+### Available Scripts
 
 ```bash
-npm run build
+pnpm dev          # Start development server
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm typecheck    # Run TypeScript checks
+pnpm lint         # Run ESLint
+pnpm format       # Format code with Prettier
+pnpm check        # Run all checks (typecheck + lint + format)
+pnpm fix          # Auto-fix linting and formatting issues
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## Project Structure
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+app/
+├── modules/           # Feature modules
+│   ├── auth/         # Authentication module
+│   ├── dashboard/    # Dashboard module
+│   ├── home/         # Home module
+│   └── products/     # Products module
+├── shared/           # Shared utilities
+│   ├── components/   # Reusable UI components
+│   ├── hooks/        # Custom React hooks
+│   ├── stores/       # Zustand stores
+│   ├── types/        # TypeScript types
+│   ├── utils/        # Utility functions
+│   └── config/       # Configuration files
+├── root.tsx          # Root component
+└── routes.ts         # Route definitions
 ```
 
-## Styling
+## Store Architecture
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+### Auth Store Features
+- **Persistent Authentication**: Auto-saves auth state to localStorage
+- **Token Refresh**: Automatic token refresh on expiration
+- **Error Handling**: Comprehensive error states and messaging
+- **Loading States**: Loading indicators for better UX
 
----
+### User Store Features
+- **Profile Management**: Complete user profile CRUD operations
+- **Preferences**: Theme, language, timezone, and notification settings
+- **Statistics**: User activity tracking and metrics
 
-Built with ❤️ using React Router.
+### Usage Examples
+
+```tsx
+// Using auth store
+import { useAuth } from '~/shared/hooks/use-auth';
+
+function LoginComponent() {
+  const { login, isLoading, error, isAuthenticated } = useAuth();
+  
+  const handleLogin = async (credentials) => {
+    try {
+      await login(credentials);
+      // Redirect or show success
+    } catch (error) {
+      // Error is handled by store
+    }
+  };
+}
+
+// Using user store
+import { useUserProfile } from '~/shared/hooks/use-user-profile';
+
+function ProfileComponent() {
+  const { profile, updateProfile, updateTheme } = useUserProfile();
+  
+  const handleThemeChange = async (theme) => {
+    await updateTheme(theme);
+  };
+}
+```
+
+## Technology Stack
+
+- **Frontend**: React 19, TypeScript, Tailwind CSS v4
+- **Routing**: React Router v7
+- **State Management**: Zustand v5
+- **Build Tool**: Vite
+- **Code Quality**: ESLint, Prettier
+- **UI Components**: Custom components with Tailwind
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and checks: `pnpm check`
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
