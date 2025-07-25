@@ -340,67 +340,69 @@ function useButton({
   };
 }
 
-export const Button = forwardRef<"button", ButtonProps>((
-  {
-    as: Component = "button",
-    children,
-    loadingText,
-    loadingVariant = "transparent",
-    leftIcon,
-    rightIcon,
-    ...props
-  },
-  ref
-) => {
-  const buttonProps = useButton(props);
+export const Button = forwardRef<"button", ButtonProps>(
+  (
+    {
+      as: Component = "button",
+      children,
+      loadingText,
+      loadingVariant = "transparent",
+      leftIcon,
+      rightIcon,
+      ...props
+    },
+    ref
+  ) => {
+    const buttonProps = useButton(props);
 
-  return (
-    <Component
-      ref={ref}
-      type="button"
-      data-loading={buttonProps.loading}
-      {...buttonProps}
-    >
-      {buttonProps.loading && (
-        <Spinner
-          className={loadingVariant === "default" ? "relative" : "absolute"}
-        />
-      )}
-      {leftIcon ? (
-        buttonProps.loading ? (
-          <span
-            className={loadingVariant === "default" ? "hidden" : "opacity-0"}
-          >
-            {leftIcon}
-          </span>
-        ) : (
-          leftIcon
-        )
-      ) : null}
-      {children || loadingText ? (
-        buttonProps.loading ? (
-          <span
-            className={cn({ "opacity-0": loadingVariant === "transparent" })}
-          >
-            {loadingText || children}
-          </span>
-        ) : (
-          children
-        )
-      ) : null}
-      {rightIcon ? (
-        buttonProps.loading ? (
-          <span
-            className={cn({ "opacity-0": loadingVariant === "transparent" })}
-          >
-            {rightIcon}
-          </span>
-        ) : (
-          rightIcon
-        )
-      ) : null}
-    </Component>
-  );
-});
+    return (
+      <Component
+        ref={ref}
+        type="button"
+        data-loading={buttonProps.loading}
+        {...buttonProps}
+      >
+        {buttonProps.loading && (
+          <Spinner
+            className={loadingVariant === "default" ? "relative" : "absolute"}
+          />
+        )}
+        {leftIcon ? (
+          buttonProps.loading ? (
+            <span
+              className={loadingVariant === "default" ? "hidden" : "opacity-0"}
+            >
+              {leftIcon}
+            </span>
+          ) : (
+            leftIcon
+          )
+        ) : null}
+        {children || loadingText ? (
+          buttonProps.loading ? (
+            <span
+              className={cn({ "opacity-0": loadingVariant === "transparent" })}
+            >
+              {loadingText || children}
+            </span>
+          ) : (
+            children
+          )
+        ) : null}
+        {rightIcon ? (
+          buttonProps.loading ? (
+            <span
+              className={cn({ "opacity-0": loadingVariant === "transparent" })}
+            >
+              {rightIcon}
+            </span>
+          ) : (
+            rightIcon
+          )
+        ) : null}
+      </Component>
+    );
+  }
+);
 
 Button.displayName = "Button";

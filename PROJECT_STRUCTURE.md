@@ -363,3 +363,27 @@ modules/auth/
 ---
 
 **🚀 This Feature-First structure scales from small projects to enterprise applications while maintaining simplicity and developer happiness!**
+
+## 🔗 Data Fetching & Server State (TanStack Query)
+
+### Integration
+- **QueryClient** và config được khởi tạo riêng trong `app/shared/config/react-query-config.ts`.
+- Sử dụng các hook `useQuery`, `useMutation`, `useQueryClient` từ `~/shared/hooks` để đảm bảo thống nhất import và dễ refactor.
+
+### Best Practices
+- Đặt logic fetch API trong các custom hooks feature-specific (ví dụ: `useProductListQuery` trong feature products).
+- Luôn handle loading và error state trong component sử dụng query.
+- Sử dụng query key rõ ràng, có phân vùng theo feature/module.
+- Ưu tiên invalidate hoặc refetch query sau mutation để đảm bảo dữ liệu đồng bộ.
+
+### Example
+```typescript
+import { useQuery } from '~/shared/hooks';
+
+export function useProductListQuery() {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: fetchProducts,
+  });
+}
+```

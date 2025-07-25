@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { Button } from "~/shared/components/button";
 import { Card } from "~/shared/components/card";
@@ -11,32 +11,27 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isLoading, error, clearError } = useAuth();
 
-  const [credentials, setCredentials] = useState<AuthCredentials>({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm<AuthCredentials>({
+    defaultValues: { email: "", password: "" },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: AuthCredentials) => {
     clearError();
-
+    clearErrors();
     try {
-      await login(credentials);
+      await login(data);
       navigate("/dashboard");
-    } catch (error) {
-      // Error is handled by the store
-      console.error("Login failed:", error);
+    } catch {
+      // Error is handled by the store, but can set form error if needed
+      setError("email", { type: "manual", message: " " }); // dummy to trigger error style
     }
   };
-
-  const handleInputChange =
-    (field: keyof AuthCredentials) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCredentials(prev => ({
-        ...prev,
-        [field]: e.target.value,
-      }));
-    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -47,7 +42,11 @@ export default function LoginPage() {
         />
 
         <Card className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-6"
+            noValidate
+          >
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
                 {error}
@@ -64,13 +63,23 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                value={credentials.email}
-                onChange={handleInputChange("email")}
-                placeholder="Enter your email"
-                required
                 autoComplete="email"
+                placeholder="Enter your email"
                 className="w-full"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email address",
+                  },
+                })}
+                aria-invalid={!!errors.email}
               />
+              {errors.email && (
+                <span className="text-xs text-red-600 mt-1 block">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             <div>
@@ -83,13 +92,23 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                value={credentials.password}
-                onChange={handleInputChange("password")}
-                placeholder="Enter your password"
-                required
                 autoComplete="current-password"
+                placeholder="Enter your password"
                 className="w-full"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+                aria-invalid={!!errors.password}
               />
+              {errors.password && (
+                <span className="text-xs text-red-600 mt-1 block">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             <div className="flex items-center justify-between">

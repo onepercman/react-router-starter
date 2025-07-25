@@ -1,0 +1,248 @@
+# React Router v7 + TypeScript + Tailwind CSS v4 - Project Rules
+
+You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern React development patterns.
+
+## 🏗️ PROJECT ARCHITECTURE
+
+### Feature-First Organization
+- Use **Feature-First Architecture** - each feature is self-contained in its own folder
+- Structure: `app/modules/{module}/{feature}/` 
+- Each feature contains ALL related code: components, hooks, types, utils
+- Shared code goes to `app/shared/` only when used by 2+ features
+- Use barrel exports (`index.ts`) for clean imports
+
+### Naming Conventions
+- **Folders**: `kebab-case` (`product-list/`, `dashboard-overview/`)
+- **Files**: Prefix with feature name (`login-page.tsx`, `product-list-utils.ts`)
+- **Components**: `PascalCase` (`LoginPage`, `ProductCard`)
+- **Functions**: `camelCase` (`useAuth`, `formatPrice`)
+- **Constants**: `UPPER_SNAKE_CASE` (`API_ENDPOINTS`)
+
+## 🛠️ TECHNOLOGY STACK
+
+### Core Framework
+- **React Router v7** with file-based routing
+- **React 19** with functional components only (no class components)
+- **TypeScript** in strict mode
+- **Vite** as build tool
+- **pnpm** as package manager
+
+### Key Dependencies
+- `@react-router/dev` - React Router v7
+- `zustand` - State management
+- `tailwindcss@4` - Styling with CSS variables
+- `tailwind-variants` - Component styling patterns
+- `axios` - HTTP client
+- `lucide-react` - Icons
+
+## 🎨 STYLING & UI
+
+### Tailwind CSS v4 Conventions
+- Use **CSS variables** instead of theme functions: `var(--color-primary)` not `theme(colors.primary)`
+- Prefer **flat colors** over gradients
+- All buttons must have **transitions**
+- Follow Tailwind v4 naming conventions for all className values
+- Use responsive design with mobile-first approach
+
+### Component Styling
+- Use `tailwind-variants` (tv) for complex component styling patterns
+- Use `cn()` helper function for className concatenation (not react-tvcx)
+- Component structure: base styles + variants + compound variants
+- CSS variables pattern: `[--variable-name:value]`
+
+### Design System
+- Consistent sizing: `xs`, `sm`, `md`, `lg` variants
+- Color system: `default`, `primary`, `accent`, `info`, `success`, `warning`, `error`
+- Shape variants: `normal`, `pill`, `circle`, `square`
+- Component variants: `default`, `outlined`, `ghost`, `light`
+
+## 📦 STATE MANAGEMENT
+
+### Zustand Patterns
+- Use `create()` with TypeScript generics
+- Implement `persist` middleware for auth and user data
+- Include loading and error states for async actions
+- Use `createJSONStorage(() => localStorage)` for persistence
+- Actions should be async/await with proper error handling
+
+### Store Structure
+```typescript
+interface StoreState {
+  // Data
+  data: T | null;
+  // UI States  
+  isLoading: boolean;
+  error: string | null;
+  // Actions
+  actionName: (params) => Promise<void>;
+  clearError: () => void;
+}
+```
+
+## 🔧 COMPONENT PATTERNS
+
+### React Patterns
+- **Functional components only** - no class components
+- Use `forwardRef` for reusable components
+- Implement proper TypeScript props interfaces
+- Use custom hooks for feature-specific logic
+- Follow compound component patterns for complex UI
+
+### Component File Structure
+```
+feature-name/
+├── feature-page.tsx        # Main page component  
+├── feature-component.tsx   # Sub-components
+├── use-feature.ts         # Custom hooks
+├── feature-types.ts       # Types
+├── feature-utils.ts       # Utilities
+└── index.ts              # Barrel exports
+```
+
+### Props & Types
+- Use `interface` for component props
+- Extend HTML element props when appropriate
+- Use `React.ComponentProps<'element'>` for base element props
+- Implement proper `forwardRef` typing
+
+## 📁 FILE ORGANIZATION
+
+### Import Order (auto-organized by Prettier)
+```typescript
+// 1. React imports
+import { useState, useEffect } from 'react';
+
+// 2. External library imports
+import { create } from 'zustand';
+
+// 3. Internal imports (~/shared, ~/modules)  
+import { Button } from '~/shared/components';
+
+// 4. Type imports (separate)
+import type { User } from './types';
+```
+
+### Path Aliases
+- Use `~/` for all internal imports (`./app/`)
+- Avoid relative imports (`../../`)
+- Configure in `tsconfig.json` paths
+
+### Export Patterns
+- Use **named exports** (avoid default exports except for pages)
+- Implement barrel exports via `index.ts`
+- Export types separately: `export type { TypeName }`
+
+## 🚀 DEVELOPMENT PRACTICES
+
+### Code Quality
+- Follow ESLint configuration (relaxed but strict)
+- Use Prettier with minimal configuration (only non-default values)
+- Implement TypeScript strict mode
+- Write descriptive variable and function names
+
+### Error Handling
+- Use try-catch blocks for async operations
+- Implement proper error states in components
+- Use React Error Boundaries for fallbacks
+- Show user-friendly error messages
+
+### Performance
+- Use React.memo() for expensive components
+- Implement proper dependency arrays in hooks
+- Use code splitting at route level
+- Optimize bundle size with tree shaking
+
+## 🎯 ROUTING PATTERNS
+
+### React Router v7 File-based Routing
+```typescript
+// app/routes.ts - Central configuration
+export default [
+  index("modules/home/home-page/home-page.tsx"),
+  route("dashboard", "modules/dashboard/dashboard-page.tsx"),
+  route("products", "modules/products/product-list-page.tsx"),
+] satisfies RouteConfig;
+```
+
+### Page Components
+- Export as default function
+- Use descriptive names: `LoginPage`, `ProductListPage`
+- Implement proper meta data and SEO
+- Handle loading and error states
+
+## 📋 TYPESCRIPT CONVENTIONS
+
+### Type Organization
+- Feature-specific types in feature folders
+- Shared types in `app/shared/types/`
+- Use `interface` for object shapes
+- Use `type` for unions and computed types
+
+### Naming
+- Interfaces: `PascalCase` (`User`, `AuthCredentials`)
+- Types: `PascalCase` with descriptive suffixes (`UserRole`, `ApiResponse`)
+- Generics: Single letter or descriptive (`T`, `TData`)
+
+## 🔒 SECURITY & API
+
+### Authentication Patterns
+- JWT tokens with refresh mechanism
+- Persistent auth state with Zustand
+- Protected routes with proper guards
+- Secure token storage in localStorage
+
+### API Integration
+- Use Axios with base client configuration
+- Implement proper error handling
+- Use TypeScript for request/response types
+- Handle loading states consistently
+
+## 🚀 GIT & DEVELOPMENT
+
+### Commit Conventions
+- Start commit messages with rocket emoji: 🚀
+- Use clear, descriptive commit messages
+- Follow conventional commits when possible
+
+### Scripts & Commands
+- Use `pnpm` for all package management
+- Available scripts: `dev`, `build`, `typecheck`, `lint`, `format`
+- Run `pnpm check` before commits
+
+## 📝 CODING BEST PRACTICES
+
+### Component Development
+1. Start with page component
+2. Add feature-specific sub-components  
+3. Extract custom hooks for logic
+4. Add types and utilities as needed
+5. Implement clean exports via index.ts
+
+### Code Style
+- Use arrow functions for components and handlers
+- Implement proper TypeScript typing
+- Follow single responsibility principle
+- Keep components focused and small
+- Use descriptive prop and variable names
+
+### Testing Strategy
+- Write component tests for critical features
+- Test custom hooks thoroughly
+- Implement integration tests for user flows
+- Use proper TypeScript in tests
+
+## 🎨 UI/UX PATTERNS
+
+### Consistent UI Elements
+- Use shared components from `~/shared/components`
+- Implement consistent spacing and typography
+- Follow design system colors and variants
+- Ensure responsive design across all screens
+
+### Loading & Error States
+- Show loading indicators for async operations
+- Implement proper error boundaries
+- Display user-friendly error messages
+- Handle empty states gracefully
+
+Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. 
