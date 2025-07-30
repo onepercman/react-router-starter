@@ -6,6 +6,7 @@ export * from "./input";
 export { PageHeader } from "./page-header";
 export * from "./spinner";
 export { ThemeToggle } from "./theme-toggle";
+export { ThemeProvider } from "./theme-provider";
 
 export {
   ModuleErrorBoundary,

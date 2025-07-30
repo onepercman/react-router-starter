@@ -1,12 +1,16 @@
+import { useTheme } from "next-themes";
 import { useAuth } from "~/modules/auth";
-import { useDarkMode } from "~/modules/theme";
 import { useUserProfile } from "~/modules/user";
 import { Button } from "./button";
 
 export function AuthStatus() {
   const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
-  const { profile, isLoading: profileLoading } = useUserProfile(user?.id);
-  const { theme, toggleTheme } = useDarkMode();
+  const { isLoading: profileLoading } = useUserProfile(user?.id);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
 
   if (authLoading || profileLoading) {
     return (

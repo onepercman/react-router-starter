@@ -1,8 +1,13 @@
-import { useDarkMode } from "~/modules/theme";
+import { useTheme } from "next-themes";
 import { Button } from "./button";
 
 export function ThemeToggle() {
-  const { isDark, toggleTheme } = useDarkMode();
+  const { setTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
   return (
     <Button

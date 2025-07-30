@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { ThemeProvider } from "~/modules/theme";
+import { ThemeProvider } from "~/shared/components";
 import { MainLayout } from "~/shared/layouts/main-layout";
 
 import { queryClient } from "~/shared/config/react-query-config";

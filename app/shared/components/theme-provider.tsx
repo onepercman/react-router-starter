@@ -3,20 +3,13 @@ import type { ReactNode } from "react";
 
 interface ThemeProviderProps {
   children: ReactNode;
-  defaultTheme?: "light" | "dark" | "system";
-  storageKey?: string;
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "theme",
-}: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme={defaultTheme}
-      storageKey={storageKey}
+      defaultTheme="system"
       enableSystem
       disableTransitionOnChange
     >
