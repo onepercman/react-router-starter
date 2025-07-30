@@ -3,9 +3,9 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 export const card = tv({
   slots: {
-    base: "rounded-xl bg-card text-card-foreground",
+    base: "rounded-xl bg-background text-foreground",
     header: "mb-4",
-    title: "text-lg font-semibold text-card-foreground",
+    title: "text-lg font-semibold text-foreground",
     content: "",
   },
   variants: {
@@ -28,14 +28,14 @@ export const card = tv({
       none: "border-0",
       default: "border border-border",
       strong: "border-2 border-border",
-      info: "border-2 border-info/30",
-      success: "border-2 border-success/30",
-      warning: "border-2 border-warning/30",
-      accent: "border-2 border-accent/30",
-      primary: "border-2 border-primary/30",
+      info: "border-2 border-info-muted",
+      success: "border-2 border-success-muted",
+      warning: "border-2 border-warning-muted",
+      accent: "border-2 border-accent-muted",
+      primary: "border-2 border-primary-muted",
     },
     bg: {
-      default: "bg-card",
+      default: "bg-background",
       gradient: "bg-gradient-to-r from-primary-subtle to-accent-subtle",
     },
   },

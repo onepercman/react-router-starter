@@ -1,0 +1,67 @@
+/* Dark Theme Color Configuration */
+.dark {
+  /* Base Colors */
+  --color-background: var(--color-gray-900);
+  --color-foreground: var(--color-gray-100);
+  --color-muted: var(--color-gray-700);
+  --color-muted-foreground: var(--color-gray-300);
+  --color-border: var(--color-gray-700);
+  --color-ring: var(--color-blue-400);
+  --color-secondary: var(--color-gray-400);
+
+  /* Default Colors (Gray Scale) */
+  --color-default: var(--color-gray-400);
+  --color-default-foreground: var(--color-gray-950);
+  --color-default-focus: var(--color-gray-300);
+  --color-default-muted: var(--color-gray-800);
+  --color-default-subtle: var(--color-gray-950);
+
+  /* Primary Colors */
+  --color-primary: var(--color-indigo-400);
+  --color-primary-foreground: var(--color-indigo-950);
+  --color-primary-focus: var(--color-indigo-300);
+  --color-primary-muted: var(--color-indigo-900);
+  --color-primary-subtle: var(--color-indigo-950);
+
+  /* Success Colors */
+  --color-success: var(--color-emerald-400);
+  --color-success-foreground: var(--color-emerald-950);
+  --color-success-focus: var(--color-emerald-300);
+  --color-success-muted: var(--color-emerald-900);
+  --color-success-subtle: var(--color-emerald-950);
+
+  /* Error Colors */
+  --color-error: var(--color-red-400);
+  --color-error-foreground: var(--color-red-950);
+  --color-error-focus: var(--color-red-300);
+  --color-error-muted: var(--color-red-900);
+  --color-error-subtle: var(--color-red-950);
+
+  /* Warning Colors */
+  --color-warning: var(--color-amber-400);
+  --color-warning-foreground: var(--color-amber-950);
+  --color-warning-focus: var(--color-amber-300);
+  --color-warning-muted: var(--color-amber-900);
+  --color-warning-subtle: var(--color-amber-950);
+
+  /* Info Colors */
+  --color-info: var(--color-blue-400);
+  --color-info-foreground: var(--color-blue-950);
+  --color-info-focus: var(--color-blue-300);
+  --color-info-muted: var(--color-blue-900);
+  --color-info-subtle: var(--color-blue-950);
+
+  /* Accent Colors */
+  --color-accent: var(--color-teal-400);
+  --color-accent-foreground: var(--color-teal-950);
+  --color-accent-focus: var(--color-teal-300);
+  --color-accent-muted: var(--color-teal-900);
+  --color-accent-subtle: var(--color-teal-950);
+
+  /* Destructive Colors */
+  --color-destructive: var(--color-error);
+  --color-destructive-foreground: var(--color-error-foreground);
+  --color-destructive-focus: var(--color-error-focus);
+  --color-destructive-muted: var(--color-error-muted);
+  --color-destructive-subtle: var(--color-error-subtle);
+}

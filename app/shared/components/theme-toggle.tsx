@@ -8,7 +8,7 @@ export function ThemeToggle() {
     <Button
       shape="square"
       onClick={toggleTheme}
-      className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background border border-border hover:bg-background transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
+      className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background border border-border hover:bg-muted transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -50,7 +50,7 @@ export function ThemeToggle() {
         </svg>
       </div>
 
-      <div className="absolute inset-0 rounded-lg bg-primary/20 scale-0 transition-transform duration-200 group-active:scale-100"></div>
+      <div className="absolute inset-0 rounded-lg bg-primary-muted scale-0 transition-transform duration-200 group-active:scale-100"></div>
     </Button>
   );
 }

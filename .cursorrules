@@ -58,11 +58,158 @@ module-name/
 - `axios` - HTTP client
 - `lucide-react` - Icons
 
+## 🎨 DESIGN SYSTEM & COLOR TOKENS
+
+### ⚠️ CRITICAL: Always Use Design System Color Tokens
+
+**NEVER use hardcoded colors or Tailwind's default colors. ALWAYS use the configured color tokens from the design system.**
+
+### How to Find Available Color Tokens
+
+When building UI components, **ALWAYS check the design system files first** to see what color tokens are available:
+
+1. **Check the main design system file**: `app/shared/styles/app.css`
+   - Look for `@theme` section to see all available color tokens
+   - Each token follows the pattern: `--color-{name}`
+
+2. **Check theme files for actual values**:
+   - `app/shared/styles/light.css` - Light theme color values
+   - `app/shared/styles/dark.css` - Dark theme color values
+
+3. **Use Tailwind classes** that correspond to the CSS variables:
+   - CSS variable: `--color-primary` → Tailwind class: `bg-primary`, `text-primary`
+   - CSS variable: `--color-primary-foreground` → Tailwind class: `text-primary-foreground`
+   - CSS variable: `--color-primary-muted` → Tailwind class: `bg-primary-muted`
+
+### Color Token Naming Patterns
+
+The design system follows these naming patterns:
+
+#### Base Colors
+
+- `background` - Main background color
+- `foreground` - Main text color
+- `muted` - Muted background color
+- `muted-foreground` - Muted text color
+- `border` - Border color
+- `ring` - Focus ring color
+
+#### Semantic Colors (with variants)
+
+Each semantic color typically has these variants:
+
+- `{color}` - Base color (e.g., `primary`, `success`, `error`)
+- `{color}-foreground` - Text color on base background
+- `{color}-focus` - Focus/hover state
+- `{color}-muted` - Subtle background variant
+- `{color}-subtle` - Very subtle background variant
+
+### Color Usage Guidelines
+
+#### ✅ CORRECT - Use Design System Tokens
+
+```tsx
+// Text colors - Use semantic tokens from design system
+className = "text-foreground"; // Main text
+className = "text-muted-foreground"; // Secondary text
+className = "text-primary"; // Primary brand color
+className = "text-error"; // Error states
+className = "text-success"; // Success states
+
+// Background colors - Use semantic tokens from design system
+className = "bg-background"; // Main background
+className = "bg-muted"; // Muted background
+className = "bg-primary"; // Primary background
+className = "bg-error-muted"; // Error background (subtle)
+className = "bg-success-muted"; // Success background (subtle)
+
+// Border colors - Use semantic tokens from design system
+className = "border-border"; // Default borders
+className = "border-primary"; // Primary borders
+className = "border-error"; // Error borders
+
+// Hover states - Use focus variants from design system
+className = "hover:bg-primary-focus"; // Primary hover
+className = "hover:text-primary-focus"; // Primary text hover
+className = "hover:bg-muted"; // Subtle hover
+```
+
+#### ❌ WRONG - Never Use These
+
+```tsx
+// Hardcoded colors - NEVER USE
+className = "text-gray-900";
+className = "text-blue-600";
+className = "bg-red-50";
+className = "border-gray-200";
+className = "text-white";
+className = "bg-black";
+
+// Hex colors - NEVER USE
+className = "text-[#000000]";
+className = "bg-[#ffffff]";
+className = "border-[#e5e7eb]";
+
+// RGB colors - NEVER USE
+className = "text-[rgb(0,0,0)]";
+className = "bg-[rgba(255,255,255,0.8)]";
+```
+
+### Color Token Selection Strategy
+
+When building UI components, follow this decision tree:
+
+#### 1. Check Design System First
+
+- **Always start** by looking at `app/shared/styles/app.css` to see available tokens
+- **Check theme files** to understand the color values
+- **Use the tokens** that are actually defined in the system
+
+#### 2. Choose Appropriate Token Type
+
+- **Base tokens**: Use for fundamental UI elements (`background`, `foreground`, `border`)
+- **Semantic tokens**: Use for specific meanings (`primary`, `success`, `error`, `warning`, `info`)
+- **Variant tokens**: Use for different states (`muted`, `focus`, `subtle`)
+
+#### 3. Apply Consistent Patterns
+
+- **Text**: Use `text-{token}` or `text-{token}-foreground`
+- **Background**: Use `bg-{token}` or `bg-{token}-muted`
+- **Borders**: Use `border-{token}`
+- **Hover/Focus**: Use `hover:bg-{token}-focus` or `hover:text-{token}-focus`
+
+### Component-Specific Patterns
+
+```tsx
+// Buttons - Use semantic color props
+<Button color="primary" />           // Uses design system primary colors
+<Button color="error" />             // Uses design system error colors
+<Button variant="outlined" />        // Uses design system border colors
+
+// Cards - Use base design system colors
+<Card />                             // Uses bg-background text-foreground
+<Card border="error" />              // Uses border-error-muted
+
+// Inputs - Use design system focus states
+<Input />                            // Uses border-border focus:border-primary
+<Input invalid />                    // Uses border-error bg-error-muted
+```
+
+### Theme Support
+
+All color tokens automatically adapt to light/dark themes. The tokens are defined in:
+
+- `app/shared/styles/light.css` - Light theme values
+- `app/shared/styles/dark.css` - Dark theme values
+- `app/shared/styles/app.css` - Token definitions
+
+**Always check these files when you need to understand the current color system.**
+
 ## 🎨 STYLING & UI
 
 ### Tailwind CSS v4 Conventions
 
-- Use **CSS variables** instead of theme functions: `var(--color-primary)` not `theme(colors.primary)`
+- Use **Tailwind classes** that correspond to design system tokens
 - Prefer **flat colors** over gradients
 - All buttons must have **transitions**
 - Follow Tailwind v4 naming conventions for all className values
@@ -73,12 +220,12 @@ module-name/
 - Use `tailwind-variants` (tv) for complex component styling patterns
 - Use `cn()` helper function for className concatenation (not react-tvcx)
 - Component structure: base styles + variants + compound variants
-- CSS variables pattern: `[--variable-name:value]`
+- Always use design system color tokens in variants
 
 ### Design System
 
 - Consistent sizing: `xs`, `sm`, `md`, `lg` variants
-- Color system: `default`, `primary`, `accent`, `info`, `success`, `warning`, `error`
+- Color system: Use semantic color tokens (primary, success, error, warning, info, accent)
 - Shape variants: `normal`, `pill`, `circle`, `square`
 - Component variants: `default`, `outlined`, `ghost`, `light`
 
@@ -324,6 +471,48 @@ export default [
 - Keep components focused and small
 - Use descriptive prop and variable names
 
+### Color Token Best Practices
+
+#### ✅ DO - Always Use Design System Tokens
+
+```tsx
+// ✅ Correct - Uses semantic color tokens from design system
+<div className="bg-background text-foreground border border-border">
+  <h1 className="text-foreground">Title</h1>
+  <p className="text-muted-foreground">Description</p>
+  <Button color="primary">Action</Button>
+  <span className="text-error">Error message</span>
+</div>
+```
+
+#### ❌ DON'T - Never Use Hardcoded Colors
+
+```tsx
+// ❌ Wrong - Uses hardcoded colors instead of design system tokens
+<div className="bg-white text-black border border-gray-200">
+  <h1 className="text-gray-900">Title</h1>
+  <p className="text-gray-600">Description</p>
+  <button className="bg-blue-600 text-white">Action</button>
+  <span className="text-red-600">Error message</span>
+</div>
+```
+
+#### Color Token Selection Process
+
+When building UI components, follow this process:
+
+1. **Check Design System First**: Look at `app/shared/styles/app.css` to see available tokens
+2. **Choose Base vs Semantic**:
+   - Use base tokens (`foreground`, `background`, `border`) for fundamental elements
+   - Use semantic tokens (`primary`, `success`, `error`) for specific meanings
+3. **Select Appropriate Variant**:
+   - Base: `text-{token}`, `bg-{token}`, `border-{token}`
+   - Foreground: `text-{token}-foreground` for text on colored backgrounds
+   - Muted: `bg-{token}-muted` for subtle backgrounds
+   - Focus: `hover:bg-{token}-focus` for interactive states
+4. **Verify Token Exists**: Ensure the token is actually defined in the design system
+5. **Test Theme Support**: Verify it works in both light and dark themes
+
 ### Testing Strategy
 
 - Write component tests for critical features
@@ -337,15 +526,104 @@ export default [
 
 - Use shared components from `~/shared/components`
 - Implement consistent spacing and typography
-- Follow design system colors and variants
+- **ALWAYS use design system color tokens** - never hardcoded colors
 - Ensure responsive design across all screens
+
+### Color Token Usage in UI Patterns
+
+#### Status Indicators
+
+Use semantic color tokens for different states. Check the design system for available semantic colors:
+
+```tsx
+// Success states - Use success tokens from design system
+<div className="bg-success-muted text-success">Operation completed successfully</div>
+
+// Error states - Use error tokens from design system
+<div className="bg-error-muted text-error">Something went wrong</div>
+
+// Warning states - Use warning tokens from design system
+<div className="bg-warning-muted text-warning">Please review your input</div>
+
+// Info states - Use info tokens from design system
+<div className="bg-info-muted text-info">New feature available</div>
+```
+
+#### Interactive Elements
+
+Use semantic color props and design system tokens:
+
+```tsx
+// Primary actions - Use semantic color props
+<Button color="primary">Save Changes</Button>
+
+// Secondary actions - Use outlined variant with design system colors
+<Button variant="outlined">Cancel</Button>
+
+// Destructive actions - Use semantic error color
+<Button color="error">Delete</Button>
+
+// Links - Use primary color with focus state
+<a className="text-primary hover:text-primary-focus">Learn more</a>
+```
+
+#### Form Elements
+
+Use base and semantic tokens from design system:
+
+```tsx
+// Labels - Use foreground color from design system
+<label className="text-foreground font-medium">Email Address</label>
+
+// Placeholders - Use muted foreground from design system
+<input placeholder="Enter your email" className="placeholder:text-muted-foreground" />
+
+// Validation errors - Use error token from design system
+<span className="text-error text-sm">Email is required</span>
+
+// Success feedback - Use success token from design system
+<span className="text-success text-sm">Email sent successfully</span>
+```
+
+#### Layout & Structure
+
+Use base design system tokens for layout elements:
+
+```tsx
+// Main content areas - Use background and foreground tokens
+<main className="bg-background text-foreground">
+
+// Sidebars/navigation - Use muted background and border tokens
+<nav className="bg-muted border-border">
+
+// Cards/containers - Use background and border tokens
+<div className="bg-background border border-border">
+
+// Dividers - Use border token from design system
+<hr className="border-border" />
+```
 
 ### Loading & Error States
 
 - Show loading indicators for async operations
 - Implement proper error boundaries
-- Display user-friendly error messages
-- Handle empty states gracefully
+- Display user-friendly error messages using `text-error` and `bg-error-muted`
+- Handle empty states gracefully with `text-muted-foreground`
+
+### Empty States
+
+```tsx
+// Empty state with muted colors
+<div className="text-center py-8">
+  <div className="text-muted-foreground text-lg">No items found</div>
+  <p className="text-muted-foreground mt-2">
+    Try adjusting your search criteria
+  </p>
+  <Button color="primary" className="mt-4">
+    Add New Item
+  </Button>
+</div>
+```
 
 ## 🔄 MODULE ORGANIZATION
 
@@ -397,4 +675,48 @@ import type { AuthCredentials } from "~/modules/auth";
 import type { UserProfile } from "~/modules/user";
 ```
 
+## 🎯 CRITICAL REMINDERS
+
+### Color Token Priority
+
+**ALWAYS prioritize design system color tokens over any other color approach:**
+
+1. **First choice**: Use semantic color tokens from the design system (check `app/shared/styles/app.css`)
+2. **Second choice**: Use base color tokens from the design system (`foreground`, `background`, `border`)
+3. **Never use**: Hardcoded colors, hex values, RGB values, or Tailwind's default colors
+
+### Design System Discovery Process
+
+**Before using any colors, always:**
+
+1. **Check the design system file**: `app/shared/styles/app.css`
+   - Look for `@theme` section to see all available tokens
+   - Understand the naming patterns: `--color-{name}`
+
+2. **Check theme files**:
+   - `app/shared/styles/light.css` - Light theme values
+   - `app/shared/styles/dark.css` - Dark theme values
+
+3. **Use Tailwind classes** that correspond to CSS variables:
+   - `--color-primary` → `bg-primary`, `text-primary`
+   - `--color-primary-foreground` → `text-primary-foreground`
+   - `--color-primary-muted` → `bg-primary-muted`
+
+### Naming Pattern Reference
+
+- **Base tokens**: `background`, `foreground`, `muted`, `muted-foreground`, `border`, `ring`
+- **Semantic tokens**: `primary`, `success`, `error`, `warning`, `info`, `accent` (check design system for full list)
+- **Variants**: `{token}`, `{token}-foreground`, `{token}-focus`, `{token}-muted`, `{token}-subtle`
+
+### Quick Decision Guide
+
+When choosing colors, ask yourself:
+
+- **Is this a fundamental UI element?** → Use base tokens (`background`, `foreground`, `border`)
+- **Does this have a specific meaning?** → Use semantic tokens (`primary`, `success`, `error`)
+- **Do I need a subtle variant?** → Use muted variants (`bg-primary-muted`, `text-muted-foreground`)
+- **Is this interactive?** → Use focus variants (`hover:bg-primary-focus`)
+
 Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. Each feature is self-contained with all its related code, and the shared folder only contains truly global utilities and components. Use minimal, English-only comments and prefer self-documenting code.
+
+**Most importantly: ALWAYS check the design system files first - NEVER use hardcoded colors!**

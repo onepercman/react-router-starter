@@ -11,8 +11,8 @@ export function AuthStatus() {
   if (authLoading || profileLoading) {
     return (
       <div className="flex items-center space-x-2">
-        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
-        <span className="text-sm text-gray-600">Loading...</span>
+        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground"></div>
+        <span className="text-sm text-muted-foreground">Loading...</span>
       </div>
     );
   }
@@ -20,7 +20,7 @@ export function AuthStatus() {
   if (!isAuthenticated || !user) {
     return (
       <div className="flex items-center space-x-2">
-        <span className="text-sm text-gray-600">Not signed in</span>
+        <span className="text-sm text-muted-foreground">Not signed in</span>
         <Button variant="outlined" size="sm">
           <a href="/auth/login">Sign in</a>
         </Button>
@@ -43,16 +43,12 @@ export function AuthStatus() {
   return (
     <div className="flex items-center space-x-3">
       <div className="flex items-center space-x-2">
-        <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+        <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
           {getUserInitials()}
         </div>
         <div className="hidden sm:block">
-          <p className="text-sm font-medium text-gray-900 dark:text-white">
-            {displayName}
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {user.role}
-          </p>
+          <p className="text-sm font-medium text-foreground">{displayName}</p>
+          <p className="text-xs text-muted-foreground">{user.role}</p>
         </div>
       </div>
 

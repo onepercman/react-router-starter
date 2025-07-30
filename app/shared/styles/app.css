@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "./light.css";
+@import "./dark.css";
+
+@theme {
+  --font-display:
+    "DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  /* Base Colors */
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-border: var(--color-border);
+  --color-ring: var(--color-ring);
+  --color-secondary: var(--color-secondary);
+
+  /* Default Colors (Gray Scale) */
+  --color-default: var(--color-default);
+  --color-default-foreground: var(--color-default-foreground);
+  --color-default-focus: var(--color-default-focus);
+  --color-default-muted: var(--color-default-muted);
+  --color-default-subtle: var(--color-default-subtle);
+
+  /* Primary Colors */
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-primary-focus: var(--color-primary-focus);
+  --color-primary-muted: var(--color-primary-muted);
+  --color-primary-subtle: var(--color-primary-subtle);
+
+  /* Success Colors */
+  --color-success: var(--color-success);
+  --color-success-foreground: var(--color-success-foreground);
+  --color-success-focus: var(--color-success-focus);
+  --color-success-muted: var(--color-success-muted);
+  --color-success-subtle: var(--color-success-subtle);
+
+  /* Error Colors */
+  --color-error: var(--color-error);
+  --color-error-foreground: var(--color-error-foreground);
+  --color-error-focus: var(--color-error-focus);
+  --color-error-muted: var(--color-error-muted);
+  --color-error-subtle: var(--color-error-subtle);
+
+  /* Warning Colors */
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: var(--color-warning-foreground);
+  --color-warning-focus: var(--color-warning-focus);
+  --color-warning-muted: var(--color-warning-muted);
+  --color-warning-subtle: var(--color-warning-subtle);
+
+  /* Info Colors */
+  --color-info: var(--color-info);
+  --color-info-foreground: var(--color-info-foreground);
+  --color-info-focus: var(--color-info-focus);
+  --color-info-muted: var(--color-info-muted);
+  --color-info-subtle: var(--color-info-subtle);
+
+  /* Accent Colors */
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-accent-focus: var(--color-accent-focus);
+  --color-accent-muted: var(--color-accent-muted);
+  --color-accent-subtle: var(--color-accent-subtle);
+
+  /* Destructive Colors */
+  --color-destructive: var(--color-destructive);
+  --color-destructive-foreground: var(--color-destructive-foreground);
+  --color-destructive-focus: var(--color-destructive-focus);
+  --color-destructive-muted: var(--color-destructive-muted);
+  --color-destructive-subtle: var(--color-destructive-subtle);
+}
+
+html,
+body {
+  @apply bg-background text-foreground transition-colors duration-200;
+}

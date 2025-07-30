@@ -34,7 +34,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-muted py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <PageHeader
           title="Sign in to your account"
@@ -48,7 +48,7 @@ export default function LoginPage() {
             noValidate
           >
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+              <div className="bg-error-muted border border-error text-error px-4 py-3 rounded-md text-sm">
                 {error}
               </div>
             )}
@@ -56,7 +56,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-foreground mb-2"
               >
                 Email address
               </label>
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 aria-invalid={!!errors.email}
               />
               {errors.email && (
-                <span className="text-xs text-red-600 mt-1 block">
+                <span className="text-xs text-error mt-1 block">
                   {errors.email.message}
                 </span>
               )}
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-foreground mb-2"
               >
                 Password
               </label>
@@ -105,7 +105,7 @@ export default function LoginPage() {
                 aria-invalid={!!errors.password}
               />
               {errors.password && (
-                <span className="text-xs text-red-600 mt-1 block">
+                <span className="text-xs text-error mt-1 block">
                   {errors.password.message}
                 </span>
               )}
@@ -117,11 +117,11 @@ export default function LoginPage() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                 />
                 <label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                  className="ml-2 block text-sm text-foreground"
                 >
                   Remember me
                 </label>
@@ -130,7 +130,7 @@ export default function LoginPage() {
               <div className="text-sm">
                 <a
                   href="#"
-                  className="font-medium text-blue-600 hover:text-blue-500"
+                  className="font-medium text-primary hover:text-primary-focus"
                 >
                   Forgot your password?
                 </a>
@@ -143,11 +143,11 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
               <a
                 href="/auth/register"
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-medium text-primary hover:text-primary-focus"
               >
                 Sign up
               </a>
@@ -155,11 +155,11 @@ export default function LoginPage() {
           </div>
 
           {/* Demo credentials */}
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
-            <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">
+          <div className="mt-4 p-3 bg-info-muted rounded-md">
+            <p className="text-xs text-info font-medium mb-1">
               Demo credentials:
             </p>
-            <p className="text-xs text-blue-600 dark:text-blue-400">
+            <p className="text-xs text-info">
               Email: test@example.com
               <br />
               Password: password

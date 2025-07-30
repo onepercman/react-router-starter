@@ -9,8 +9,14 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
     <div className="mb-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">{title}</h1>
-          {description && <p className="mt-2 text-secondary">{description}</p>}
+          <h1 className="text-3xl font-bold text-foreground">
+            {title}
+          </h1>
+          {description && (
+            <p className="mt-2 text-muted-foreground">
+              {description}
+            </p>
+          )}
         </div>
         {children && (
           <div className="flex items-center space-x-3">{children}</div>

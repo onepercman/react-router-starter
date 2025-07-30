@@ -8,13 +8,13 @@ import { useComposedRefs } from "use-composed-refs";
 
 export const input = tv({
   base: [
-    "inline-flex cursor-text items-center gap-2 overflow-hidden text-ellipsis rounded-xl border-2 border-transparent px-3 transition-all transition-colors transition-bg transition-border duration-150 focus-within:border-[var(--color-primary)]",
+    "inline-flex cursor-text items-center gap-2 overflow-hidden text-ellipsis rounded-xl border-2 border-transparent px-3 transition-all transition-colors transition-bg transition-border duration-150 focus-within:border-primary",
     "h-[var(--input-size)] min-h-[var(--input-size)] min-w-[var(--input-size)] px-3 text-xs",
   ],
   slots: {
     input: [
       "h-full grow self-stretch overflow-hidden text-ellipsis border-transparent bg-transparent p-0",
-      "placeholder:text-[var(--color-muted)] autofill:[-webkit-background-clip:text] focus:outline-none focus:ring-transparent",
+      "placeholder:text-muted-foreground autofill:[-webkit-background-clip:text] focus:outline-none focus:ring-transparent",
     ],
     addonBefore: "rounded-r-none",
     addonAfter: "rounded-l-none",
@@ -27,13 +27,13 @@ export const input = tv({
       lg: "px-5 text-lg [--input-size:3rem]",
     },
     variant: {
-      filled: "bg-[var(--color-default)]",
-      outlined: "border-[var(--color-line)]",
-      blur: "bg-[var(--color-default)]/20 backdrop-blur",
+      filled: "bg-muted",
+      outlined: "border-border",
+      blur: "bg-muted/20 backdrop-blur",
     },
     invalid: {
       true: {
-        base: "border-2 border-[var(--color-error)] bg-[var(--color-error)]/10 text-[var(--color-error)] focus-within:border-[var(--color-error-hover)]",
+        base: "border-2 border-error bg-error-muted text-error focus-within:border-error-focus",
       },
     },
   },
