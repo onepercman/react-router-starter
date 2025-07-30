@@ -21,11 +21,6 @@ app/
 │   │   ├── user-types.ts       # User-related types
 │   │   ├── use-user-profile.ts # User profile hook
 │   │   └── index.ts            # Module exports
-│   ├── theme/                  # Theme module
-│   │   ├── theme-store.ts      # Theme state management
-│   │   ├── use-dark-mode.ts    # Theme hook
-│   │   ├── theme-provider.tsx  # Theme provider component
-│   │   └── index.ts            # Module exports
 │   ├── dashboard/              # Dashboard module
 │   │   ├── dashboard-overview/ # Dashboard overview feature
 │   │   │   ├── dashboard-page.tsx
@@ -50,7 +45,7 @@ app/
 │   │   ├── page-header.tsx     # Page header component
 │   │   ├── error-boundary.tsx  # Error boundary component
 │   │   ├── auth-status.tsx     # Auth status component
-│   │   ├── theme-toggle.tsx    # Theme toggle component
+
 │   │   └── index.ts            # Barrel exports
 │   ├── layouts/                # Layout components
 │   │   └── main-layout.tsx     # Main layout
@@ -158,7 +153,6 @@ shared/types/auth-types.ts            ← Moved to auth module
 // ✅ Feature-specific imports
 import { useAuth } from '~/modules/auth';
 import { useUserProfile } from '~/modules/user';
-import { useDarkMode } from '~/modules/theme';
 
 // ✅ Shared imports
 import { Button } from '~/shared/components';
@@ -199,57 +193,9 @@ export { useUserProfile } from './use-user-profile';
 export type { UserProfile, UserPreferences } from './user-types';
 ```
 
-### **Theme Module (`~/modules/theme`)**
-```typescript
-// State management
-export { useThemeStore, useThemeManager } from './theme-store';
 
-// Custom hooks
-export { useDarkMode } from './use-dark-mode';
 
-// Provider component
-export { ThemeProvider } from './theme-provider';
-```
 
-## 🌙 Theme Management
-
-This project uses **next-themes** for robust theme management:
-
-### **Features**
-- **Multiple Themes**: Light, dark, and system theme support
-- **System Integration**: Automatically detects system theme preference
-- **Persistent Storage**: Remembers user theme choice
-- **Hydration Safe**: Prevents theme flash on page load
-- **SSR Compatible**: Works with server-side rendering
-
-### **Usage**
-```typescript
-// In components
-import { useDarkMode } from '~/modules/theme';
-
-function MyComponent() {
-  const { theme, setTheme, toggleTheme, isDark } = useDarkMode();
-  
-  return (
-    <button onClick={toggleTheme}>
-      {isDark ? '🌙' : '☀️'}
-    </button>
-  );
-}
-
-// In root component
-import { ThemeProvider } from '~/modules/theme';
-
-export default function App() {
-  return (
-    <ThemeProvider>
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
-    </ThemeProvider>
-  );
-}
-```
 
 ## 🔄 Migration from Shared to Modules
 
@@ -265,11 +211,7 @@ export default function App() {
    - `shared/hooks/use-user-profile.ts` → `modules/user/use-user-profile.ts`
    - `shared/types/user-types.ts` → `modules/user/user-types.ts`
 
-3. **Theme-related code** → `~/modules/theme/`
-   - `shared/hooks/use-dark-mode.ts` → `modules/theme/use-dark-mode.ts`
-   - Created `modules/theme/theme-store.ts`
-   - Created `modules/theme/theme-provider.tsx`
-   - Integrated with `next-themes` library
+
 
 ### **What Remains in Shared:**
 
@@ -335,4 +277,4 @@ import { cn } from '~/shared/utils';
 import type { AuthCredentials } from '~/modules/auth';
 ```
 
-This architecture provides a clean, scalable, and maintainable codebase where each feature is self-contained and the shared folder only contains truly global utilities and components. Theme management is now handled by a robust library instead of manual implementation.
+This architecture provides a clean, scalable, and maintainable codebase where each feature is self-contained and the shared folder only contains truly global utilities and components.

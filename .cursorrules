@@ -663,7 +663,6 @@ Use base design system tokens for layout elements:
 // ✅ Feature-specific imports
 import { useAuth } from "~/modules/auth";
 import { useUserProfile } from "~/modules/user";
-import { useDarkMode } from "~/modules/theme";
 
 // ✅ Shared imports
 import { Button } from "~/shared/components";

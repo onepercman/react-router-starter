@@ -7,7 +7,7 @@ A modern React application built with React Router, TypeScript, and Zustand for 
 - ⚡ **React Router v7** - File-based routing with type safety
 - 🎨 **Tailwind CSS v4** - Modern utility-first CSS framework
 - 📱 **Responsive Design** - Mobile-first approach
-- 🌙 **Dark Mode** - Built-in theme switching with next-themes
+
 - 🔒 **Authentication** - Complete auth system with Zustand
 - 📊 **State Management** - Zustand for predictable state management
 - 🏗️ **Feature-First Architecture** - Self-contained feature modules
@@ -34,11 +34,7 @@ app/modules/
 │   ├── user-types.ts       # User-related types
 │   ├── use-user-profile.ts # User profile hook
 │   └── index.ts            # Module exports
-├── theme/                  # Theme module
-│   ├── theme-store.ts      # Theme state management
-│   ├── use-dark-mode.ts    # Theme hook
-│   ├── theme-provider.tsx  # Theme provider component
-│   └── index.ts            # Module exports
+
 └── index.ts                # Main modules exports
 ```
 
@@ -59,19 +55,11 @@ This project uses **Zustand v5** for state management with feature-specific stor
 - Preferences and settings
 - Profile updates and customization
 
-### Theme Module (`~/modules/theme`)
-- **`useThemeStore`** - Theme state management
-- **`useDarkMode`** - Dark mode functionality
-- **`ThemeProvider`** - Theme provider component
-- **`next-themes`** integration for robust theme management
-- Light/dark/system theme switching
-- Persistent theme preferences
-- Hydration-safe theme switching
+
 
 ### Custom Hooks
 - `useAuth()` - Enhanced auth functionality
 - `useUserProfile()` - User profile management
-- `useDarkMode()` - Theme management
 
 ## Demo Credentials
 
@@ -130,11 +118,6 @@ app/
 │   │   ├── user-types.ts       # User-related types
 │   │   ├── use-user-profile.ts # User profile hook
 │   │   └── index.ts            # Module exports
-│   ├── theme/                  # Theme module
-│   │   ├── theme-store.ts      # Theme state management
-│   │   ├── use-dark-mode.ts    # Theme hook
-│   │   ├── theme-provider.tsx  # Theme provider component
-│   │   └── index.ts            # Module exports
 │   ├── dashboard/              # Dashboard module
 │   ├── products/               # Products module
 │   ├── home/                   # Home module
@@ -160,7 +143,6 @@ app/
 // Import from specific modules
 import { useAuth } from '~/modules/auth';
 import { useUserProfile } from '~/modules/user';
-import { useDarkMode } from '~/modules/theme';
 
 // Import types
 import type { AuthCredentials } from '~/modules/auth';
@@ -175,45 +157,7 @@ import { useLocalStorage } from '~/shared/hooks';
 import { cn } from '~/shared/utils';
 ```
 
-## Theme Management
 
-This project uses **next-themes** for robust theme management:
-
-### Features
-- **Multiple Themes**: Light, dark, and system theme support
-- **System Integration**: Automatically detects system theme preference
-- **Persistent Storage**: Remembers user theme choice
-- **Hydration Safe**: Prevents theme flash on page load
-- **SSR Compatible**: Works with server-side rendering
-
-### Usage
-```typescript
-// In components
-import { useDarkMode } from '~/modules/theme';
-
-function MyComponent() {
-  const { theme, setTheme, toggleTheme, isDark } = useDarkMode();
-  
-  return (
-    <button onClick={toggleTheme}>
-      {isDark ? '🌙' : '☀️'}
-    </button>
-  );
-}
-
-// In root component
-import { ThemeProvider } from '~/modules/theme';
-
-export default function App() {
-  return (
-    <ThemeProvider>
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
-    </ThemeProvider>
-  );
-}
-```
 
 ## Store Architecture
 
@@ -228,11 +172,7 @@ export default function App() {
 - **Preferences**: User preferences and settings
 - **Real-time Updates**: Immediate UI updates on profile changes
 
-### Theme Store Features
-- **Multiple Themes**: Light, dark, and system theme support
-- **Persistent Preferences**: Remembers user theme choice
-- **System Integration**: Respects system theme preferences
-- **Library Integration**: Built on top of next-themes for reliability
+
 
 ## Development Guidelines
 
