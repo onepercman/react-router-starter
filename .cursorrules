@@ -5,15 +5,36 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 ## 🏗️ PROJECT ARCHITECTURE
 
 ### Feature-First Organization
+
 - Use **Feature-First Architecture** - each feature is self-contained in its own folder
-- Structure: `app/modules/{module}/{feature}/` 
-- Each feature contains ALL related code: components, hooks, types, utils
+- Structure: `app/modules/{module}/{feature}/`
+- Each feature contains ALL related code: components, hooks, types, utils, stores
 - Shared code goes to `app/shared/` only when used by 2+ features
 - Use barrel exports (`index.ts`) for clean imports
 
+### Module Structure Pattern
+
+```
+module-name/
+├── module-store.ts             # State management (Zustand)
+├── module-types.ts             # TypeScript types
+├── use-module.ts               # Custom hooks
+├── module.service.ts           # API services (if needed)
+├── sub-feature/                # Sub-features (if needed)
+│   ├── sub-feature-page.tsx
+│   └── index.ts
+└── index.ts                    # Barrel exports
+```
+
 ### Naming Conventions
-- **Folders**: `kebab-case` (`product-list/`, `dashboard-overview/`)
-- **Files**: Prefix with feature name (`login-page.tsx`, `product-list-utils.ts`)
+
+- **Folders**: `kebab-case` (`auth/`, `user-profile/`, `product-list/`)
+- **Files**:
+  - Store files: `{module}-store.ts` (e.g., `auth-store.ts`, `user-store.ts`)
+  - Type files: `{module}-types.ts` (e.g., `auth-types.ts`, `user-types.ts`)
+  - Hook files: `use-{feature}.ts` (e.g., `use-auth.ts`, `use-user-profile.ts`)
+  - Service files: `{module}.service.ts` (e.g., `auth.service.ts`)
+  - Page components: `{feature}-page.tsx` (e.g., `login-page.tsx`)
 - **Components**: `PascalCase` (`LoginPage`, `ProductCard`)
 - **Functions**: `camelCase` (`useAuth`, `formatPrice`)
 - **Constants**: `UPPER_SNAKE_CASE` (`API_ENDPOINTS`)
@@ -21,6 +42,7 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 ## 🛠️ TECHNOLOGY STACK
 
 ### Core Framework
+
 - **React Router v7** with file-based routing
 - **React 19** with functional components only (no class components)
 - **TypeScript** in strict mode
@@ -28,6 +50,7 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 - **pnpm** as package manager
 
 ### Key Dependencies
+
 - `@react-router/dev` - React Router v7
 - `zustand` - State management
 - `tailwindcss@4` - Styling with CSS variables
@@ -38,6 +61,7 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 ## 🎨 STYLING & UI
 
 ### Tailwind CSS v4 Conventions
+
 - Use **CSS variables** instead of theme functions: `var(--color-primary)` not `theme(colors.primary)`
 - Prefer **flat colors** over gradients
 - All buttons must have **transitions**
@@ -45,12 +69,14 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 - Use responsive design with mobile-first approach
 
 ### Component Styling
+
 - Use `tailwind-variants` (tv) for complex component styling patterns
 - Use `cn()` helper function for className concatenation (not react-tvcx)
 - Component structure: base styles + variants + compound variants
 - CSS variables pattern: `[--variable-name:value]`
 
 ### Design System
+
 - Consistent sizing: `xs`, `sm`, `md`, `lg` variants
 - Color system: `default`, `primary`, `accent`, `info`, `success`, `warning`, `error`
 - Shape variants: `normal`, `pill`, `circle`, `square`
@@ -59,6 +85,7 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 ## 📦 STATE MANAGEMENT
 
 ### Zustand Patterns
+
 - Use `create()` with TypeScript generics
 - Implement `persist` middleware for auth and user data
 - Include loading and error states for async actions
@@ -66,11 +93,12 @@ You are an expert in React Router v7, TypeScript, Tailwind CSS v4, and modern Re
 - Actions should be async/await with proper error handling
 
 ### Store Structure
+
 ```typescript
 interface StoreState {
   // Data
   data: T | null;
-  // UI States  
+  // UI States
   isLoading: boolean;
   error: string | null;
   // Actions
@@ -79,9 +107,15 @@ interface StoreState {
 }
 ```
 
+### Store Location
+
+- **Feature-specific stores** → `app/modules/{module}/{module}-store.ts`
+- **Global stores** → `app/shared/stores/` (only if truly global)
+
 ## 🔧 COMPONENT PATTERNS
 
 ### React Patterns
+
 - **Functional components only** - no class components
 - Use `forwardRef` for reusable components
 - Implement proper TypeScript props interfaces
@@ -89,9 +123,10 @@ interface StoreState {
 - Follow compound component patterns for complex UI
 
 ### Component File Structure
+
 ```
 feature-name/
-├── feature-page.tsx        # Main page component  
+├── feature-page.tsx        # Main page component
 ├── feature-component.tsx   # Sub-components
 ├── use-feature.ts         # Custom hooks
 ├── feature-types.ts       # Types
@@ -100,6 +135,7 @@ feature-name/
 ```
 
 ### Props & Types
+
 - Use `interface` for component props
 - Extend HTML element props when appropriate
 - Use `React.ComponentProps<'element'>` for base element props
@@ -108,45 +144,98 @@ feature-name/
 ## 📁 FILE ORGANIZATION
 
 ### Import Order (auto-organized by Prettier)
+
 ```typescript
 // 1. React imports
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // 2. External library imports
-import { create } from 'zustand';
+import { create } from "zustand";
 
-// 3. Internal imports (~/shared, ~/modules)  
-import { Button } from '~/shared/components';
+// 3. Module imports (~/modules)
+import { useAuth } from "~/modules/auth";
+import { useUserProfile } from "~/modules/user";
 
-// 4. Type imports (separate)
-import type { User } from './types';
+// 4. Shared imports (~/shared)
+import { Button } from "~/shared/components";
+import { cn } from "~/shared/utils";
+
+// 5. Type imports
+import type { AuthCredentials } from "~/modules/auth";
 ```
 
 ### Path Aliases
+
 - Use `~/` for all internal imports (`./app/`)
 - Avoid relative imports (`../../`)
 - Configure in `tsconfig.json` paths
 
 ### Export Patterns
+
 - Use **named exports** (avoid default exports except for pages)
 - Implement barrel exports via `index.ts`
 - Export types separately: `export type { TypeName }`
 
+## 💬 COMMENTING GUIDELINES
+
+### Comment Rules
+
+- **Use ONLY English comments** - no Vietnamese or other languages
+- **Minimize comments** - prefer self-documenting code
+- **Only comment when necessary** - when logic is complex or non-obvious
+- **Use JSDoc for public APIs** - functions, components, and types that are exported
+- **Avoid obvious comments** - don't comment what the code clearly shows
+
+### When to Comment
+
+```typescript
+// ✅ Good - complex business logic
+const calculateDiscount = (price: number, userType: UserType) => {
+  // Apply tiered discount based on user type and purchase history
+  const baseDiscount = userType === "premium" ? 0.15 : 0.05;
+  const loyaltyBonus = getUserLoyaltyBonus(userId);
+  return price * (baseDiscount + loyaltyBonus);
+};
+
+// ❌ Bad - obvious comment
+const user = getUser(); // Get user
+
+// ✅ Good - JSDoc for public API
+/**
+ * Authenticates user with provided credentials
+ * @param credentials - User login credentials
+ * @returns Promise resolving to auth result
+ */
+export const authenticateUser = async (credentials: AuthCredentials) => {
+  // Implementation
+};
+```
+
+### Comment Style
+
+- Use `//` for single-line comments
+- Use `/* */` for multi-line comments only when necessary
+- Use JSDoc `/** */` for public APIs and complex functions
+- Keep comments concise and focused on the "why" not the "what"
+
 ## 🚀 DEVELOPMENT PRACTICES
 
 ### Code Quality
+
 - Follow ESLint configuration (relaxed but strict)
 - Use Prettier with minimal configuration (only non-default values)
 - Implement TypeScript strict mode
 - Write descriptive variable and function names
 
 ### Error Handling
+
 - Use try-catch blocks for async operations
 - Implement proper error states in components
 - Use React Error Boundaries for fallbacks
 - Show user-friendly error messages
 
 ### Performance
+
 - Use React.memo() for expensive components
 - Implement proper dependency arrays in hooks
 - Use code splitting at route level
@@ -155,6 +244,7 @@ import type { User } from './types';
 ## 🎯 ROUTING PATTERNS
 
 ### React Router v7 File-based Routing
+
 ```typescript
 // app/routes.ts - Central configuration
 export default [
@@ -165,6 +255,7 @@ export default [
 ```
 
 ### Page Components
+
 - Export as default function
 - Use descriptive names: `LoginPage`, `ProductListPage`
 - Implement proper meta data and SEO
@@ -173,12 +264,14 @@ export default [
 ## 📋 TYPESCRIPT CONVENTIONS
 
 ### Type Organization
-- Feature-specific types in feature folders
-- Shared types in `app/shared/types/`
+
+- Feature-specific types in feature folders (`app/modules/{module}/{module}-types.ts`)
+- Shared types in `app/shared/types/` (only if used by 2+ features)
 - Use `interface` for object shapes
 - Use `type` for unions and computed types
 
 ### Naming
+
 - Interfaces: `PascalCase` (`User`, `AuthCredentials`)
 - Types: `PascalCase` with descriptive suffixes (`UserRole`, `ApiResponse`)
 - Generics: Single letter or descriptive (`T`, `TData`)
@@ -186,13 +279,15 @@ export default [
 ## 🔒 SECURITY & API
 
 ### Authentication Patterns
+
 - JWT tokens with refresh mechanism
 - Persistent auth state with Zustand
 - Protected routes with proper guards
 - Secure token storage in localStorage
 
 ### API Integration
-- Use Axios with base client configuration
+
+- Use Axios with base client configuration (`app/shared/api/base-client.ts`)
 - Implement proper error handling
 - Use TypeScript for request/response types
 - Handle loading states consistently
@@ -200,11 +295,13 @@ export default [
 ## 🚀 GIT & DEVELOPMENT
 
 ### Commit Conventions
+
 - Start commit messages with rocket emoji: 🚀
 - Use clear, descriptive commit messages
 - Follow conventional commits when possible
 
 ### Scripts & Commands
+
 - Use `pnpm` for all package management
 - Available scripts: `dev`, `build`, `typecheck`, `lint`, `format`
 - Run `pnpm check` before commits
@@ -212,13 +309,15 @@ export default [
 ## 📝 CODING BEST PRACTICES
 
 ### Component Development
+
 1. Start with page component
-2. Add feature-specific sub-components  
+2. Add feature-specific sub-components
 3. Extract custom hooks for logic
 4. Add types and utilities as needed
 5. Implement clean exports via index.ts
 
 ### Code Style
+
 - Use arrow functions for components and handlers
 - Implement proper TypeScript typing
 - Follow single responsibility principle
@@ -226,6 +325,7 @@ export default [
 - Use descriptive prop and variable names
 
 ### Testing Strategy
+
 - Write component tests for critical features
 - Test custom hooks thoroughly
 - Implement integration tests for user flows
@@ -234,15 +334,67 @@ export default [
 ## 🎨 UI/UX PATTERNS
 
 ### Consistent UI Elements
+
 - Use shared components from `~/shared/components`
 - Implement consistent spacing and typography
 - Follow design system colors and variants
 - Ensure responsive design across all screens
 
 ### Loading & Error States
+
 - Show loading indicators for async operations
 - Implement proper error boundaries
 - Display user-friendly error messages
 - Handle empty states gracefully
 
-Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. 
+## 🔄 MODULE ORGANIZATION
+
+### When to Use Modules vs Shared
+
+```typescript
+// ✅ Module-specific (feature folder)
+- State management for the feature
+- Custom hooks for the feature
+- Types specific to the feature
+- API services for the feature
+- Components only used by the feature
+
+// ✅ Shared (shared folder)
+- UI components used across features
+- Utility functions used across features
+- Global state management
+- Layout components
+- API client and configuration
+```
+
+### Creating New Features
+
+1. **Create module folder**: `app/modules/new-feature/`
+2. **Add core files**:
+   - `new-feature-store.ts` (if state needed)
+   - `new-feature-types.ts` (if types needed)
+   - `use-new-feature.ts` (if hooks needed)
+   - `new-feature.service.ts` (if API needed)
+3. **Add sub-features** (if needed): `app/modules/new-feature/sub-feature/`
+4. **Export everything** in `index.ts`
+5. **Update main modules index**: `app/modules/index.ts`
+
+### Import Patterns
+
+```typescript
+// ✅ Feature-specific imports
+import { useAuth } from "~/modules/auth";
+import { useUserProfile } from "~/modules/user";
+import { useDarkMode } from "~/modules/theme";
+
+// ✅ Shared imports
+import { Button } from "~/shared/components";
+import { useLocalStorage } from "~/shared/hooks";
+import { cn } from "~/shared/utils";
+
+// ✅ Type imports
+import type { AuthCredentials } from "~/modules/auth";
+import type { UserProfile } from "~/modules/user";
+```
+
+Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. Each feature is self-contained with all its related code, and the shared folder only contains truly global utilities and components. Use minimal, English-only comments and prefer self-documenting code.

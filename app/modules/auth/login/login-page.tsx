@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import type { AuthCredentials } from "~/modules/auth";
+import { useAuth } from "~/modules/auth";
 import { Button } from "~/shared/components/button";
 import { Card } from "~/shared/components/card";
 import { Input } from "~/shared/components/input";
 import { PageHeader } from "~/shared/components/page-header";
-import { useAuth } from "~/shared/hooks/use-auth";
-import type { AuthCredentials } from "~/shared/types/auth-types";
 
 export default function LoginPage() {
   const navigate = useNavigate();

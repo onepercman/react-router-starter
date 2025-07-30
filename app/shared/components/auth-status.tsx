@@ -1,14 +1,14 @@
-import { useAuth } from "../hooks/use-auth";
-import { useUserProfile } from "../hooks/use-user-profile";
+import { useAuth } from "~/modules/auth";
+import { useDarkMode } from "~/modules/theme";
+import { useUserProfile } from "~/modules/user";
 import { Button } from "./button";
 
 export function AuthStatus() {
   const { user, isAuthenticated, isLoading: authLoading, logout } = useAuth();
+  const { profile, isLoading: profileLoading } = useUserProfile(user?.id);
+  const { theme, toggleTheme } = useDarkMode();
 
-  const { profile, getUserInitials, displayName, updateTheme } =
-    useUserProfile();
-
-  if (authLoading) {
+  if (authLoading || profileLoading) {
     return (
       <div className="flex items-center space-x-2">
         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
@@ -28,20 +28,20 @@ export function AuthStatus() {
     );
   }
 
-  const handleThemeToggle = async () => {
-    const currentTheme = profile?.preferences.theme || "system";
-    const newTheme = currentTheme === "light" ? "dark" : "light";
-
-    try {
-      await updateTheme(newTheme);
-    } catch (error) {
-      console.error("Failed to update theme:", error);
-    }
+  const getUserInitials = () => {
+    if (!user.name) return user.email.charAt(0).toUpperCase();
+    return user.name
+      .split(" ")
+      .map(n => n.charAt(0))
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
+
+  const displayName = user.name || user.email;
 
   return (
     <div className="flex items-center space-x-3">
-      {/* User Avatar */}
       <div className="flex items-center space-x-2">
         <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
           {getUserInitials()}
@@ -56,24 +56,21 @@ export function AuthStatus() {
         </div>
       </div>
 
-      {/* Theme Toggle */}
       <Button
         variant="ghost"
         size="sm"
-        onClick={handleThemeToggle}
+        onClick={toggleTheme}
         title="Toggle theme"
       >
-        {profile?.preferences.theme === "dark" ? "🌙" : "☀️"}
+        {theme === "dark" ? "🌙" : "☀️"}
       </Button>
 
-      {/* User Menu */}
       <div className="relative">
         <Button variant="ghost" size="sm">
           ⚙️
         </Button>
       </div>
 
-      {/* Logout */}
       <Button variant="outlined" size="sm" onClick={logout}>
         Sign out
       </Button>

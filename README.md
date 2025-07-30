@@ -1,36 +1,77 @@
 # React Router Starter
 
-A modern React application built with React Router, TypeScript, and Zustand for state management.
+A modern React application built with React Router, TypeScript, and Zustand for state management using a **Feature-First Architecture**.
 
 ## Features
 
 - ⚡ **React Router v7** - File-based routing with type safety
 - 🎨 **Tailwind CSS v4** - Modern utility-first CSS framework
 - 📱 **Responsive Design** - Mobile-first approach
-- 🌙 **Dark Mode** - Built-in theme switching
+- 🌙 **Dark Mode** - Built-in theme switching with next-themes
 - 🔒 **Authentication** - Complete auth system with Zustand
 - 📊 **State Management** - Zustand for predictable state management
+- 🏗️ **Feature-First Architecture** - Self-contained feature modules
 - 🛠️ **TypeScript** - Full type safety
 - 🎯 **ESLint & Prettier** - Code quality and formatting
 
+## Architecture
+
+This project uses **Feature-First Organization** where each feature is self-contained with all related code (components, hooks, types, stores, services) in a single folder.
+
+### Module Structure
+
+```
+app/modules/
+├── auth/                   # Authentication module
+│   ├── auth-store.ts       # Auth state management
+│   ├── auth-types.ts       # Auth-related types
+│   ├── use-auth.ts         # Auth custom hook
+│   ├── auth.service.ts     # Auth API service
+│   ├── login/              # Login sub-feature
+│   └── index.ts            # Module exports
+├── user/                   # User module
+│   ├── user-store.ts       # User state management
+│   ├── user-types.ts       # User-related types
+│   ├── use-user-profile.ts # User profile hook
+│   └── index.ts            # Module exports
+├── theme/                  # Theme module
+│   ├── theme-store.ts      # Theme state management
+│   ├── use-dark-mode.ts    # Theme hook
+│   ├── theme-provider.tsx  # Theme provider component
+│   └── index.ts            # Module exports
+└── index.ts                # Main modules exports
+```
+
 ## State Management
 
-This project uses **Zustand v5** for state management with the following stores:
+This project uses **Zustand v5** for state management with feature-specific stores:
 
-### Auth Store (`useAuthStore`)
-- User authentication (login/register/logout)
+### Auth Module (`~/modules/auth`)
+- **`useAuthStore`** - User authentication (login/register/logout)
+- **`useAuth`** - Enhanced auth functionality with auto-refresh
 - Token management with automatic refresh
 - Persistent storage with localStorage
 - Error handling and loading states
 
-### User Store (`useUserStore`)
-- User profile management
+### User Module (`~/modules/user`)
+- **`useUserStore`** - User profile management
+- **`useUserProfile`** - User profile management hook
 - Preferences and settings
 - Profile updates and customization
+
+### Theme Module (`~/modules/theme`)
+- **`useThemeStore`** - Theme state management
+- **`useDarkMode`** - Dark mode functionality
+- **`ThemeProvider`** - Theme provider component
+- **`next-themes`** integration for robust theme management
+- Light/dark/system theme switching
+- Persistent theme preferences
+- Hydration-safe theme switching
 
 ### Custom Hooks
 - `useAuth()` - Enhanced auth functionality
 - `useUserProfile()` - User profile management
+- `useDarkMode()` - Theme management
 
 ## Demo Credentials
 
@@ -76,20 +117,102 @@ pnpm fix          # Auto-fix linting and formatting issues
 
 ```
 app/
-├── modules/           # Feature modules
-│   ├── auth/         # Authentication module
-│   ├── dashboard/    # Dashboard module
-│   ├── home/         # Home module
-│   └── products/     # Products module
-├── shared/           # Shared utilities
-│   ├── components/   # Reusable UI components
-│   ├── hooks/        # Custom React hooks
-│   ├── stores/       # Zustand stores
-│   ├── types/        # TypeScript types
-│   ├── utils/        # Utility functions
-│   └── config/       # Configuration files
-├── root.tsx          # Root component
-└── routes.ts         # Route definitions
+├── modules/                    # Feature modules
+│   ├── auth/                   # Authentication module
+│   │   ├── auth-store.ts       # Auth state management
+│   │   ├── auth-types.ts       # Auth-related types
+│   │   ├── use-auth.ts         # Auth custom hook
+│   │   ├── auth.service.ts     # Auth API service
+│   │   ├── login/              # Login sub-feature
+│   │   └── index.ts            # Module exports
+│   ├── user/                   # User module
+│   │   ├── user-store.ts       # User state management
+│   │   ├── user-types.ts       # User-related types
+│   │   ├── use-user-profile.ts # User profile hook
+│   │   └── index.ts            # Module exports
+│   ├── theme/                  # Theme module
+│   │   ├── theme-store.ts      # Theme state management
+│   │   ├── use-dark-mode.ts    # Theme hook
+│   │   ├── theme-provider.tsx  # Theme provider component
+│   │   └── index.ts            # Module exports
+│   ├── dashboard/              # Dashboard module
+│   ├── products/               # Products module
+│   ├── home/                   # Home module
+│   └── index.ts                # Main modules exports
+├── shared/                     # Shared resources (global only)
+│   ├── components/             # Shared UI components
+│   ├── layouts/                # Layout components
+│   ├── hooks/                  # Global hooks only
+│   ├── types/                  # Global types only
+│   ├── utils/                  # Utility functions
+│   ├── api/                    # API layer
+│   ├── config/                 # Configuration
+│   ├── constants/              # Shared constants
+│   └── stores/                 # Global stores only
+├── root.tsx                    # Root component
+└── routes.ts                   # Route definitions
+```
+
+## Import Patterns
+
+### Feature-Specific Imports
+```typescript
+// Import from specific modules
+import { useAuth } from '~/modules/auth';
+import { useUserProfile } from '~/modules/user';
+import { useDarkMode } from '~/modules/theme';
+
+// Import types
+import type { AuthCredentials } from '~/modules/auth';
+import type { UserProfile } from '~/modules/user';
+```
+
+### Shared Imports
+```typescript
+// Import shared components and utilities
+import { Button } from '~/shared/components';
+import { useLocalStorage } from '~/shared/hooks';
+import { cn } from '~/shared/utils';
+```
+
+## Theme Management
+
+This project uses **next-themes** for robust theme management:
+
+### Features
+- **Multiple Themes**: Light, dark, and system theme support
+- **System Integration**: Automatically detects system theme preference
+- **Persistent Storage**: Remembers user theme choice
+- **Hydration Safe**: Prevents theme flash on page load
+- **SSR Compatible**: Works with server-side rendering
+
+### Usage
+```typescript
+// In components
+import { useDarkMode } from '~/modules/theme';
+
+function MyComponent() {
+  const { theme, setTheme, toggleTheme, isDark } = useDarkMode();
+  
+  return (
+    <button onClick={toggleTheme}>
+      {isDark ? '🌙' : '☀️'}
+    </button>
+  );
+}
+
+// In root component
+import { ThemeProvider } from '~/modules/theme';
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <MainLayout>
+        <Outlet />
+      </MainLayout>
+    </ThemeProvider>
+  );
+}
 ```
 
 ## Store Architecture
@@ -98,60 +221,58 @@ app/
 - **Persistent Authentication**: Auto-saves auth state to localStorage
 - **Token Refresh**: Automatic token refresh on expiration
 - **Error Handling**: Comprehensive error states and messaging
-- **Loading States**: Loading indicators for better UX
+- **API Integration**: Seamless integration with API client
 
 ### User Store Features
 - **Profile Management**: Complete user profile CRUD operations
-- **Preferences**: Theme, language, timezone, and notification settings
-- **Statistics**: User activity tracking and metrics
+- **Preferences**: User preferences and settings
+- **Real-time Updates**: Immediate UI updates on profile changes
 
-### Usage Examples
+### Theme Store Features
+- **Multiple Themes**: Light, dark, and system theme support
+- **Persistent Preferences**: Remembers user theme choice
+- **System Integration**: Respects system theme preferences
+- **Library Integration**: Built on top of next-themes for reliability
 
-```tsx
-// Using auth store
-import { useAuth } from '~/shared/hooks/use-auth';
+## Development Guidelines
 
-function LoginComponent() {
-  const { login, isLoading, error, isAuthenticated } = useAuth();
-  
-  const handleLogin = async (credentials) => {
-    try {
-      await login(credentials);
-      // Redirect or show success
-    } catch (error) {
-      // Error is handled by store
-    }
-  };
-}
+### Creating New Features
 
-// Using user store
-import { useUserProfile } from '~/shared/hooks/use-user-profile';
+1. **Create module folder**: `app/modules/new-feature/`
+2. **Add core files**:
+   - `new-feature-store.ts` (if state needed)
+   - `new-feature-types.ts` (if types needed)
+   - `use-new-feature.ts` (if hooks needed)
+   - `new-feature.service.ts` (if API needed)
+3. **Add sub-features** (if needed): `app/modules/new-feature/sub-feature/`
+4. **Export everything** in `index.ts`
+5. **Update main modules index**: `app/modules/index.ts`
 
-function ProfileComponent() {
-  const { profile, updateProfile, updateTheme } = useUserProfile();
-  
-  const handleThemeChange = async (theme) => {
-    await updateTheme(theme);
-  };
-}
+### When to Use Modules vs Shared
+
+```typescript
+// ✅ Module-specific (feature folder)
+- State management for the feature
+- Custom hooks for the feature
+- Types specific to the feature
+- API services for the feature
+- Components only used by the feature
+
+// ✅ Shared (shared folder)
+- UI components used across features
+- Utility functions used across features
+- Global state management
+- Layout components
+- API client and configuration
 ```
-
-## Technology Stack
-
-- **Frontend**: React 19, TypeScript, Tailwind CSS v4
-- **Routing**: React Router v7
-- **State Management**: Zustand v5
-- **Build Tool**: Vite
-- **Code Quality**: ESLint, Prettier
-- **UI Components**: Custom components with Tailwind
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and checks: `pnpm check`
-5. Submit a pull request
+1. Follow the feature-first architecture
+2. Keep features self-contained
+3. Use TypeScript for all new code
+4. Follow the established naming conventions
+5. Write descriptive commit messages
 
 ## License
 

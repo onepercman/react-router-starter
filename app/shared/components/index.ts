@@ -1,4 +1,3 @@
-// UI Components
 export { AuthStatus } from "./auth-status";
 export { Button } from "./button";
 export { Card, CardContent, CardHeader, CardTitle } from "./card";
@@ -8,7 +7,6 @@ export { PageHeader } from "./page-header";
 export * from "./spinner";
 export { ThemeToggle } from "./theme-toggle";
 
-// Error Handling (Modern functional approach)
 export {
   ModuleErrorBoundary,
   RouteErrorBoundary,
@@ -16,5 +14,4 @@ export {
   useErrorHandler,
 } from "./error-boundary";
 
-// Layout Components
 export { MainLayout } from "~/shared/layouts/main-layout";

@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import { MainLayout } from "~/shared/layouts/main-layout";
+import { ThemeProvider } from "~/modules/theme";
 
 import { queryClient } from "~/shared/config/react-query-config";
 import type { Route } from "./+types/root";
@@ -28,46 +29,12 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-
-        {/* Theme detection script - prevents flash of incorrect theme */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'system';
-                  var root = document.documentElement;
-                  
-                  // Remove any existing theme classes
-                  root.classList.remove('dark', 'light');
-                  
-                  if (theme === 'system') {
-                    var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    root.classList.add(isDark ? 'dark' : 'light');
-                  } else {
-                    root.classList.add(theme);
-                  }
-                } catch (e) {
-                  // Fallback to system preference if localStorage is not available
-                  var root = document.documentElement;
-                  root.classList.remove('dark', 'light');
-                  
-                  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    root.classList.add('dark');
-                  } else {
-                    root.classList.add('light');
-                  }
-                }
-              })();
-            `,
-          }}
-        />
       </head>
       <body>
         {children}
@@ -80,11 +47,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <MainLayout>
-        <Outlet />
-      </MainLayout>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
