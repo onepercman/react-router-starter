@@ -3,7 +3,7 @@
   "registry": [
     {
       "name": "ui",
-      "url": "https://github.com/onepercman/onepercman-ui",
+      "url": "https://github.com/onepercman/opm-ui",
       "path": "/packages/ui/src",
       "dirname": "./app/shared/components"
     }

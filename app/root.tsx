@@ -7,10 +7,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { ThemeProvider } from "~/shared/components";
-import { MainLayout } from "~/shared/layouts/main-layout";
-
+import { Loader, ThemeProvider } from "~/shared/components";
 import { queryClient } from "~/shared/config/react-query-config";
+import { MainLayout } from "~/shared/layouts/main-layout";
 import "~/shared/styles/app.css";
 import type { Route } from "./+types/root";
 
@@ -55,6 +54,10 @@ export default function App() {
       </QueryClientProvider>
     </ThemeProvider>
   );
+}
+
+export function HydrateFallback() {
+  return <Loader />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
