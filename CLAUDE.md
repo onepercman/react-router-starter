@@ -263,6 +263,42 @@ feature-name/
 
 ## File Organization
 
+### Single File Preference
+
+**CRITICAL: Prefer single files over folders for features whenever possible.**
+
+- **Default approach**: Keep features in single files (e.g., `crypto-section.tsx`, `promo-section.tsx`)
+- **Only create folders** when the feature becomes complex and truly needs multiple files
+- **Avoid premature organization** - don't create folders with just an `index.ts` export file
+- **Guidelines for folder creation**:
+  - Feature has 3+ substantial components (not just small helper components)
+  - Feature has complex business logic that needs separation
+  - Feature has multiple distinct responsibilities that warrant separation
+  - Total lines of code exceed ~300-400 lines in a single file
+
+### Examples
+
+```
+✅ PREFERRED - Single file approach
+feature-name.tsx          # Contains all related components, types, and logic
+
+❌ AVOID - Unnecessary folder structure  
+feature-name/
+├── feature-component.tsx # Small component
+├── index.ts             # Just exports
+└── types.ts             # Few types
+
+✅ ACCEPTABLE - When truly needed
+complex-feature/
+├── complex-component.tsx # Substantial component 1
+├── another-component.tsx # Substantial component 2  
+├── business-logic.ts    # Complex business logic
+├── types.ts            # Many types and interfaces
+└── index.ts            # Barrel exports
+```
+
+This approach reduces cognitive overhead and makes navigation simpler while maintaining clean architecture.
+
 ### Naming Conventions
 - **Folders**: `kebab-case` (`auth/`, `user-profile/`, `product-list/`)
 - **Files**:
