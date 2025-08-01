@@ -11,5 +11,5 @@ export default [
   route("products", "routes/products/index.tsx"),
 
   // Auth routes
-  route("auth/login", "routes/auth.login/index.tsx"),
+  route("auth/login", "routes/auth/login/index.tsx"),
 ] satisfies RouteConfig;
