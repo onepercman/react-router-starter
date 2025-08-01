@@ -106,7 +106,9 @@ export const useAuthStore = create<AuthState>()(
           });
 
           api.setAuthToken(newToken);
-        } catch (error: any) {
+        } catch (err: any) {
+          console.log(err);
+
           get().logout();
         }
       },
@@ -118,7 +120,7 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
-      partialize: state => ({
+      partialize: (state) => ({
         user: state.user,
         token: state.token,
       }),

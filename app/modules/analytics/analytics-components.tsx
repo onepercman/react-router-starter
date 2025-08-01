@@ -84,7 +84,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {activities.map(activity => (
+          {activities.map((activity) => (
             <div
               key={activity.id}
               className="flex items-center justify-between py-2 border-b border-border last:border-b-0"

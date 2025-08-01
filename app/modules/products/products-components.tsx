@@ -15,7 +15,7 @@ interface ProductGridProps {
 export function ProductGrid({ products }: ProductGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {products.map(product => (
+      {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
@@ -43,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
       </div>
-      
+
       <CardContent className="p-6">
         <div className="mb-3">
           <div className="flex items-start justify-between mb-2">
@@ -57,11 +57,11 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           </div>
         </div>
-        
+
         <p className="text-sm text-secondary mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
-        
+
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-primary">
@@ -69,8 +69,8 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
             <span className="text-xs text-secondary">Best Price</span>
           </div>
-          <Button 
-            size="sm" 
+          <Button
+            size="sm"
             disabled={!product.inStock}
             className="px-6 shadow-lg hover:shadow-xl transition-shadow"
           >
@@ -111,13 +111,22 @@ export function ProductFilters() {
               Categories
             </label>
             <div className="space-y-2">
-              {['All Categories', 'Electronics', 'Accessories', 'Home & Kitchen', 'Home & Office'].map((category) => (
-                <label key={category} className="flex items-center space-x-3 cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="category" 
-                    className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2" 
-                    defaultChecked={category === 'All Categories'}
+              {[
+                "All Categories",
+                "Electronics",
+                "Accessories",
+                "Home & Kitchen",
+                "Home & Office",
+              ].map((category) => (
+                <label
+                  key={category}
+                  className="flex items-center space-x-3 cursor-pointer group"
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
+                    defaultChecked={category === "All Categories"}
                   />
                   <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
                     {category}
@@ -134,18 +143,21 @@ export function ProductFilters() {
             </label>
             <div className="space-y-2">
               {[
-                { label: 'All Prices', value: 'all' },
-                { label: 'Under $50', value: '0-50' },
-                { label: '$50 - $100', value: '50-100' },
-                { label: '$100 - $200', value: '100-200' },
-                { label: 'Over $200', value: '200+' }
+                { label: "All Prices", value: "all" },
+                { label: "Under $50", value: "0-50" },
+                { label: "$50 - $100", value: "50-100" },
+                { label: "$100 - $200", value: "100-200" },
+                { label: "Over $200", value: "200+" },
               ].map((price) => (
-                <label key={price.value} className="flex items-center space-x-3 cursor-pointer group">
-                  <input 
-                    type="radio" 
-                    name="price" 
+                <label
+                  key={price.value}
+                  className="flex items-center space-x-3 cursor-pointer group"
+                >
+                  <input
+                    type="radio"
+                    name="price"
                     className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
-                    defaultChecked={price.value === 'all'}
+                    defaultChecked={price.value === "all"}
                   />
                   <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
                     {price.label}
@@ -161,9 +173,9 @@ export function ProductFilters() {
               Availability
             </label>
             <label className="flex items-center space-x-3 cursor-pointer group">
-              <input 
-                type="checkbox" 
-                className="w-4 h-4 text-primary border-border rounded focus:ring-primary/20 focus:ring-2" 
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-primary border-border rounded focus:ring-primary/20 focus:ring-2"
               />
               <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
                 In Stock Only

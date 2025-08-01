@@ -141,7 +141,7 @@ export default function HomePage() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-        {navigationItems.map(item => (
+        {navigationItems.map((item) => (
           <Link key={item.path} to={item.path} className="group">
             <Card
               className={`transition-all duration-300 border-2 cursor-pointer h-full ${item.color}`}

@@ -4,7 +4,7 @@ import { cn, forwardRef } from "react-tvcx";
 import { Spinner } from "./spinner";
 
 export const Loader = forwardRef(
-  ({ as: Component = "div", children, className, ...props }, ref) => (
+  ({ as: Component = "div", className, ...props }, ref) => (
     <Component ref={ref} className={cn("flex min-h-56", className)} {...props}>
       <div className="m-auto flex flex-col items-center gap-4 p-4">
         <Spinner />

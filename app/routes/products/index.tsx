@@ -81,19 +81,30 @@ export default function ProductsPage() {
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-gradient-to-br from-primary-subtle to-primary-muted p-4 rounded-xl border border-primary/20">
-          <div className="text-2xl font-bold text-primary">{products.length}</div>
+          <div className="text-2xl font-bold text-primary">
+            {products.length}
+          </div>
           <div className="text-sm text-primary/70">Total Products</div>
         </div>
         <div className="bg-gradient-to-br from-success-subtle to-success-muted p-4 rounded-xl border border-success/20">
-          <div className="text-2xl font-bold text-success">{products.filter(p => p.inStock).length}</div>
+          <div className="text-2xl font-bold text-success">
+            {products.filter((p) => p.inStock).length}
+          </div>
           <div className="text-sm text-success/70">In Stock</div>
         </div>
         <div className="bg-gradient-to-br from-info-subtle to-info-muted p-4 rounded-xl border border-info/20">
-          <div className="text-2xl font-bold text-info">{new Set(products.map(p => p.category)).size}</div>
+          <div className="text-2xl font-bold text-info">
+            {new Set(products.map((p) => p.category)).size}
+          </div>
           <div className="text-sm text-info/70">Categories</div>
         </div>
         <div className="bg-gradient-to-br from-accent-subtle to-accent-muted p-4 rounded-xl border border-accent/20">
-          <div className="text-2xl font-bold text-accent">${Math.round(products.reduce((sum, p) => sum + p.price, 0) / products.length)}</div>
+          <div className="text-2xl font-bold text-accent">
+            $
+            {Math.round(
+              products.reduce((sum, p) => sum + p.price, 0) / products.length
+            )}
+          </div>
           <div className="text-sm text-accent/70">Avg Price</div>
         </div>
       </div>
@@ -106,7 +117,9 @@ export default function ProductsPage() {
         <div className="lg:col-span-4">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <h2 className="text-xl font-semibold text-foreground">All Products</h2>
+              <h2 className="text-xl font-semibold text-foreground">
+                All Products
+              </h2>
               <span className="px-3 py-1 bg-muted text-secondary text-sm rounded-full">
                 {products.length} items
               </span>
@@ -115,7 +128,7 @@ export default function ProductsPage() {
               <span className="text-sm text-secondary">Sort by:</span>
               <select className="bg-background border border-border rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary">
                 <option>Newest</option>
-                <option>Price: Low to High</option>  
+                <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
                 <option>Name A-Z</option>
               </select>

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { AuthCredentials } from "~/modules/auth";
 import { useAuth } from "~/modules/auth";
 import { Button } from "~/shared/components/button";
@@ -38,15 +38,17 @@ export default function LoginPage() {
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/5 rounded-full blur-3xl"></div>
       </div>
-      
+
       <div className="relative w-full max-w-lg">
         {/* Back to home */}
         <div className="mb-8">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="inline-flex items-center gap-2 text-sm text-secondary hover:text-foreground transition-colors group"
           >
-            <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+            <span className="group-hover:-translate-x-0.5 transition-transform">
+              ←
+            </span>
             <span>Back to Home</span>
           </Link>
         </div>
@@ -58,7 +60,9 @@ export default function LoginPage() {
               🔐
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Welcome back
+          </h1>
           <p className="text-secondary">Sign in to continue to your account</p>
         </div>
 
@@ -164,9 +168,9 @@ export default function LoginPage() {
                 </label>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary-focus hover:to-accent-focus shadow-lg hover:shadow-xl transition-all duration-200 text-base font-semibold" 
+              <Button
+                type="submit"
+                className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary-focus hover:to-accent-focus shadow-lg hover:shadow-xl transition-all duration-200 text-base font-semibold"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -190,18 +194,26 @@ export default function LoginPage() {
                   <div className="w-full border-t border-border/50"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-background text-secondary">Or continue with</span>
+                  <span className="px-4 bg-background text-secondary">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-3">
-                <Button variant="outlined" className="h-12 bg-muted/30 hover:bg-muted/50 border-0">
+                <Button
+                  variant="outlined"
+                  className="h-12 bg-muted/30 hover:bg-muted/50 border-0"
+                >
                   <div className="flex items-center gap-2">
                     <span>🌐</span>
                     <span>Google</span>
                   </div>
                 </Button>
-                <Button variant="outlined" className="h-12 bg-muted/30 hover:bg-muted/50 border-0">
+                <Button
+                  variant="outlined"
+                  className="h-12 bg-muted/30 hover:bg-muted/50 border-0"
+                >
                   <div className="flex items-center gap-2">
                     <span>📱</span>
                     <span>Apple</span>

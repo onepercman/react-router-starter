@@ -16,7 +16,7 @@ interface UserState {
 
 export const useUserStore = create<UserState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       profile: null,
       preferences: null,
       isLoading: false,
@@ -100,7 +100,7 @@ export const useUserStore = create<UserState>()(
     {
       name: "user-storage",
       storage: createJSONStorage(() => localStorage),
-      partialize: state => ({
+      partialize: (state) => ({
         profile: state.profile,
         preferences: state.preferences,
       }),

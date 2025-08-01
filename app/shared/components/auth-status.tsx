@@ -36,7 +36,7 @@ export function AuthStatus() {
     if (!user.name) return user.email.charAt(0).toUpperCase();
     return user.name
       .split(" ")
-      .map(n => n.charAt(0))
+      .map((n) => n.charAt(0))
       .join("")
       .toUpperCase()
       .slice(0, 2);

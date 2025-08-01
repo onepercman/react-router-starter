@@ -101,7 +101,7 @@ export class ApiClient {
   private setupInterceptors() {
     // Request interceptor - adds auth, request ID, and logging
     this.instance.interceptors.request.use(
-      config => {
+      (config) => {
         // Inject authentication token if available and not skipped
         if (this.authToken && !config.headers?.skipAuth) {
           config.headers = config.headers || {};
@@ -123,7 +123,7 @@ export class ApiClient {
 
         return config;
       },
-      error => {
+      (error) => {
         if (env.NODE_ENV === "development") {
           console.error("[API] Request Error:", error);
         }
@@ -133,7 +133,7 @@ export class ApiClient {
 
     // Response interceptor - handles logging, auth refresh, and retry logic
     this.instance.interceptors.response.use(
-      response => {
+      (response) => {
         // Success response logging
         if (env.NODE_ENV === "development") {
           console.log(`[API] ← ${response.status} ${response.config.url}`);
@@ -165,7 +165,7 @@ export class ApiClient {
               console.log("[API] Retrying request due to server error");
             }
             // Wait 1 second before retry
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             return this.instance(config);
           }
         }
@@ -415,7 +415,7 @@ export class ApiClient {
       },
       timeout: config?.timeout || 60000, // 60 seconds for file uploads
       cancelToken: config?.cancelToken?.token,
-      onUploadProgress: progressEvent => {
+      onUploadProgress: (progressEvent) => {
         if (onProgress && progressEvent.total) {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total

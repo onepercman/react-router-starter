@@ -29,7 +29,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                 React Router App
               </Link>
               <nav className="hidden md:flex space-x-1">
-                {navItems.map(item => (
+                {navItems.map((item) => (
                   <Link
                     key={item.path}
                     to={item.path}

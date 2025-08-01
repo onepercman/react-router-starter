@@ -81,8 +81,8 @@ export default [
           allowUnboundThis: true,
         },
       ],
-      "arrow-body-style": ["warn", "as-needed"],
-      "arrow-parens": ["warn", "as-needed"],
+      "arrow-body-style": ["off", "as-needed"],
+      "arrow-parens": ["error", "always"],
       "arrow-spacing": ["error", { before: true, after: true }],
       "func-style": [
         "off", // Allow both function declarations and expressions for React components

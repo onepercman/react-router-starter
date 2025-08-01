@@ -29,7 +29,7 @@ export const isTest = env.NODE_ENV === "test";
 // Validation - throws error if required env vars are missing
 function validateEnvironment() {
   const required = ["VITE_API_URL"];
-  const missing = required.filter(key => !import.meta.env[key]);
+  const missing = required.filter((key) => !import.meta.env[key]);
 
   if (missing.length > 0 && isProduction) {
     throw new Error(
