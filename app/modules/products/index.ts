@@ -1,2 +1,2 @@
-// Products module exports
-export * from "./product-list";
+export * from "./products-components";
+export * from "./products-types";

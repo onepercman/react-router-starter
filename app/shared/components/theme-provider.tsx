@@ -16,4 +16,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       {children}
     </NextThemesProvider>
   );
-} 
+}

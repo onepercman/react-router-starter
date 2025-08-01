@@ -1,6 +1,6 @@
 # React Router Starter
 
-A modern React application built with React Router, TypeScript, and Zustand for state management using a **Feature-First Architecture**.
+A modern React application built with React Router, TypeScript, and Zustand for state management using **Routes & Modules Architecture**.
 
 ## Features
 
@@ -10,32 +10,38 @@ A modern React application built with React Router, TypeScript, and Zustand for 
 
 - 🔒 **Authentication** - Complete auth system with Zustand
 - 📊 **State Management** - Zustand for predictable state management
-- 🏗️ **Feature-First Architecture** - Self-contained feature modules
+- 🏗️ **Routes & Modules Architecture** - Clear separation between pages and business logic
 - 🛠️ **TypeScript** - Full type safety
 - 🎯 **ESLint & Prettier** - Code quality and formatting
 
 ## Architecture
 
-This project uses **Feature-First Organization** where each feature is self-contained with all related code (components, hooks, types, stores, services) in a single folder.
+This project uses **Routes & Modules Architecture** with clear separation between routes (pages) and modules (business logic). Routes compose UI by importing functionality from feature-based modules.
 
-### Module Structure
+### Routes & Modules Structure
 
 ```
-app/modules/
-├── auth/                   # Authentication module
-│   ├── auth-store.ts       # Auth state management
-│   ├── auth-types.ts       # Auth-related types
-│   ├── use-auth.ts         # Auth custom hook
-│   ├── auth.service.ts     # Auth API service
-│   ├── login/              # Login sub-feature
-│   └── index.ts            # Module exports
-├── user/                   # User module
-│   ├── user-store.ts       # User state management
-│   ├── user-types.ts       # User-related types
-│   ├── use-user-profile.ts # User profile hook
-│   └── index.ts            # Module exports
-
-└── index.ts                # Main modules exports
+app/
+├── routes/                 # Page components
+│   ├── dashboard/          # Dashboard route
+│   │   ├── index.tsx       # Main page component (default export)
+│   │   └── banner.tsx      # Route-specific component
+│   ├── products/           # Products route
+│   │   └── index.tsx       # Products page
+│   └── settings/           # Settings route
+│       └── index.tsx       # Settings page
+├── modules/                # Business logic modules
+│   ├── auth/               # Authentication module
+│   │   ├── auth-store.ts   # Auth state management
+│   │   ├── auth-types.ts   # Auth-related types
+│   │   ├── use-auth.ts     # Auth custom hook
+│   │   └── index.ts        # Module exports
+│   ├── analytics/          # Analytics module
+│   │   ├── data-widget.tsx # Reusable component
+│   │   ├── use-analytics.ts # Custom hook
+│   │   └── index.ts        # Module exports
+│   └── index.ts            # Main modules exports
+└── shared/                 # Shared utilities and components
 ```
 
 ## State Management
@@ -49,17 +55,15 @@ This project uses **Zustand v5** for state management with feature-specific stor
 - Persistent storage with localStorage
 - Error handling and loading states
 
-### User Module (`~/modules/user`)
-- **`useUserStore`** - User profile management
-- **`useUserProfile`** - User profile management hook
-- Preferences and settings
-- Profile updates and customization
-
-
+### Analytics Module (`~/modules/analytics`)
+- **`useAnalyticsStore`** - Analytics data management
+- **`useAnalytics`** - Analytics functionality hook
+- Data fetching and caching
+- Real-time updates and filtering
 
 ### Custom Hooks
 - `useAuth()` - Enhanced auth functionality
-- `useUserProfile()` - User profile management
+- `useAnalytics()` - Analytics data management
 
 ## Demo Credentials
 
@@ -105,22 +109,33 @@ pnpm fix          # Auto-fix linting and formatting issues
 
 ```
 app/
-├── modules/                    # Feature modules
+├── routes/                     # Page components
+│   ├── dashboard/              # Dashboard route
+│   │   ├── index.tsx           # Main page component (default export)
+│   │   └── banner.tsx          # Route-specific component
+│   ├── products/               # Products route
+│   │   └── index.tsx           # Products page
+│   ├── analytics/              # Analytics route
+│   │   └── index.tsx           # Analytics page
+│   └── settings/               # Settings route
+│       └── index.tsx           # Settings page
+├── modules/                    # Business logic modules
 │   ├── auth/                   # Authentication module
 │   │   ├── auth-store.ts       # Auth state management
 │   │   ├── auth-types.ts       # Auth-related types
 │   │   ├── use-auth.ts         # Auth custom hook
 │   │   ├── auth.service.ts     # Auth API service
-│   │   ├── login/              # Login sub-feature
 │   │   └── index.ts            # Module exports
-│   ├── user/                   # User module
-│   │   ├── user-store.ts       # User state management
-│   │   ├── user-types.ts       # User-related types
-│   │   ├── use-user-profile.ts # User profile hook
+│   ├── analytics/              # Analytics module
+│   │   ├── data-widget.tsx     # Reusable component
+│   │   ├── metrics-chart.tsx   # Reusable component
+│   │   ├── use-analytics.ts    # Custom hook
+│   │   ├── analytics-store.ts  # State management
 │   │   └── index.ts            # Module exports
-│   ├── dashboard/              # Dashboard module
 │   ├── products/               # Products module
-│   ├── home/                   # Home module
+│   │   ├── product-card.tsx    # Reusable component
+│   │   ├── use-products.ts     # Custom hook
+│   │   └── index.ts            # Module exports
 │   └── index.ts                # Main modules exports
 ├── shared/                     # Shared resources (global only)
 │   ├── components/             # Shared UI components
@@ -138,15 +153,16 @@ app/
 
 ## Import Patterns
 
-### Feature-Specific Imports
+### Module Imports
 ```typescript
-// Import from specific modules
+// Import from business logic modules
 import { useAuth } from '~/modules/auth';
-import { useUserProfile } from '~/modules/user';
+import { useAnalytics } from '~/modules/analytics';
+import { DataWidget } from '~/modules/analytics';
 
 // Import types
 import type { AuthCredentials } from '~/modules/auth';
-import type { UserProfile } from '~/modules/user';
+import type { AnalyticsData } from '~/modules/analytics';
 ```
 
 ### Shared Imports
@@ -188,19 +204,25 @@ import { cn } from '~/shared/utils';
 4. **Export everything** in `index.ts`
 5. **Update main modules index**: `app/modules/index.ts`
 
-### When to Use Modules vs Shared
+### When to Use Routes vs Modules vs Shared
 
 ```typescript
-// ✅ Module-specific (feature folder)
+// ✅ Routes (page components)
+- Page layout and composition
+- Route-specific components
+- Import and compose from modules
+- Handle page-level concerns
+
+// ✅ Modules (business logic)
 - State management for the feature
 - Custom hooks for the feature
-- Types specific to the feature
+- Business logic and data processing
+- Reusable components with logic
 - API services for the feature
-- Components only used by the feature
 
-// ✅ Shared (shared folder)
-- UI components used across features
-- Utility functions used across features
+// ✅ Shared (global utilities)
+- UI components used across modules
+- Utility functions used across modules
 - Global state management
 - Layout components
 - API client and configuration
@@ -208,8 +230,8 @@ import { cn } from '~/shared/utils';
 
 ## Contributing
 
-1. Follow the feature-first architecture
-2. Keep features self-contained
+1. Follow the routes & modules architecture
+2. Keep business logic in modules, pages in routes
 3. Use TypeScript for all new code
 4. Follow the established naming conventions
 5. Write descriptive commit messages

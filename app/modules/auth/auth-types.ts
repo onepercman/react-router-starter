@@ -8,7 +8,7 @@ export interface User {
   updatedAt: string;
 }
 
-export type UserRole = 'admin' | 'user' | 'moderator';
+export type UserRole = "admin" | "user" | "moderator";
 
 export interface AuthCredentials {
   email: string;
@@ -29,4 +29,4 @@ export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
   token: string | null;
-} 
+}

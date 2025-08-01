@@ -2,14 +2,14 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
   // Home page
-  index("modules/home/home-page/home-page.tsx"),
+  index("routes/_index.tsx"),
 
   // Dashboard routes
-  route("dashboard", "modules/dashboard/dashboard-overview/dashboard-page.tsx"),
+  route("dashboard", "routes/dashboard/index.tsx"),
 
   // Product routes
-  route("products", "modules/products/product-list/product-list-page.tsx"),
+  route("products", "routes/products/index.tsx"),
 
   // Auth routes
-  route("auth/login", "modules/auth/login/login-page.tsx"),
+  route("auth/login", "routes/auth.login/index.tsx"),
 ] satisfies RouteConfig;

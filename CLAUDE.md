@@ -38,13 +38,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-### Feature-First Organization
+### Routes & Modules Separation
 
-**CRITICAL**: Use Feature-First Architecture where each feature is self-contained in its own folder:
-- Structure: `app/modules/{module}/{feature}/`
-- Each feature contains ALL related code: components, hooks, types, utils, stores
-- Shared code goes to `app/shared/` only when used by 2+ features
-- Use barrel exports (`index.ts`) for clean imports
+**CRITICAL**: This project uses a clear separation between routes (pages) and modules (business logic):
+
+#### Routes Structure (`app/routes/`)
+- **Purpose**: Contains page components that define UI layouts and composition
+- **Organization**: Follows React Router v7 file-based routing structure
+- **Structure**: `app/routes/{route-name}/index.tsx`
+- **Responsibility**: Import and compose functionality from modules, handle page-level concerns
+
+#### Modules Structure (`app/modules/`)
+- **Purpose**: Contains business logic, components, and feature-specific code
+- **Organization**: Feature-based, not route-based (one module can serve multiple routes)
+- **Structure**: `app/modules/{feature-name}/`
+- **Responsibility**: Provide reusable business logic, components, hooks, stores, and services
 
 ### Module Structure Pattern
 
@@ -54,19 +62,42 @@ module-name/
 ├── module-types.ts             # TypeScript types
 ├── use-module.ts               # Custom hooks
 ├── module.service.ts           # API services (if needed)
-├── sub-feature/                # Sub-features (if needed)
-│   ├── sub-feature-page.tsx
-│   └── index.ts
+├── feature-component.tsx       # Feature-specific components
+├── feature-section.tsx         # Reusable sections
 └── index.ts                    # Barrel exports
 ```
 
-### Current Modules
-- `app/modules/home/` - Home page
-- `app/modules/tokens/` - Token management
-- `app/modules/rewards/` - Rewards system
-- `app/modules/assets/` - Asset management
-- `app/modules/user/` - User authentication and profile
-- `app/modules/onboarding/` - User onboarding flow
+### Route Structure Pattern
+
+```
+route-name/
+├── index.tsx                   # Main page component (default export)
+├── route-specific-component.tsx # Components only used by this route
+└── other-route-sections.tsx    # Route-specific sections if needed
+```
+
+### Current Architecture
+
+#### Routes (`app/routes/`)
+- `app/routes/dashboard/` - Main dashboard page layout and composition
+- `app/routes/products/` - Product listing and management pages
+- `app/routes/analytics/` - Analytics and reporting pages  
+- `app/routes/profile/` - User profile and account pages
+- `app/routes/settings/` - Application settings pages
+
+#### Modules (`app/modules/`)
+- `app/modules/auth/` - Authentication and authorization logic
+- `app/modules/user/` - User management and profile functionality
+- `app/modules/products/` - Product-related business logic and components
+- `app/modules/analytics/` - Data analysis and reporting features
+- `app/modules/notifications/` - Notification system and management
+
+### Key Principles
+
+1. **Pages import from modules**: Routes compose UI by importing from feature modules
+2. **Modules are feature-based**: Organized by business domain, not by route
+3. **Reusability**: Modules can be used by multiple routes
+4. **Clear separation**: Pages handle layout, modules handle business logic
 
 ### Shared Resources
 
@@ -216,6 +247,52 @@ interface StoreState {
 
 ## Component Patterns
 
+### Component Reuse Priority
+
+**CRITICAL: Always prioritize using existing components from the shared library before creating custom ones.**
+
+- **First priority**: Check `app/shared/components/` for existing components
+- **Available components**: Button, Input, Card, Tabs, Container, Spinner, etc.
+- **Only create custom** when existing components don't meet the specific need
+- **Extend existing** components using their props and variants system
+
+### Component Discovery Process
+
+Before creating any UI element, follow this process:
+
+1. **Check shared components**: Look in `app/shared/components/index.ts` for available components
+2. **Review component API**: Read the component's props, variants, and examples
+3. **Use existing variants**: Leverage size, variant, color, and shape props
+4. **Extend with className**: Use className prop for custom styling when needed
+5. **Create custom only if necessary**: When no existing component fits the use case
+
+### Examples
+
+```tsx
+// ✅ PREFERRED - Use existing components
+import { Button, Input } from "~/shared/components";
+
+// Use Button with variants
+<Button variant="ghost" shape="pill" size="sm" leftIcon={<Filter />}>
+  Filters
+</Button>
+
+// Use Input with props
+<Input 
+  placeholder="Search..." 
+  prefix={<Search />} 
+  variant="blur" 
+  shape="pill" 
+/>
+
+// ❌ AVOID - Manual HTML when components exist
+<button className="bg-white/5 rounded-3xl px-3 py-2">
+  Filters
+</button>
+
+<input className="bg-transparent border-0 outline-none" />
+```
+
 ### React Patterns
 - **Functional components only** - no class components
 - Use `forwardRef` for reusable components
@@ -263,52 +340,68 @@ feature-name/
 
 ## File Organization
 
-### Single File Preference
+### Routes vs Modules Organization
 
-**CRITICAL: Prefer single files over folders for features whenever possible.**
+**CRITICAL: Understand the distinction between routes (pages) and modules (business logic).**
 
-- **Default approach**: Keep features in single files (e.g., `crypto-section.tsx`, `promo-section.tsx`)
-- **Only create folders** when the feature becomes complex and truly needs multiple files
-- **Avoid premature organization** - don't create folders with just an `index.ts` export file
-- **Guidelines for folder creation**:
-  - Feature has 3+ substantial components (not just small helper components)
-  - Feature has complex business logic that needs separation
-  - Feature has multiple distinct responsibilities that warrant separation
-  - Total lines of code exceed ~300-400 lines in a single file
+#### Routes Organization (`app/routes/`)
+- **Route folders**: Each route gets its own folder (e.g., `home/`, `tokens/`, `setting/`)
+- **Main page file**: `index.tsx` with default export
+- **Route-specific components**: Components only used by this specific route
+- **Keep routes focused**: Routes should primarily compose and layout, not contain complex business logic
 
-### Examples
+#### Modules Organization (`app/modules/`)
+- **Feature-based folders**: Organized by business domain (e.g., `user/`, `tokens/`, `onboarding/`)
+- **Single file preference**: Keep related code in single files when possible
+- **Folder when needed**: Create subfolders only when feature becomes complex (3+ substantial components, 300+ lines)
+
+### File Structure Examples
 
 ```
-✅ PREFERRED - Single file approach
-feature-name.tsx          # Contains all related components, types, and logic
+✅ PREFERRED - Route structure
+app/routes/dashboard/
+├── index.tsx                    # Main DashboardPage component (default export)
+└── dashboard-banner.tsx        # Route-specific component
 
-❌ AVOID - Unnecessary folder structure  
-feature-name/
-├── feature-component.tsx # Small component
-├── index.ts             # Just exports
-└── types.ts             # Few types
+✅ PREFERRED - Module structure  
+app/modules/analytics/
+├── metrics-widget.tsx          # Reusable component
+├── data-table.tsx             # Reusable component
+├── use-analytics.ts           # Custom hook
+├── analytics-store.ts         # State management
+├── analytics-types.ts         # Types
+└── index.ts                   # Barrel exports
 
-✅ ACCEPTABLE - When truly needed
-complex-feature/
-├── complex-component.tsx # Substantial component 1
-├── another-component.tsx # Substantial component 2  
-├── business-logic.ts    # Complex business logic
-├── types.ts            # Many types and interfaces
-└── index.ts            # Barrel exports
+❌ AVOID - Mixing concerns
+app/routes/dashboard/
+├── index.tsx
+├── metrics-calculation.ts      # Business logic belongs in modules/
+└── data-processing.ts         # Business logic belongs in modules/
 ```
 
-This approach reduces cognitive overhead and makes navigation simpler while maintaining clean architecture.
+### Guidelines for Organization
+
+#### When to create route-specific components:
+- Component is only used by one specific route
+- Component handles route-specific layout or composition
+- Component doesn't contain reusable business logic
+
+#### When to create module components:
+- Component contains business logic
+- Component could be reused by multiple routes
+- Component manages its own state or data fetching
+- Component represents a distinct business feature
 
 ### Naming Conventions
 - **Folders**: `kebab-case` (`auth/`, `user-profile/`, `product-list/`)
 - **Files**:
-  - Store files: `{module}-store.ts` (e.g., `auth-store.ts`, `user-store.ts`)
-  - Type files: `{module}-types.ts` (e.g., `auth-types.ts`, `user-types.ts`)
-  - Hook files: `use-{feature}.ts` (e.g., `use-auth.ts`, `use-user-profile.ts`)
+  - Store files: `{module}-store.ts` (e.g., `auth-store.ts`, `analytics-store.ts`)
+  - Type files: `{module}-types.ts` (e.g., `auth-types.ts`, `analytics-types.ts`)
+  - Hook files: `use-{feature}.ts` (e.g., `use-auth.ts`, `use-analytics.ts`)
   - Service files: `{module}.service.ts` (e.g., `auth.service.ts`)
   - Page components: `{feature}-page.tsx` (e.g., `login-page.tsx`)
 - **Components**: `PascalCase` (`LoginPage`, `ProductCard`)
-- **Functions**: `camelCase` (`useAuth`, `formatPrice`)
+- **Functions**: `camelCase` (`useAuth`, `formatDate`, `calculateTotal`)
 - **Constants**: `UPPER_SNAKE_CASE` (`API_ENDPOINTS`)
 
 ### Import Order (auto-organized by Prettier)
@@ -321,7 +414,7 @@ import { create } from "zustand";
 
 // 3. Module imports (~/modules)
 import { useAuth } from "~/modules/auth";
-import { useUserProfile } from "~/modules/user";
+import { useAnalytics } from "~/modules/analytics";
 
 // 4. Shared imports (~/shared)
 import { Button } from "~/shared/components";
@@ -353,11 +446,11 @@ import type { AuthCredentials } from "~/modules/auth";
 ### When to Comment
 ```typescript
 // ✅ Good - complex business logic
-const calculateDiscount = (price: number, userType: UserType) => {
-  // Apply tiered discount based on user type and purchase history
-  const baseDiscount = userType === "premium" ? 0.15 : 0.05;
-  const loyaltyBonus = getUserLoyaltyBonus(userId);
-  return price * (baseDiscount + loyaltyBonus);
+const calculateTotal = (amount: number, userTier: UserTier) => {
+  // Apply pricing based on user tier and business rules
+  const baseFee = userTier === "premium" ? 0.02 : 0.05;
+  const volumeDiscount = getVolumeDiscount(amount);
+  return amount * (1 + baseFee - volumeDiscount);
 };
 
 // ❌ Bad - obvious comment
@@ -365,11 +458,11 @@ const user = getUser(); // Get user
 
 // ✅ Good - JSDoc for public API
 /**
- * Authenticates user with provided credentials
- * @param credentials - User login credentials
- * @returns Promise resolving to auth result
+ * Process data with provided configuration
+ * @param config - Processing configuration
+ * @returns Promise resolving to processed result
  */
-export const authenticateUser = async (credentials: AuthCredentials) => {
+export const processData = async (config: ProcessingConfig) => {
   // Implementation
 };
 ```
@@ -406,17 +499,46 @@ export const authenticateUser = async (credentials: AuthCredentials) => {
 ```typescript
 // app/routes.ts - Central configuration
 export default [
-  index("modules/home/home-page/home-page.tsx"),
-  route("dashboard", "modules/dashboard/dashboard-page.tsx"),
-  route("products", "modules/products/product-list-page.tsx"),
+  layout("shared/layouts/main-layout.tsx", [
+    layout("shared/layouts/dashboard-layout.tsx", [
+      index("routes/dashboard/index.tsx"),
+      route("/products", "routes/products/index.tsx"),
+      route("/analytics", "routes/analytics/index.tsx"),
+      route("/reports", "routes/reports/index.tsx"),
+    ]),
+    
+    route("/settings", "routes/settings/index.tsx"),
+    route("/profile", "routes/profile/index.tsx"),
+  ]),
 ] satisfies RouteConfig;
 ```
 
-### Page Components
-- Export as default function
-- Use descriptive names: `LoginPage`, `ProductListPage`
-- Implement proper meta data and SEO
-- Handle loading and error states
+### Page Components (`app/routes/`)
+- **Export as default function**: Each page must export default
+- **Import from modules**: Compose functionality by importing from `~/modules/`
+- **Page naming**: Use descriptive names like `DashboardPage`, `ProductsPage`, `SettingsPage`
+- **File structure**: Each route in its own folder with `index.tsx`
+- **Responsibilities**: Layout composition, data fetching coordination, page-level state
+
+### Example Page Component
+```typescript
+// app/routes/dashboard/index.tsx
+import { DataSection, MetricsWidget } from "~/modules/analytics"
+import { UserHeader } from "~/modules/user"
+import { Container } from "~/shared/components"
+import { LocalBanner } from "./local-banner"
+
+export default function DashboardPage() {
+  return (
+    <Container className="space-y-6">
+      <UserHeader />
+      <LocalBanner />
+      <MetricsWidget />
+      <DataSection />
+    </Container>
+  )
+}
+```
 
 ## TypeScript Conventions
 
@@ -477,30 +599,47 @@ export default [
 ```
 
 ### Creating New Features
-1. **Create module folder**: `app/modules/new-feature/`
+
+#### For New Routes (Pages)
+1. **Create route folder**: `app/routes/new-route/`
+2. **Add main page**: `app/routes/new-route/index.tsx` with default export
+3. **Add route-specific components** (if needed): `app/routes/new-route/page-banner.tsx`
+4. **Update routes configuration**: Add route to `app/routes.ts`
+5. **Import functionality from modules**: Use existing or create new modules
+
+#### For New Business Logic (Modules)
+1. **Create module folder**: `app/modules/feature-name/`
 2. **Add core files**:
-   - `new-feature-store.ts` (if state needed)
-   - `new-feature-types.ts` (if types needed)
-   - `use-new-feature.ts` (if hooks needed)
-   - `new-feature.service.ts` (if API needed)
-3. **Add sub-features** (if needed): `app/modules/new-feature/sub-feature/`
-4. **Export everything** in `index.ts`
-5. **Update main modules index**: `app/modules/index.ts`
+   - `feature-store.ts` (if state needed)
+   - `feature-types.ts` (if types needed)
+   - `use-feature.ts` (if hooks needed)
+   - `feature.service.ts` (if API needed)
+   - `feature-widget.tsx` (reusable components)
+3. **Export everything** in `index.ts`
+4. **Import in routes**: Use the new module in relevant route components
+
+#### Decision Guide: Route vs Module
+- **Create a route** when you need a new URL/page in the application
+- **Create a module** when you need new business logic that can be reused
+- **Route components** import and compose from modules
+- **Modules** contain the actual business logic and reusable components
 
 ### Import Patterns
 ```typescript
-// ✅ Feature-specific imports
+// ✅ Module imports
 import { useAuth } from "~/modules/auth";
-import { useUserProfile } from "~/modules/user";
+import { useNotifications } from "~/modules/notifications";
+import { useAnalytics } from "~/modules/analytics";
 
 // ✅ Shared imports
-import { Button } from "~/shared/components";
+import { Button, Card } from "~/shared/components";
 import { useLocalStorage } from "~/shared/hooks";
-import { cn } from "~/shared/utils";
+import { cn, formatDate } from "~/shared/utils";
 
 // ✅ Type imports
 import type { AuthCredentials } from "~/modules/auth";
-import type { UserProfile } from "~/modules/user";
+import type { NotificationSettings } from "~/modules/notifications";
+import type { AnalyticsData } from "~/modules/analytics";
 ```
 
 ## 🎯 CRITICAL REMINDERS
@@ -528,6 +667,36 @@ import type { UserProfile } from "~/modules/user";
    - `--color-primary-foreground` → `text-primary-foreground`
    - `--color-primary-muted` → `bg-primary-muted`
 
-Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. Each feature is self-contained with all its related code, and the shared folder only contains truly global utilities and components. Use minimal, English-only comments and prefer self-documenting code.
+Remember: This project prioritizes **developer experience**, **maintainability**, and **scalability** through consistent patterns and conventions. The clear separation between routes (pages) and modules (business logic) ensures reusability and maintainability. Use minimal, English-only comments and prefer self-documenting code.
 
 **Most importantly: ALWAYS check the design system files first - NEVER use hardcoded colors!**
+
+## 🎯 ARCHITECTURE REMINDERS
+
+### Routes vs Modules Separation
+**ALWAYS maintain clear separation:**
+
+1. **Routes (`app/routes/`)**: Page composition and layout only
+   - Import functionality from modules
+   - Handle page-level concerns
+   - Export default page components
+   - Keep business logic minimal
+
+2. **Modules (`app/modules/`)**: Business logic and reusable components
+   - Feature-based organization (not route-based)
+   - Can be used by multiple routes
+   - Contain stores, hooks, services, and components
+   - Export everything via barrel exports
+
+3. **Shared (`app/shared/`)**: Truly global utilities and components
+   - Used across multiple modules
+   - Design system components
+   - Global utilities and configuration
+
+### Import Flow
+```
+Routes → Modules → Shared
+```
+- Routes import from modules and shared
+- Modules import from shared
+- Never import routes into modules

@@ -171,10 +171,7 @@ export const button = tv({
     {
       variant: "outlined",
       color: "default",
-      class: [
-        "border-border",
-        "[&:not(:disabled)]:hover:bg-default-muted",
-      ],
+      class: ["border-border", "[&:not(:disabled)]:hover:bg-default-muted"],
     },
     {
       variant: "outlined",
@@ -228,58 +225,37 @@ export const button = tv({
     {
       variant: "ghost",
       color: "default",
-      class: [
-        "text-foreground",
-        "[&:not(:disabled)]:hover:bg-default-muted",
-      ],
+      class: ["text-foreground", "[&:not(:disabled)]:hover:bg-default-muted"],
     },
     {
       variant: "ghost",
       color: "primary",
-      class: [
-        "text-primary",
-        "[&:not(:disabled)]:hover:bg-primary-muted",
-      ],
+      class: ["text-primary", "[&:not(:disabled)]:hover:bg-primary-muted"],
     },
     {
       variant: "ghost",
       color: "info",
-      class: [
-        "text-info",
-        "[&:not(:disabled)]:hover:bg-info-muted",
-      ],
+      class: ["text-info", "[&:not(:disabled)]:hover:bg-info-muted"],
     },
     {
       variant: "ghost",
       color: "success",
-      class: [
-        "text-success",
-        "[&:not(:disabled)]:hover:bg-success-muted",
-      ],
+      class: ["text-success", "[&:not(:disabled)]:hover:bg-success-muted"],
     },
     {
       variant: "ghost",
       color: "warning",
-      class: [
-        "text-warning",
-        "[&:not(:disabled)]:hover:bg-warning-muted",
-      ],
+      class: ["text-warning", "[&:not(:disabled)]:hover:bg-warning-muted"],
     },
     {
       variant: "ghost",
       color: "error",
-      class: [
-        "text-error",
-        "[&:not(:disabled)]:hover:bg-error-muted",
-      ],
+      class: ["text-error", "[&:not(:disabled)]:hover:bg-error-muted"],
     },
     {
       variant: "ghost",
       color: "accent",
-      class: [
-        "text-accent",
-        "[&:not(:disabled)]:hover:bg-accent-muted",
-      ],
+      class: ["text-accent", "[&:not(:disabled)]:hover:bg-accent-muted"],
     },
   ],
   defaultVariants: {

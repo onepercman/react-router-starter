@@ -18,7 +18,7 @@ export interface UserProfile {
 export interface UserPreferences {
   id: string;
   userId: string;
-  theme: 'light' | 'dark' | 'system';
+  theme: "light" | "dark" | "system";
   language: string;
   notifications: {
     email: boolean;
@@ -26,7 +26,7 @@ export interface UserPreferences {
     sms: boolean;
   };
   privacy: {
-    profileVisibility: 'public' | 'private' | 'friends';
+    profileVisibility: "public" | "private" | "friends";
     showEmail: boolean;
     showLocation: boolean;
   };
@@ -39,4 +39,4 @@ export interface UserStats {
   totalFollowers: number;
   totalFollowing: number;
   joinDate: string;
-} 
+}
