@@ -12,6 +12,7 @@ export default [
       "dist/**",
       ".react-router/**",
       "*.config.js",
+      "*.config.ts",
       "public/**",
     ],
   },
