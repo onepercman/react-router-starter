@@ -1,11 +1,11 @@
-import { Link } from "react-router";
+import { Link } from "react-router"
 import {
   Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "~/shared/components";
+} from "~/shared/components/ui"
 
 export default function HomePage() {
   const navigationItems = [
@@ -14,9 +14,9 @@ export default function HomePage() {
       description: "Overview and analytics dashboard",
       path: "/dashboard",
       color:
-        "bg-gradient-to-br from-info-subtle to-info-muted hover:from-info-muted hover:to-info-muted border-info/30 hover:border-info/50",
-      iconBg: "bg-info",
-      textColor: "text-info",
+        "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-primary/30 hover:border-primary/50",
+      iconBg: "bg-primary",
+      textColor: "text-primary",
       icon: "📊",
     },
     {
@@ -24,9 +24,9 @@ export default function HomePage() {
       description: "Manage your product catalog",
       path: "/products",
       color:
-        "bg-gradient-to-br from-success-subtle to-success-muted hover:from-success-muted hover:to-success-muted border-success/30 hover:border-success/50",
-      iconBg: "bg-success",
-      textColor: "text-success",
+        "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-chart-1/30 hover:border-chart-1/50",
+      iconBg: "bg-chart-1",
+      textColor: "text-chart-1",
       icon: "📦",
     },
     {
@@ -34,69 +34,69 @@ export default function HomePage() {
       description: "User authentication system",
       path: "/auth/login",
       color:
-        "bg-gradient-to-br from-warning-subtle to-warning-muted hover:from-warning-muted hover:to-warning-muted border-warning/30 hover:border-warning/50",
-      iconBg: "bg-warning",
-      textColor: "text-warning",
+        "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-chart-5/30 hover:border-chart-5/50",
+      iconBg: "bg-chart-5",
+      textColor: "text-chart-5",
       icon: "🔐",
     },
-  ];
+  ]
 
   const features = [
     {
       title: "🏗️ Feature-First Architecture",
       description: "Modern, scalable organization with high cohesion",
-      color: "border-l-primary bg-primary-subtle/50",
+      color: "border-l-primary bg-secondary/50",
     },
     {
       title: "🚀 React Router v7",
       description: "Latest routing with SSR and modern patterns",
-      color: "border-l-info bg-info-subtle/50",
+      color: "border-l-chart-2 bg-secondary/50",
     },
     {
       title: "⚡ TypeScript",
       description: "Type-safe development with excellent DX",
-      color: "border-l-success bg-success-subtle/50",
+      color: "border-l-chart-1 bg-secondary/50",
     },
     {
       title: "🎨 Tailwind CSS",
       description: "Utility-first styling with design system",
-      color: "border-l-warning bg-warning-subtle/50",
+      color: "border-l-chart-5 bg-secondary/50",
     },
     {
       title: "🧩 Component Library",
       description: "Reusable UI components and patterns",
-      color: "border-l-accent bg-accent-subtle/50",
+      color: "border-l-accent bg-secondary/50",
     },
     {
       title: "📝 Best Practices",
       description: "Industry standards and maintainable code",
-      color: "border-l-error bg-error-subtle/50",
+      color: "border-l-destructive bg-secondary/50",
     },
-  ];
+  ]
 
   return (
     <div className="space-y-12">
-      <div className="text-center py-12 bg-gradient-to-b from-primary-subtle/30 to-transparent rounded-xl">
+      <div className="text-center py-12 bg-gradient-to-b from-secondary/30 to-transparent rounded-xl">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3">
           React Router v7 Starter
         </h1>
-        <p className="text-lg md:text-xl text-secondary mb-6 max-w-2xl mx-auto px-4">
+        <p className="text-lg md:text-xl text-muted-foreground mb-6 max-w-2xl mx-auto px-4">
           A modern, scalable foundation for building React applications with
           feature-first architecture
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
-          <Button color="primary" size="lg">
+          <Button variant="default" size="lg">
             <span>🚀</span> <span>Get Started</span>
           </Button>
           <Link to="/dashboard">
-            <Button variant="outlined" size="lg">
+            <Button variant="outline" size="lg">
               <span>📖</span> <span>Documentation</span>
             </Button>
           </Link>
         </div>
       </div>
 
-      <Card className="border-2 border-primary/30 bg-gradient-to-r from-primary-subtle to-accent-subtle">
+      <Card className="border-2 border-primary/30 bg-gradient-to-r from-secondary to-accent">
         <CardHeader>
           <CardTitle className="text-primary text-xl">
             🎯 Project Overview
@@ -104,27 +104,27 @@ export default function HomePage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-card rounded-lg border border-info/30">
-              <div className="text-2xl md:text-3xl font-bold text-info mb-1">
+            <div className="text-center p-4 bg-card rounded-lg border border-chart-2/30">
+              <div className="text-2xl md:text-3xl font-bold text-chart-2 mb-1">
                 3
               </div>
-              <div className="text-xs md:text-sm text-info/70 font-medium">
+              <div className="text-xs md:text-sm text-chart-2/70 font-medium">
                 Modules
               </div>
             </div>
-            <div className="text-center p-4 bg-card rounded-lg border border-success/30">
-              <div className="text-2xl md:text-3xl font-bold text-success mb-1">
+            <div className="text-center p-4 bg-card rounded-lg border border-chart-1/30">
+              <div className="text-2xl md:text-3xl font-bold text-chart-1 mb-1">
                 15+
               </div>
-              <div className="text-xs md:text-sm text-success/70 font-medium">
+              <div className="text-xs md:text-sm text-chart-1/70 font-medium">
                 Components
               </div>
             </div>
-            <div className="text-center p-4 bg-card rounded-lg border border-warning/30">
-              <div className="text-2xl md:text-3xl font-bold text-warning mb-1">
+            <div className="text-center p-4 bg-card rounded-lg border border-chart-5/30">
+              <div className="text-2xl md:text-3xl font-bold text-chart-5 mb-1">
                 100%
               </div>
-              <div className="text-xs md:text-sm text-warning/70 font-medium">
+              <div className="text-xs md:text-sm text-chart-5/70 font-medium">
                 TypeScript
               </div>
             </div>
@@ -159,10 +159,10 @@ export default function HomePage() {
                     >
                       {item.title}
                     </h3>
-                    <p className="text-sm text-secondary mb-3 leading-relaxed">
+                    <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
                       {item.description}
                     </p>
-                    <Button size="sm" variant="outlined">
+                    <Button size="sm" variant="outline">
                       Explore →
                     </Button>
                   </div>
@@ -187,7 +187,7 @@ export default function HomePage() {
                 <h3 className="text-base md:text-lg font-semibold text-foreground mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-secondary text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -210,47 +210,47 @@ export default function HomePage() {
                 <h4 className="font-semibold text-foreground mb-2">
                   Explore the Dashboard
                 </h4>
-                <p className="text-secondary text-sm mb-3 leading-relaxed">
+                <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                   Check out the analytics and overview functionality with sample
                   data and charts.
                 </p>
-                <Button size="sm" variant="outlined">
+                <Button size="sm" variant="outline">
                   View Dashboard →
                 </Button>
               </div>
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="bg-success text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+              <div className="bg-chart-1 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                 2
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-2">
                   Browse Products
                 </h4>
-                <p className="text-secondary text-sm mb-3 leading-relaxed">
+                <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                   See the product catalog with filtering, categories, and modern
                   card layouts.
                 </p>
-                <Button size="sm" variant="outlined">
+                <Button size="sm" variant="outline">
                   Browse Products →
                 </Button>
               </div>
             </div>
 
             <div className="flex items-start space-x-4">
-              <div className="bg-warning text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+              <div className="bg-chart-5 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                 3
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-foreground mb-2">
                   Try Authentication
                 </h4>
-                <p className="text-secondary text-sm mb-3 leading-relaxed">
+                <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
                   Experience the login flow with form validation and loading
                   states.
                 </p>
-                <Button size="sm" variant="outlined">
+                <Button size="sm" variant="outline">
                   Try Login →
                 </Button>
               </div>
@@ -259,5 +259,5 @@ export default function HomePage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

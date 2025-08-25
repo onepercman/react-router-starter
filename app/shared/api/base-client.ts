@@ -1,25 +1,25 @@
-import type { AxiosError, AxiosInstance, CancelTokenSource } from "axios";
-import axios from "axios";
-import { env } from "~/shared/config/environment";
+import type { AxiosError, AxiosInstance, CancelTokenSource } from "axios"
+import axios from "axios"
+import { env } from "~/shared/config/environment"
 
 /**
  * Standard API Response structure
  * @template T The type of the data payload
  */
 export interface ApiResponse<T = any> {
-  data: T;
-  message?: string;
-  success: boolean;
+  data: T
+  message?: string
+  success: boolean
 }
 
 /**
  * API Error structure for consistent error handling
  */
 export interface ApiError {
-  message: string;
-  code?: string;
-  status?: number;
-  details?: any;
+  message: string
+  code?: string
+  status?: number
+  details?: any
 }
 
 /**
@@ -27,11 +27,11 @@ export interface ApiError {
  */
 export interface ApiRequestConfig {
   /** Request timeout in milliseconds */
-  timeout?: number;
+  timeout?: number
   /** Skip automatic authentication header */
-  skipAuth?: boolean;
+  skipAuth?: boolean
   /** Cancel token for request cancellation */
-  cancelToken?: CancelTokenSource;
+  cancelToken?: CancelTokenSource
 }
 
 /**
@@ -46,8 +46,8 @@ export class ApiClientError extends Error {
     public details?: any,
     public isRetryable: boolean = false
   ) {
-    super(message);
-    this.name = "ApiClientError";
+    super(message)
+    this.name = "ApiClientError"
   }
 }
 
@@ -73,9 +73,9 @@ export class ApiClientError extends Error {
  * - Network error retry logic
  */
 export class ApiClient {
-  private instance: AxiosInstance;
-  private authToken: string | null = null;
-  private pendingRequests = new Map<string, Promise<any>>();
+  private instance: AxiosInstance
+  private authToken: string | null = null
+  private pendingRequests = new Map<string, Promise<any>>()
 
   /**
    * Initialize the API client with base configuration
@@ -89,9 +89,9 @@ export class ApiClient {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    });
+    })
 
-    this.setupInterceptors();
+    this.setupInterceptors()
   }
 
   /**
@@ -104,41 +104,41 @@ export class ApiClient {
       (config) => {
         // Inject authentication token if available and not skipped
         if (this.authToken && !config.headers?.skipAuth) {
-          config.headers = config.headers || {};
-          config.headers.Authorization = `Bearer ${this.authToken}`;
+          config.headers = config.headers || {}
+          config.headers.Authorization = `Bearer ${this.authToken}`
         }
 
         // Add unique request ID for tracing and debugging
-        config.headers = config.headers || {};
+        config.headers = config.headers || {}
         config.headers["X-Request-ID"] =
-          `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
         // Development logging for debugging
         if (env.NODE_ENV === "development") {
           console.log(`[API] → ${config.method?.toUpperCase()} ${config.url}`, {
             params: config.params,
             data: config.data,
-          });
+          })
         }
 
-        return config;
+        return config
       },
       (error) => {
         if (env.NODE_ENV === "development") {
-          console.error("[API] Request Error:", error);
+          console.error("[API] Request Error:", error)
         }
-        return Promise.reject(this.handleError(error));
+        return Promise.reject(this.handleError(error))
       }
-    );
+    )
 
     // Response interceptor - handles logging, auth refresh, and retry logic
     this.instance.interceptors.response.use(
       (response) => {
         // Success response logging
         if (env.NODE_ENV === "development") {
-          console.log(`[API] ← ${response.status} ${response.config.url}`);
+          console.log(`[API] ← ${response.status} ${response.config.url}`)
         }
-        return response;
+        return response
       },
       async (error: AxiosError) => {
         // Error response logging
@@ -146,33 +146,33 @@ export class ApiClient {
           console.error(
             `[API] ← Error ${error.response?.status || "Network"} ${error.config?.url}`,
             error
-          );
+          )
         }
 
         // Handle authentication errors - clear token and trigger refresh
         if (error.response?.status === 401 && this.authToken) {
-          this.clearAuthToken();
+          this.clearAuthToken()
           // Note: Implement token refresh logic here based on your auth system
           // Example: this.triggerTokenRefresh();
         }
 
         // Automatic retry for server errors (5xx) - single retry with 1s delay
         if (error.response && error.response.status >= 500) {
-          const config = error.config as any;
+          const config = error.config as any
           if (!config._retry) {
-            config._retry = true;
+            config._retry = true
             if (env.NODE_ENV === "development") {
-              console.log("[API] Retrying request due to server error");
+              console.log("[API] Retrying request due to server error")
             }
             // Wait 1 second before retry
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            return this.instance(config);
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+            return this.instance(config)
           }
         }
 
-        throw this.handleError(error);
+        throw this.handleError(error)
       }
-    );
+    )
   }
 
   /**
@@ -184,13 +184,13 @@ export class ApiClient {
   private handleError(error: AxiosError | any): ApiClientError {
     // Handle request cancellation
     if (axios.isCancel(error)) {
-      return new ApiClientError("Request was cancelled", 0, "CANCELLED");
+      return new ApiClientError("Request was cancelled", 0, "CANCELLED")
     }
 
     if (error.response) {
       // Server responded with an error status
-      const data = error.response.data as any;
-      const isRetryable = error.response.status >= 500; // 5xx errors are retryable
+      const data = error.response.data as any
+      const isRetryable = error.response.status >= 500 // 5xx errors are retryable
 
       return new ApiClientError(
         data?.message ||
@@ -199,7 +199,7 @@ export class ApiClient {
         data?.code || `HTTP_${error.response.status}`,
         data,
         isRetryable
-      );
+      )
     } else if (error.request) {
       // Network error - no response received
       return new ApiClientError(
@@ -208,14 +208,14 @@ export class ApiClient {
         "NETWORK_ERROR",
         null,
         true // Network errors are retryable
-      );
+      )
     } else {
       // Something else happened in setting up the request
       return new ApiClientError(
         error.message || "Unknown error occurred",
         0,
         "UNKNOWN_ERROR"
-      );
+      )
     }
   }
 
@@ -230,17 +230,17 @@ export class ApiClient {
     key: string,
     requestFn: () => Promise<T>
   ): Promise<T> {
-    const existing = this.pendingRequests.get(key);
+    const existing = this.pendingRequests.get(key)
     if (existing) {
-      return existing;
+      return existing
     }
 
     const promise = requestFn().finally(() => {
-      this.pendingRequests.delete(key);
-    });
+      this.pendingRequests.delete(key)
+    })
 
-    this.pendingRequests.set(key, promise);
-    return promise;
+    this.pendingRequests.set(key, promise)
+    return promise
   }
 
   // === Authentication Management ===
@@ -250,16 +250,16 @@ export class ApiClient {
    * @param token JWT or other authentication token
    */
   setAuthToken(token: string) {
-    this.authToken = token;
-    this.instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    this.authToken = token
+    this.instance.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 
   /**
    * Clear authentication token from all requests
    */
   clearAuthToken() {
-    this.authToken = null;
-    delete this.instance.defaults.headers.common.Authorization;
+    this.authToken = null
+    delete this.instance.defaults.headers.common.Authorization
   }
 
   // === Request Cancellation ===
@@ -269,7 +269,7 @@ export class ApiClient {
    * @returns CancelTokenSource that can be used to cancel requests
    */
   createCancelToken(): CancelTokenSource {
-    return axios.CancelToken.source();
+    return axios.CancelToken.source()
   }
 
   // === HTTP Methods ===
@@ -287,7 +287,7 @@ export class ApiClient {
     params?: Record<string, any>,
     config?: ApiRequestConfig
   ): Promise<T> {
-    const key = `GET:${endpoint}:${JSON.stringify(params || {})}`;
+    const key = `GET:${endpoint}:${JSON.stringify(params || {})}`
 
     return this.deduplicateRequest(key, async () => {
       const response = await this.instance.get<T>(endpoint, {
@@ -297,9 +297,9 @@ export class ApiClient {
         headers: {
           skipAuth: config?.skipAuth,
         },
-      });
-      return response.data;
-    });
+      })
+      return response.data
+    })
   }
 
   /**
@@ -320,8 +320,8 @@ export class ApiClient {
       headers: {
         skipAuth: config?.skipAuth,
       },
-    });
-    return response.data;
+    })
+    return response.data
   }
 
   /**
@@ -342,8 +342,8 @@ export class ApiClient {
       headers: {
         skipAuth: config?.skipAuth,
       },
-    });
-    return response.data;
+    })
+    return response.data
   }
 
   /**
@@ -364,8 +364,8 @@ export class ApiClient {
       headers: {
         skipAuth: config?.skipAuth,
       },
-    });
-    return response.data;
+    })
+    return response.data
   }
 
   /**
@@ -384,8 +384,8 @@ export class ApiClient {
       headers: {
         skipAuth: config?.skipAuth,
       },
-    });
-    return response.data;
+    })
+    return response.data
   }
 
   // === File Upload ===
@@ -405,8 +405,8 @@ export class ApiClient {
     onProgress?: (progress: number) => void,
     config?: ApiRequestConfig
   ): Promise<T> {
-    const formData = new FormData();
-    formData.append("file", file);
+    const formData = new FormData()
+    formData.append("file", file)
 
     const response = await this.instance.post<T>(endpoint, formData, {
       headers: {
@@ -419,12 +419,12 @@ export class ApiClient {
         if (onProgress && progressEvent.total) {
           const progress = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
-          );
-          onProgress(progress);
+          )
+          onProgress(progress)
         }
       },
-    });
-    return response.data;
+    })
+    return response.data
   }
 
   // === Utility Methods ===
@@ -435,7 +435,7 @@ export class ApiClient {
    * @returns The axios instance
    */
   getAxiosInstance(): AxiosInstance {
-    return this.instance;
+    return this.instance
   }
 
   /**
@@ -444,10 +444,10 @@ export class ApiClient {
    */
   async healthCheck(): Promise<boolean> {
     try {
-      await this.get("/health", undefined, { skipAuth: true, timeout: 5000 });
-      return true;
+      await this.get("/health", undefined, { skipAuth: true, timeout: 5000 })
+      return true
     } catch {
-      return false;
+      return false
     }
   }
 }
@@ -458,14 +458,14 @@ export class ApiClient {
  * Default API client instance
  * Pre-configured with environment settings
  */
-export const api = new ApiClient();
+export const api = new ApiClient()
 
 // === Additional Exports ===
 
 /**
  * Export axios for direct usage when needed
  */
-export { axios };
+export { axios }
 
 /**
  * Factory function to create additional API client instances
@@ -473,4 +473,4 @@ export { axios };
  * @param baseURL Optional base URL override
  * @returns New ApiClient instance
  */
-export const createApiClient = (baseURL?: string) => new ApiClient(baseURL);
+export const createApiClient = (baseURL?: string) => new ApiClient(baseURL)

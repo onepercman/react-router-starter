@@ -19,26 +19,26 @@ export const env = {
     buildDate: import.meta.env.VITE_BUILD_DATE || new Date().toISOString(),
     gitCommit: import.meta.env.VITE_GIT_COMMIT || "unknown",
   },
-} as const;
+} as const
 
 // Environment helpers
-export const isDevelopment = env.NODE_ENV === "development";
-export const isProduction = env.NODE_ENV === "production";
-export const isTest = env.NODE_ENV === "test";
+export const isDevelopment = env.NODE_ENV === "development"
+export const isProduction = env.NODE_ENV === "production"
+export const isTest = env.NODE_ENV === "test"
 
 // Validation - throws error if required env vars are missing
 function validateEnvironment() {
-  const required = ["VITE_API_URL"];
-  const missing = required.filter((key) => !import.meta.env[key]);
+  const required = ["VITE_API_URL"]
+  const missing = required.filter((key) => !import.meta.env[key])
 
   if (missing.length > 0 && isProduction) {
     throw new Error(
       `Missing required environment variables: ${missing.join(", ")}`
-    );
+    )
   }
 }
 
 // Run validation
 if (isProduction) {
-  validateEnvironment();
+  validateEnvironment()
 }

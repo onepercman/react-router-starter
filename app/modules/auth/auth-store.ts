@@ -1,18 +1,18 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { api } from "~/shared/api/base-client";
-import type { AuthCredentials, AuthResponse, User } from "./auth-types";
+import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
+import { api } from "~/shared/api/base-client"
+import type { AuthCredentials, AuthResponse, User } from "./auth-types"
 
 interface AuthState {
-  user: User | null;
-  token: string | null;
-  isLoading: boolean;
-  error: string | null;
-  login: (credentials: AuthCredentials) => Promise<void>;
-  logout: () => void;
-  register: (credentials: AuthCredentials) => Promise<void>;
-  refreshToken: () => Promise<void>;
-  clearError: () => void;
+  user: User | null
+  token: string | null
+  isLoading: boolean
+  error: string | null
+  login: (credentials: AuthCredentials) => Promise<void>
+  logout: () => void
+  register: (credentials: AuthCredentials) => Promise<void>
+  refreshToken: () => Promise<void>
+  clearError: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -24,30 +24,30 @@ export const useAuthStore = create<AuthState>()(
       error: null,
 
       login: async (credentials: AuthCredentials) => {
-        set({ isLoading: true, error: null });
+        set({ isLoading: true, error: null })
 
         try {
           const response = await api.post<AuthResponse>(
             "/auth/login",
             credentials
-          );
-          const { user, token } = response;
+          )
+          const { user, token } = response
 
           set({
             user,
             token,
             isLoading: false,
             error: null,
-          });
+          })
 
-          api.setAuthToken(token);
+          api.setAuthToken(token)
         } catch (error: any) {
-          const errorMessage = error.response?.data?.message || "Login failed";
+          const errorMessage = error.response?.data?.message || "Login failed"
           set({
             isLoading: false,
             error: errorMessage,
-          });
-          throw new Error(errorMessage);
+          })
+          throw new Error(errorMessage)
         }
       },
 
@@ -56,65 +56,65 @@ export const useAuthStore = create<AuthState>()(
           user: null,
           token: null,
           error: null,
-        });
+        })
 
-        api.clearAuthToken();
+        api.clearAuthToken()
       },
 
       register: async (credentials: AuthCredentials) => {
-        set({ isLoading: true, error: null });
+        set({ isLoading: true, error: null })
 
         try {
           const response = await api.post<AuthResponse>(
             "/auth/register",
             credentials
-          );
-          const { user, token } = response;
+          )
+          const { user, token } = response
 
           set({
             user,
             token,
             isLoading: false,
             error: null,
-          });
+          })
 
-          api.setAuthToken(token);
+          api.setAuthToken(token)
         } catch (error: any) {
           const errorMessage =
-            error.response?.data?.message || "Registration failed";
+            error.response?.data?.message || "Registration failed"
           set({
             isLoading: false,
             error: errorMessage,
-          });
-          throw new Error(errorMessage);
+          })
+          throw new Error(errorMessage)
         }
       },
 
       refreshToken: async () => {
-        const { token } = get();
-        if (!token) return;
+        const { token } = get()
+        if (!token) return
 
         try {
           const response = await api.post<AuthResponse>("/auth/refresh", {
             token,
-          });
-          const { user, token: newToken } = response;
+          })
+          const { user, token: newToken } = response
 
           set({
             user,
             token: newToken,
-          });
+          })
 
-          api.setAuthToken(newToken);
+          api.setAuthToken(newToken)
         } catch (err: any) {
-          console.log(err);
+          console.log(err)
 
-          get().logout();
+          get().logout()
         }
       },
 
       clearError: () => {
-        set({ error: null });
+        set({ error: null })
       },
     }),
     {
@@ -126,4 +126,4 @@ export const useAuthStore = create<AuthState>()(
       }),
     }
   )
-);
+)

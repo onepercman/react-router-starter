@@ -1,19 +1,20 @@
-import { Link, useLocation } from "react-router";
-import { Button, ThemeToggle } from "~/shared/components";
+import { Link, useLocation } from "react-router"
+import { ThemeToggle } from "../components/theme-toggle"
+import { Button } from "../components/ui"
 
 interface MainLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
-  const location = useLocation();
+  const location = useLocation()
 
   const navItems = [
     { path: "/", label: "Home", icon: "🏠" },
     { path: "/dashboard", label: "Dashboard", icon: "📊" },
     { path: "/products", label: "Products", icon: "📦" },
     { path: "/auth/login", label: "Login", icon: "🔐" },
-  ];
+  ]
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -35,8 +36,8 @@ export function MainLayout({ children }: MainLayoutProps) {
                     to={item.path}
                     className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                       location.pathname === item.path
-                        ? "bg-primary-muted text-primary border border-primary/30"
-                        : "text-secondary hover:text-foreground hover:bg-primary-subtle border border-transparent hover:border-primary/20"
+                        ? "bg-accent text-accent-foreground border border-border"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent border border-transparent hover:border-border"
                     }`}
                   >
                     <span className="text-base">{item.icon}</span>
@@ -53,7 +54,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               {/* User Menu */}
               <Button
                 variant="ghost"
-                className="text-secondary hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20"
+                className="text-muted-foreground hover:text-foreground p-2 rounded-lg hover:bg-accent transition-all duration-200 border border-transparent hover:border-border"
               >
                 <span className="text-lg">👤</span>
               </Button>
@@ -61,7 +62,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               {/* Mobile menu button */}
               <Button
                 variant="ghost"
-                className="md:hidden text-secondary hover:text-foreground p-2 rounded-lg hover:bg-primary-subtle transition-all duration-200 border border-transparent hover:border-primary/20"
+                className="md:hidden text-muted-foreground hover:text-foreground p-2 rounded-lg hover:bg-accent transition-all duration-200 border border-transparent hover:border-border"
               >
                 <svg
                   className="w-5 h-5"
@@ -94,7 +95,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-center md:text-left">
-              <p className="text-sm text-secondary">
+              <p className="text-sm text-muted-foreground">
                 © 2024 React Router Starter. Built with React Router v7.
               </p>
             </div>
@@ -103,7 +104,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-secondary hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <span className="sr-only">GitHub</span>
                 <svg
@@ -118,7 +119,7 @@ export function MainLayout({ children }: MainLayoutProps) {
                 href="https://reactrouter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-secondary hover:text-primary transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <span className="sr-only">React Router</span>
                 <span className="text-sm font-medium">Docs</span>
@@ -128,5 +129,5 @@ export function MainLayout({ children }: MainLayoutProps) {
         </div>
       </footer>
     </div>
-  );
+  )
 }

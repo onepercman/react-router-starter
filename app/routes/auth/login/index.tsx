@@ -1,14 +1,12 @@
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
-import type { AuthCredentials } from "~/modules/auth";
-import { useAuth } from "~/modules/auth";
-import { Button } from "~/shared/components/button";
-import { Card } from "~/shared/components/card";
-import { Input } from "~/shared/components/input";
+import { useForm } from "react-hook-form"
+import { Link, useNavigate } from "react-router"
+import type { AuthCredentials } from "~/modules/auth"
+import { useAuth } from "~/modules/auth"
+import { Button, Card, Input } from "~/shared/components/ui"
 
 export default function LoginPage() {
-  const navigate = useNavigate();
-  const { login, isLoading, error, clearError } = useAuth();
+  const navigate = useNavigate()
+  const { login, isLoading, error, clearError } = useAuth()
 
   const {
     register,
@@ -18,18 +16,18 @@ export default function LoginPage() {
     clearErrors,
   } = useForm<AuthCredentials>({
     defaultValues: { email: "", password: "" },
-  });
+  })
 
   const onSubmit = async (data: AuthCredentials) => {
-    clearError();
-    clearErrors();
+    clearError()
+    clearErrors()
     try {
-      await login(data);
-      navigate("/dashboard");
+      await login(data)
+      navigate("/dashboard")
     } catch {
-      setError("email", { type: "manual", message: " " });
+      setError("email", { type: "manual", message: " " })
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-subtle/10 via-background to-accent-subtle/10 flex items-center justify-center p-4">
@@ -95,7 +93,6 @@ export default function LoginPage() {
                     autoComplete="email"
                     placeholder="name@company.com"
                     className="w-full h-12 bg-muted/50 border-0 focus:bg-background transition-colors"
-                    prefix={<span className="text-secondary">📧</span>}
                     {...register("email", {
                       required: "Email is required",
                       pattern: {
@@ -134,7 +131,6 @@ export default function LoginPage() {
                     autoComplete="current-password"
                     placeholder="Enter your password"
                     className="w-full h-12 bg-muted/50 border-0 focus:bg-background transition-colors"
-                    prefix={<span className="text-secondary">🔒</span>}
                     {...register("password", {
                       required: "Password is required",
                       minLength: {
@@ -202,7 +198,7 @@ export default function LoginPage() {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Button
-                  variant="outlined"
+                  variant="outline"
                   className="h-12 bg-muted/30 hover:bg-muted/50 border-0"
                 >
                   <div className="flex items-center gap-2">
@@ -211,7 +207,7 @@ export default function LoginPage() {
                   </div>
                 </Button>
                 <Button
-                  variant="outlined"
+                  variant="outline"
                   className="h-12 bg-muted/30 hover:bg-muted/50 border-0"
                 >
                   <div className="flex items-center gap-2">
@@ -254,5 +250,5 @@ export default function LoginPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }

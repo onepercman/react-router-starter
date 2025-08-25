@@ -1,4 +1,4 @@
-import { QueryClient, type QueryClientConfig } from "@tanstack/react-query";
+import { QueryClient, type QueryClientConfig } from "@tanstack/react-query"
 
 export const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
@@ -12,6 +12,6 @@ export const queryClientConfig: QueryClientConfig = {
       // mutation options nếu cần
     },
   },
-};
+}
 
-export const queryClient = new QueryClient(queryClientConfig);
+export const queryClient = new QueryClient(queryClientConfig)

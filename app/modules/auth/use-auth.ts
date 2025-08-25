@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
-import { useAuthStore } from "./auth-store";
-import type { AuthCredentials, RegisterCredentials } from "./auth-types";
+import { useCallback, useEffect } from "react"
+import { useAuthStore } from "./auth-store"
+import type { AuthCredentials, RegisterCredentials } from "./auth-types"
 
 export const useAuth = () => {
   const {
@@ -13,49 +13,49 @@ export const useAuth = () => {
     register,
     refreshToken,
     clearError,
-  } = useAuthStore();
+  } = useAuthStore()
 
-  const isAuthenticated = !!user && !!token;
+  const isAuthenticated = !!user && !!token
 
   useEffect(() => {
     if (isAuthenticated) {
-      refreshToken();
+      refreshToken()
     }
-  }, [isAuthenticated, refreshToken]);
+  }, [isAuthenticated, refreshToken])
 
   const handleLogin = useCallback(
     async (credentials: AuthCredentials) => {
       try {
-        await login(credentials);
-        return { success: true };
+        await login(credentials)
+        return { success: true }
       } catch (error) {
         return {
           success: false,
           error: error instanceof Error ? error.message : "Login failed",
-        };
+        }
       }
     },
     [login]
-  );
+  )
 
   const handleRegister = useCallback(
     async (credentials: RegisterCredentials) => {
       try {
-        await register(credentials);
-        return { success: true };
+        await register(credentials)
+        return { success: true }
       } catch (error) {
         return {
           success: false,
           error: error instanceof Error ? error.message : "Registration failed",
-        };
+        }
       }
     },
     [register]
-  );
+  )
 
   const handleLogout = useCallback(() => {
-    logout();
-  }, [logout]);
+    logout()
+  }, [logout])
 
   return {
     user,
@@ -68,5 +68,5 @@ export const useAuth = () => {
     register: handleRegister,
     refreshToken,
     clearError,
-  };
-};
+  }
+}

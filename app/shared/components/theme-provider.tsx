@@ -1,8 +1,8 @@
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import type { ReactNode } from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes"
+import type { ReactNode } from "react"
 
 interface ThemeProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
@@ -15,5 +15,5 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     >
       {children}
     </NextThemesProvider>
-  );
+  )
 }

@@ -139,6 +139,8 @@ app/
 │   └── index.ts                # Main modules exports
 ├── shared/                     # Shared resources (global only)
 │   ├── components/             # Shared UI components
+│   │   ├── ui/                 # Design system components (shadcn)
+│   │   └── custom-components   # Custom shared components
 │   ├── layouts/                # Layout components
 │   ├── hooks/                  # Global hooks only
 │   ├── types/                  # Global types only
@@ -167,8 +169,13 @@ import type { AnalyticsData } from '~/modules/analytics';
 
 ### Shared Imports
 ```typescript
-// Import shared components and utilities
-import { Button } from '~/shared/components';
+// Import design system components (barrel exports)
+import { Button, Card } from '~/shared/components/ui';
+
+// Import custom shared components (direct imports)
+import { CustomComponent } from '~/shared/components/custom-component';
+
+// Import utilities and hooks
 import { useLocalStorage } from '~/shared/hooks';
 import { cn } from '~/shared/utils';
 ```

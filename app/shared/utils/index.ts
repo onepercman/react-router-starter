@@ -1,2 +1,2 @@
-export { cn } from "./cn";
-export * from "./format-utils";
+export { cn } from "./cn"
+export * from "./format-utils"

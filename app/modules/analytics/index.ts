@@ -1,2 +1,2 @@
-export * from "./analytics-components";
-export * from "./analytics-types";
+export * from "./analytics-components"
+export * from "./analytics-types"

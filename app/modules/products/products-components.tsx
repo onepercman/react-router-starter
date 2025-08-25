@@ -5,11 +5,11 @@ import {
   CardHeader,
   CardTitle,
   Input,
-} from "~/shared/components";
-import type { Product } from "./products-types";
+} from "~/shared/components/ui"
+import type { Product } from "./products-types"
 
 interface ProductGridProps {
-  products: Product[];
+  products: Product[]
 }
 
 export function ProductGrid({ products }: ProductGridProps) {
@@ -19,17 +19,17 @@ export function ProductGrid({ products }: ProductGridProps) {
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
-  );
+  )
 }
 
 interface ProductCardProps {
-  product: Product;
+  product: Product
 }
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-background to-muted/30">
-      <div className="relative h-56 bg-gradient-to-br from-primary-subtle/20 to-accent-subtle/20 flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
+      <div className="relative h-56 bg-gradient-to-br from-muted to-accent flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
         <div className="relative z-10">📦</div>
         {product.inStock && (
@@ -38,7 +38,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
         {!product.inStock && (
-          <div className="absolute top-3 right-3 bg-error text-error-foreground px-2 py-1 text-xs font-medium rounded-full shadow-lg">
+          <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-2 py-1 text-xs font-medium rounded-full shadow-lg">
             ✗ Out of Stock
           </div>
         )}
@@ -52,13 +52,13 @@ export function ProductCard({ product }: ProductCardProps) {
             </h3>
           </div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-1 text-xs font-medium bg-primary-subtle text-primary rounded-full">
+            <span className="px-2 py-1 text-xs font-medium bg-accent text-accent-foreground rounded-full">
               {product.category}
             </span>
           </div>
         </div>
 
-        <p className="text-sm text-secondary mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
@@ -67,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-2xl font-bold text-primary">
               ${product.price}
             </span>
-            <span className="text-xs text-secondary">Best Price</span>
+            <span className="text-xs text-muted-foreground">Best Price</span>
           </div>
           <Button
             size="sm"
@@ -79,20 +79,16 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 export function ProductFilters() {
   return (
     <div className="space-y-6">
       {/* Search */}
-      <Card className="border-0 bg-gradient-to-br from-background to-primary-subtle/5">
+      <Card className="border-0 bg-gradient-to-br from-background to-muted">
         <CardContent className="p-4">
-          <Input
-            placeholder="Search products..."
-            className="w-full"
-            prefix={<span className="text-muted-foreground">🔍</span>}
-          />
+          <Input placeholder="Search products..." className="w-full" />
         </CardContent>
       </Card>
 
@@ -128,7 +124,7 @@ export function ProductFilters() {
                     className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
                     defaultChecked={category === "All Categories"}
                   />
-                  <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
+                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
                     {category}
                   </span>
                 </label>
@@ -159,7 +155,7 @@ export function ProductFilters() {
                     className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
                     defaultChecked={price.value === "all"}
                   />
-                  <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
+                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
                     {price.label}
                   </span>
                 </label>
@@ -177,18 +173,18 @@ export function ProductFilters() {
                 type="checkbox"
                 className="w-4 h-4 text-primary border-border rounded focus:ring-primary/20 focus:ring-2"
               />
-              <span className="text-sm text-secondary group-hover:text-foreground transition-colors">
+              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
                 In Stock Only
               </span>
             </label>
           </div>
 
           {/* Clear Filters */}
-          <Button variant="outlined" size="sm" className="w-full mt-4">
+          <Button variant="outline" size="sm" className="w-full mt-4">
             Clear All Filters
           </Button>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

@@ -1,9 +1,9 @@
-import { api } from "~/shared/api/base-client";
+import { api } from "~/shared/api/base-client"
 
 class AuthService {
   login(email: string, password: string) {
-    return api.post("/auth/login", { email, password });
+    return api.post("/auth/login", { email, password })
   }
 }
 
-export default new AuthService();
+export default new AuthService()

@@ -102,12 +102,14 @@ route-name/
 ### Shared Resources
 
 `app/shared/` contains truly global code used by multiple features:
-- `components/` - Reusable UI components (Button, Card, Input, etc.)
-- `layouts/` - Layout components (MainLayout, TabLayout)
-- `api/base-client.ts` - Axios HTTP client
-- `config/` - Environment and React Query configuration
-- `hooks/` - Global hooks (useLocalStorage)
-- `utils/` - Utility functions (cn, format-utils)
+- `components/` - Reusable UI components
+  - `ui/` - Design system components (shadcn) with barrel exports
+  - Root level - Custom shared components (direct imports)
+- `layouts/` - Layout components
+- `api/` - HTTP client and API configuration
+- `config/` - Environment and app configuration
+- `hooks/` - Global custom hooks
+- `utils/` - Utility functions
 - `styles/` - Global CSS and design system tokens
 
 ## 🎨 DESIGN SYSTEM & COLOR TOKENS
@@ -133,7 +135,9 @@ When building UI components, **ALWAYS check the design system files first**:
    - CSS variable: `--color-primary-foreground` → Tailwind class: `text-primary-foreground`
    - CSS variable: `--color-primary-muted` → Tailwind class: `bg-primary-muted`
 
-### Color Token Naming Patterns
+### Available Color Tokens
+
+**Current design system tokens available:**
 
 #### Base Colors
 - `background` - Main background color
@@ -141,44 +145,77 @@ When building UI components, **ALWAYS check the design system files first**:
 - `muted` - Muted background color
 - `muted-foreground` - Muted text color
 - `border` - Border color
+- `input` - Input border color
 - `ring` - Focus ring color
 
-#### Semantic Colors (with variants)
-Each semantic color typically has these variants:
-- `{color}` - Base color (e.g., `primary`, `success`, `error`)
-- `{color}-foreground` - Text color on base background
-- `{color}-focus` - Focus/hover state
-- `{color}-muted` - Subtle background variant
-- `{color}-subtle` - Very subtle background variant
+#### Card & Popover Colors
+- `card` - Card background
+- `card-foreground` - Card text color
+- `popover` - Popover background
+- `popover-foreground` - Popover text color
+
+#### Semantic Colors
+- `primary` - Primary brand color
+- `primary-foreground` - Text on primary background
+- `secondary` - Secondary background
+- `secondary-foreground` - Text on secondary background
+- `accent` - Accent background
+- `accent-foreground` - Text on accent background
+- `destructive` - Error/danger color
+- `destructive-foreground` - Text on destructive background
+- `success` - Success/positive states
+- `success-foreground` - Text on success background
+- `warning` - Warning/caution states
+- `warning-foreground` - Text on warning background
+- `info` - Informational states
+- `info-foreground` - Text on info background
+
+#### Chart Colors (for data visualization)
+- `chart-1` through `chart-5` - Chart color palette
+
+#### Sidebar Colors (for navigation)
+- `sidebar` - Sidebar background
+- `sidebar-foreground` - Sidebar text
+- `sidebar-primary` - Sidebar primary elements
+- `sidebar-primary-foreground` - Text on sidebar primary
+- `sidebar-accent` - Sidebar accent elements
+- `sidebar-accent-foreground` - Text on sidebar accent
+- `sidebar-border` - Sidebar borders
+- `sidebar-ring` - Sidebar focus rings
 
 ### Color Usage Guidelines
 
 #### ✅ CORRECT - Use Design System Tokens
 
 ```tsx
-// Text colors - Use semantic tokens from design system
+// Text colors - Use available design system tokens
 className = "text-foreground"; // Main text
 className = "text-muted-foreground"; // Secondary text
 className = "text-primary"; // Primary brand color
-className = "text-error"; // Error states
+className = "text-destructive"; // Error states
 className = "text-success"; // Success states
+className = "text-warning"; // Warning states
+className = "text-info"; // Info states
 
-// Background colors - Use semantic tokens from design system
+// Background colors - Use available design system tokens
 className = "bg-background"; // Main background
 className = "bg-muted"; // Muted background
 className = "bg-primary"; // Primary background
-className = "bg-error-muted"; // Error background (subtle)
-className = "bg-success-muted"; // Success background (subtle)
+className = "bg-accent"; // Accent background
+className = "bg-card"; // Card background
+className = "bg-success"; // Success background
+className = "bg-warning"; // Warning background
+className = "bg-info"; // Info background
 
-// Border colors - Use semantic tokens from design system
+// Border colors - Use available design system tokens
 className = "border-border"; // Default borders
+className = "border-input"; // Input borders
 className = "border-primary"; // Primary borders
-className = "border-error"; // Error borders
 
-// Hover states - Use focus variants from design system
-className = "hover:bg-primary-focus"; // Primary hover
-className = "hover:text-primary-focus"; // Primary text hover
-className = "hover:bg-muted"; // Subtle hover
+// Hover states - Use available tokens
+className = "hover:bg-accent"; // Subtle hover
+className = "hover:text-foreground"; // Text hover
+className = "hover:border-border"; // Border hover
 ```
 
 #### ❌ WRONG - Never Use These
@@ -207,16 +244,25 @@ className = "bg-[rgba(255,255,255,0.8)]";
 When building UI components, follow this process:
 
 1. **Check Design System First**: Look at `app/shared/styles/app.css` to see available tokens
-2. **Choose Base vs Semantic**:
-   - Use base tokens (`foreground`, `background`, `border`) for fundamental elements
-   - Use semantic tokens (`primary`, `success`, `error`) for specific meanings
-3. **Select Appropriate Variant**:
-   - Base: `text-{token}`, `bg-{token}`, `border-{token}`
-   - Foreground: `text-{token}-foreground` for text on colored backgrounds
-   - Muted: `bg-{token}-muted` for subtle backgrounds
-   - Focus: `hover:bg-{token}-focus` for interactive states
-4. **Verify Token Exists**: Ensure the token is actually defined in the design system
-5. **Test Theme Support**: Verify it works in both light and dark themes
+2. **Choose Appropriate Token Type**:
+   - **Base tokens** (`foreground`, `background`, `border`) for fundamental elements
+   - **Semantic tokens** (`primary`, `accent`, `destructive`) for specific meanings
+   - **Chart tokens** (`chart-1` to `chart-5`) for data visualization
+   - **Card tokens** (`card`, `card-foreground`) for card components
+3. **Use Correct Variants**:
+   - Primary colors: `bg-primary`, `text-primary-foreground`
+   - Muted elements: `text-muted-foreground`, `bg-muted`
+   - Interactive states: `hover:bg-accent`, `hover:text-foreground`
+   - Borders: `border-border`, `border-input`
+4. **Common Patterns**:
+   - Success indicators: Use `text-success` or `bg-success` 
+   - Warning states: Use `text-warning` or `bg-warning`
+   - Error states: Use `text-destructive` or `bg-destructive`  
+   - Info states: Use `text-info` or `bg-info`
+   - Secondary text: Use `text-muted-foreground`
+   - Hover states: Use `hover:bg-accent`
+5. **Verify Token Exists**: Ensure the token is actually defined in the design system
+6. **Test Theme Support**: Verify it works in both light and dark themes
 
 ## State Management
 
@@ -251,8 +297,8 @@ interface StoreState {
 
 **CRITICAL: Always prioritize using existing components from the shared library before creating custom ones.**
 
-- **First priority**: Check `app/shared/components/` for existing components
-- **Available components**: Button, Input, Card, Tabs, Container, Spinner, etc.
+- **First priority**: Check `~/shared/components/ui` for design system components
+- **Second priority**: Check `~/shared/components` for custom shared components  
 - **Only create custom** when existing components don't meet the specific need
 - **Extend existing** components using their props and variants system
 
@@ -260,37 +306,32 @@ interface StoreState {
 
 Before creating any UI element, follow this process:
 
-1. **Check shared components**: Look in `app/shared/components/index.ts` for available components
-2. **Review component API**: Read the component's props, variants, and examples
-3. **Use existing variants**: Leverage size, variant, color, and shape props
-4. **Extend with className**: Use className prop for custom styling when needed
-5. **Create custom only if necessary**: When no existing component fits the use case
+1. **Check design system components**: Look in `ui/` folder for available components with barrel exports
+2. **Check custom shared components**: Look in components root for project-specific components
+3. **Review component API**: Read the component's props, variants, and examples
+4. **Use existing variants**: Leverage size, variant, color, and shape props
+5. **Extend with className**: Use className prop for custom styling when needed
+6. **Create custom only if necessary**: When no existing component fits the use case
 
 ### Examples
 
 ```tsx
-// ✅ PREFERRED - Use existing components
-import { Button, Input } from "~/shared/components";
+// ✅ PREFERRED - Use design system components (barrel imports)
+import { Button, Input, Card } from "~/shared/components/ui";
 
-// Use Button with variants
-<Button variant="ghost" shape="pill" size="sm" leftIcon={<Filter />}>
-  Filters
+// ✅ PREFERRED - Use custom shared components (direct imports)
+import { ComponentName } from "~/shared/components/component-name";
+
+// Use components with their variant system
+<Button variant="ghost" size="sm">
+  Action
 </Button>
 
-// Use Input with props
-<Input 
-  placeholder="Search..." 
-  prefix={<Search />} 
-  variant="blur" 
-  shape="pill" 
-/>
+<Input placeholder="Search..." />
 
 // ❌ AVOID - Manual HTML when components exist
-<button className="bg-white/5 rounded-3xl px-3 py-2">
-  Filters
-</button>
-
-<input className="bg-transparent border-0 outline-none" />
+<button className="custom-styles">Action</button>
+<input className="custom-styles" />
 ```
 
 ### React Patterns
@@ -631,10 +672,15 @@ import { useAuth } from "~/modules/auth";
 import { useNotifications } from "~/modules/notifications";
 import { useAnalytics } from "~/modules/analytics";
 
-// ✅ Shared imports
-import { Button, Card } from "~/shared/components";
-import { useLocalStorage } from "~/shared/hooks";
-import { cn, formatDate } from "~/shared/utils";
+// ✅ Shared UI imports (design system components)
+import { Button, Card, Input } from "~/shared/components/ui";
+
+// ✅ Shared custom component imports
+import { CustomComponent } from "~/shared/components/custom-component";
+
+// ✅ Shared utilities and hooks
+import { useHook } from "~/shared/hooks";
+import { cn, utilityFunction } from "~/shared/utils";
 
 // ✅ Type imports
 import type { AuthCredentials } from "~/modules/auth";

@@ -1,25 +1,25 @@
-import { useTheme } from "next-themes";
-import { Button } from "./button";
+import { useTheme } from "next-themes"
+import { Button } from "./ui"
 
 export function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { setTheme, resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
 
   const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
-  };
+    setTheme(isDark ? "light" : "dark")
+  }
 
   return (
     <Button
-      shape="square"
       onClick={toggleTheme}
+      size="icon"
       className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-background border border-border hover:bg-muted transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <div className="relative w-5 h-5">
+      <div className="relative w-4 h-4">
         <svg
-          className={`absolute inset-0 w-5 h-5 text-warning transition-all duration-300 transform ${
+          className={`absolute inset-0 w-4 h-4 text-chart-4 transition-all duration-300 transform ${
             isDark
               ? "rotate-90 scale-0 opacity-0"
               : "rotate-0 scale-100 opacity-100"
@@ -37,7 +37,7 @@ export function ThemeToggle() {
         </svg>
 
         <svg
-          className={`absolute inset-0 w-5 h-5 text-accent transition-all duration-300 transform ${
+          className={`absolute inset-0 w-4 h-4 text-accent transition-all duration-300 transform ${
             isDark
               ? "rotate-0 scale-100 opacity-100"
               : "-rotate-90 scale-0 opacity-0"
@@ -55,7 +55,7 @@ export function ThemeToggle() {
         </svg>
       </div>
 
-      <div className="absolute inset-0 rounded-lg bg-primary-muted scale-0 transition-transform duration-200 group-active:scale-100"></div>
+      <div className="absolute inset-0 rounded-lg bg-accent scale-0 transition-transform duration-200 group-active:scale-100"></div>
     </Button>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 export const Spinner: React.FC<React.SVGAttributes<SVGElement>> = function ({
   ...props
@@ -43,7 +43,7 @@ export const Spinner: React.FC<React.SVGAttributes<SVGElement>> = function ({
         />
       </g>
     </svg>
-  );
-};
+  )
+}
 
-Spinner.displayName = "Spinner";
+Spinner.displayName = "Spinner"

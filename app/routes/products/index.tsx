@@ -1,6 +1,7 @@
-import type { Product } from "~/modules/products";
-import { ProductFilters, ProductGrid } from "~/modules/products";
-import { Button, PageHeader } from "~/shared/components";
+import type { Product } from "~/modules/products"
+import { ProductFilters, ProductGrid } from "~/modules/products"
+import { PageHeader } from "~/shared/components/page-header"
+import { Button } from "~/shared/components/ui"
 
 export default function ProductsPage() {
   const products: Product[] = [
@@ -58,7 +59,7 @@ export default function ProductsPage() {
       inStock: true,
       description: "Portable Bluetooth speaker with excellent sound quality",
     },
-  ];
+  ]
 
   return (
     <div className="space-y-8">
@@ -71,7 +72,7 @@ export default function ProductsPage() {
             <span>➕</span>
             <span>Add Product</span>
           </Button>
-          <Button variant="outlined" className="shadow-sm">
+          <Button variant="outline" className="shadow-sm">
             <span>📊</span>
             <span>Export</span>
           </Button>
@@ -138,5 +139,5 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

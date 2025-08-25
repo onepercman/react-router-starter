@@ -4,11 +4,11 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "~/shared/components";
-import type { ActivityItem, StatItem } from "./analytics-types";
+} from "~/shared/components/ui"
+import type { ActivityItem, StatItem } from "./analytics-types"
 
 interface StatsGridProps {
-  stats: StatItem[];
+  stats: StatItem[]
 }
 
 export function StatsGrid({ stats }: StatsGridProps) {
@@ -19,7 +19,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-secondary">
+                <p className="text-sm font-medium text-muted-foreground">
                   {stat.label}
                 </p>
                 <p className="text-2xl font-bold text-foreground">
@@ -29,7 +29,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
                   className={`text-sm font-semibold ${
                     stat.changeType === "positive"
                       ? "text-success"
-                      : "text-error"
+                      : "text-destructive"
                   }`}
                 >
                   {stat.change} from last month
@@ -46,7 +46,7 @@ export function StatsGrid({ stats }: StatsGridProps) {
         </Card>
       ))}
     </div>
-  );
+  )
 }
 
 export function AnalyticsChart() {
@@ -62,18 +62,18 @@ export function AnalyticsChart() {
             <p className="text-lg font-medium text-foreground">
               Chart Placeholder
             </p>
-            <p className="text-sm text-secondary">
+            <p className="text-sm text-muted-foreground">
               Analytics chart would go here
             </p>
           </div>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 interface ActivityFeedProps {
-  activities: ActivityItem[];
+  activities: ActivityItem[]
 }
 
 export function ActivityFeed({ activities }: ActivityFeedProps) {
@@ -93,15 +93,19 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
                 <p className="text-sm font-medium text-foreground">
                   {activity.action}
                 </p>
-                <p className="text-xs text-secondary">by {activity.user}</p>
+                <p className="text-xs text-muted-foreground">
+                  by {activity.user}
+                </p>
               </div>
-              <span className="text-xs text-secondary">{activity.time}</span>
+              <span className="text-xs text-muted-foreground">
+                {activity.time}
+              </span>
             </div>
           ))}
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 export function QuickActions() {
@@ -112,24 +116,24 @@ export function QuickActions() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 gap-y-6">
-          <Button variant="outlined" className="h-20 flex-col gap-2">
+          <Button variant="outline" className="h-20 flex-col gap-2">
             <span className="text-2xl">📦</span>
             <span>Add Product</span>
           </Button>
-          <Button variant="outlined" className="h-20 flex-col gap-2">
+          <Button variant="outline" className="h-20 flex-col gap-2">
             <span className="text-2xl">👥</span>
             <span>Manage Users</span>
           </Button>
-          <Button variant="outlined" className="h-20 flex-col gap-2">
+          <Button variant="outline" className="h-20 flex-col gap-2">
             <span className="text-2xl">📊</span>
             <span>View Analytics</span>
           </Button>
-          <Button variant="outlined" className="h-20 flex-col gap-2">
+          <Button variant="outline" className="h-20 flex-col gap-2">
             <span className="text-2xl">⚙️</span>
             <span>Settings</span>
           </Button>
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

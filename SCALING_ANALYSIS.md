@@ -70,8 +70,9 @@ import { Container } from '~/shared/components';
 import { useAuth } from '~/modules/auth';
 import { useAnalytics } from '~/modules/analytics';
 
-// Shared imports (global utilities) ✅
-import { Button, Card } from '~/shared/components';
+// Shared imports (design system components) ✅
+import { Button, Card } from '~/shared/components/ui';
+import { CustomComponent } from '~/shared/components/custom-component';
 import { cn, formatDate } from '~/shared/utils';
 ```
 

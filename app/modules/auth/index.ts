@@ -1,5 +1,5 @@
-export * from "./auth-service";
-export { useAuthStore } from "./auth-store";
+export * from "./auth-service"
+export { useAuthStore } from "./auth-store"
 export type {
   AuthCredentials,
   AuthResponse,
@@ -7,5 +7,5 @@ export type {
   RegisterCredentials,
   User,
   UserRole,
-} from "./auth-types";
-export { useAuth } from "./use-auth";
+} from "./auth-types"
+export { useAuth } from "./use-auth"

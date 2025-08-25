@@ -40,11 +40,13 @@ app/
 │   └── index.ts                # Main modules exports
 ├── shared/                     # Shared resources (global only)
 │   ├── components/             # Shared UI components
-│   │   ├── button.tsx          # Button component
-│   │   ├── card.tsx            # Card component
-│   │   ├── input.tsx           # Input component
-│   │   ├── container.tsx       # Container component
-│   │   └── index.ts            # Barrel exports
+│   │   ├── ui/                 # Design system components (shadcn)
+│   │   │   ├── button.tsx      # Button component
+│   │   │   ├── card.tsx        # Card component
+│   │   │   ├── input.tsx       # Input component
+│   │   │   └── index.ts        # Barrel exports
+│   │   ├── auth-status.tsx     # Custom component (direct import)
+│   │   └── theme-toggle.tsx    # Custom component (direct import)
 │   ├── layouts/                # Layout components
 │   │   ├── main-layout.tsx     # Main layout
 │   │   └── dashboard-layout.tsx # Dashboard layout
@@ -176,8 +178,9 @@ import { Container } from '~/shared/components';
 import { useAuth } from '~/modules/auth';
 import { useAnalytics } from '~/modules/analytics';
 
-// ✅ Shared imports (global utilities)
-import { Button, Card } from '~/shared/components';
+// ✅ Shared imports (design system components)
+import { Button, Card } from '~/shared/components/ui';
+import { CustomComponent } from '~/shared/components/custom-component';
 import { cn, formatDate } from '~/shared/utils';
 
 // ✅ Type imports
@@ -308,7 +311,8 @@ import { useAuth } from '~/modules/auth';
 import { useAnalytics } from '~/modules/analytics';
 
 // 4. Shared imports (~/shared)
-import { Button, Container } from '~/shared/components';
+import { Button, Container } from '~/shared/components/ui';
+import { CustomComponent } from '~/shared/components/custom-component';
 import { cn, formatDate } from '~/shared/utils';
 
 // 5. Type imports

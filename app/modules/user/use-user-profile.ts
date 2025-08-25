@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from "react";
-import { useUserStore } from "./user-store";
-import type { UserPreferences, UserProfile } from "./user-types";
+import { useCallback, useEffect } from "react"
+import { useUserStore } from "./user-store"
+import type { UserPreferences, UserProfile } from "./user-types"
 
 export const useUserProfile = (userId?: string) => {
   const {
@@ -12,35 +12,35 @@ export const useUserProfile = (userId?: string) => {
     updateProfile,
     updatePreferences,
     clearError,
-  } = useUserStore();
+  } = useUserStore()
 
   useEffect(() => {
     if (userId) {
-      fetchProfile(userId);
+      fetchProfile(userId)
     }
-  }, [userId, fetchProfile]);
+  }, [userId, fetchProfile])
 
   const handleUpdateProfile = useCallback(
     async (profileData: Partial<UserProfile>) => {
       try {
-        await updateProfile(profileData);
-        return { success: true };
+        await updateProfile(profileData)
+        return { success: true }
       } catch (error) {
         return {
           success: false,
           error:
             error instanceof Error ? error.message : "Failed to update profile",
-        };
+        }
       }
     },
     [updateProfile]
-  );
+  )
 
   const handleUpdatePreferences = useCallback(
     async (preferencesData: Partial<UserPreferences>) => {
       try {
-        await updatePreferences(preferencesData);
-        return { success: true };
+        await updatePreferences(preferencesData)
+        return { success: true }
       } catch (error) {
         return {
           success: false,
@@ -48,11 +48,11 @@ export const useUserProfile = (userId?: string) => {
             error instanceof Error
               ? error.message
               : "Failed to update preferences",
-        };
+        }
       }
     },
     [updatePreferences]
-  );
+  )
 
   return {
     profile,
@@ -62,5 +62,5 @@ export const useUserProfile = (userId?: string) => {
     updateProfile: handleUpdateProfile,
     updatePreferences: handleUpdatePreferences,
     clearError,
-  };
-};
+  }
+}

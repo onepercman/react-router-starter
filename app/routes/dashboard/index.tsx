@@ -1,11 +1,12 @@
-import type { ActivityItem, StatItem } from "~/modules/analytics";
+import type { ActivityItem, StatItem } from "~/modules/analytics"
 import {
   ActivityFeed,
   AnalyticsChart,
   QuickActions,
   StatsGrid,
-} from "~/modules/analytics";
-import { Button, PageHeader } from "~/shared/components";
+} from "~/modules/analytics"
+import { PageHeader } from "~/shared/components/page-header"
+import { Button } from "~/shared/components/ui"
 
 export default function DashboardPage() {
   const stats: StatItem[] = [
@@ -33,7 +34,7 @@ export default function DashboardPage() {
       change: "+201",
       changeType: "positive",
     },
-  ];
+  ]
 
   const recentActivities: ActivityItem[] = [
     {
@@ -60,7 +61,7 @@ export default function DashboardPage() {
       user: "Sarah Wilson",
       time: "15 minutes ago",
     },
-  ];
+  ]
 
   return (
     <div>
@@ -88,5 +89,5 @@ export default function DashboardPage() {
         <QuickActions />
       </div>
     </div>
-  );
+  )
 }
