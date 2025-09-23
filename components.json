@@ -18,5 +18,5 @@
     "hooks": "~/shared/hooks"
   },
   "iconLibrary": "@intentui/icons",
-  "registries": {}
+  "registries": { "@intentui": "https://intentui.com/r/{name}" }
 }

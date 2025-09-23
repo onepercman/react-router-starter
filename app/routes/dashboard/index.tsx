@@ -1,3 +1,4 @@
+import { IconChartBar } from "@intentui/icons"
 import type { ActivityItem, StatItem } from "~/modules/analytics"
 import {
   ActivityFeed,
@@ -70,7 +71,10 @@ export default function DashboardPage() {
         description="Welcome back! Here's what's happening with your store today."
       >
         <div className="flex space-x-2">
-          <Button color="primary">📊 View Reports</Button>
+          <Button intent="primary">
+            <IconChartBar className="size-4" />
+            View Reports
+          </Button>
         </div>
       </PageHeader>
 

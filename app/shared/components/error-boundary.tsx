@@ -1,3 +1,4 @@
+import { IconSearch, IconX } from "@intentui/icons"
 import type { ErrorInfo, ReactNode } from "react"
 import type { FallbackProps } from "react-error-boundary"
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary"
@@ -23,20 +24,20 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
     <div className="min-h-[400px] flex items-center justify-center p-4">
       <Card className="max-w-lg w-full">
         <div className="text-center space-y-4">
-          <div className="text-4xl">😕</div>
-          <h2 className="text-xl font-semibold text-foreground">
+          <IconX className="size-12 text-muted-fg mx-auto" />
+          <h2 className="text-xl font-semibold text-fg">
             Something went wrong
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-fg">
             We're sorry, but something unexpected happened. Please try again.
           </p>
 
           {isDevelopment && error && (
             <details className="text-left text-sm">
-              <summary className="cursor-pointer font-medium text-error mb-2">
+              <summary className="cursor-pointer font-medium text-danger mb-2">
                 Error Details (Development Only)
               </summary>
-              <pre className="bg-error-muted p-3 rounded text-error overflow-auto max-h-40">
+              <pre className="bg-danger-subtle p-3 rounded text-danger overflow-auto max-h-40">
                 {error.message}
                 {error.stack}
               </pre>
@@ -44,10 +45,10 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
           )}
 
           <div className="flex gap-3 justify-center">
-            <Button color="primary" onClick={resetErrorBoundary}>
+            <Button intent="primary" onClick={resetErrorBoundary}>
               Try Again
             </Button>
-            <Button variant="outline" onClick={() => window.location.reload()}>
+            <Button intent="outline" onClick={() => window.location.reload()}>
               Reload Page
             </Button>
           </div>
@@ -116,11 +117,11 @@ export function ModuleErrorBoundary({
     fallback ||
     (({ resetErrorBoundary }: FallbackProps) => (
       <div className="p-4 text-center">
-        <div className="text-4xl mb-2">⚠️</div>
-        <p className="text-muted-foreground mb-4">
+        <IconX className="size-12 text-warning mx-auto mb-2" />
+        <p className="text-muted-fg mb-4">
           Error in {moduleName} module. Please try refreshing.
         </p>
-        <Button color="primary" onClick={resetErrorBoundary}>
+        <Button intent="primary" onClick={resetErrorBoundary}>
           Retry
         </Button>
       </div>
@@ -139,16 +140,20 @@ export function RouteErrorBoundary({ error }: { error: unknown }) {
     return (
       <div className="min-h-[400px] flex items-center justify-center p-4">
         <Card className="max-w-lg w-full text-center space-y-4">
-          <div className="text-4xl">{error.status === 404 ? "🔍" : "⚠️"}</div>
-          <h2 className="text-xl font-semibold text-foreground">
+          {error.status === 404 ? (
+            <IconSearch className="size-12 text-muted-fg mx-auto" />
+          ) : (
+            <IconX className="size-12 text-warning mx-auto" />
+          )}
+          <h2 className="text-xl font-semibold text-fg">
             {error.status === 404 ? "Page Not Found" : `Error ${error.status}`}
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-fg">
             {error.status === 404
               ? "The page you're looking for doesn't exist."
               : error.statusText || "Something went wrong."}
           </p>
-          <Button color="primary" onClick={() => window.history.back()}>
+          <Button intent="primary" onClick={() => window.history.back()}>
             Go Back
           </Button>
         </Card>

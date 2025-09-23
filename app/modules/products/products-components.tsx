@@ -1,3 +1,4 @@
+import { IconCheck, IconFilter, IconPackage, IconX } from "@intentui/icons"
 import {
   Button,
   Card,
@@ -28,18 +29,18 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-background to-muted/30">
+    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-bg to-muted/30">
       <div className="relative h-56 bg-gradient-to-br from-muted to-accent flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-        <div className="relative z-10">📦</div>
+        <IconPackage className="size-16 text-muted-fg" />
         {product.inStock && (
-          <div className="absolute top-3 right-3 bg-success text-success-foreground px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            ✓ Available
+          <div className="absolute top-3 right-3 bg-success text-success-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
+            <IconCheck className="size-3" /> Available
           </div>
         )}
         {!product.inStock && (
-          <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            ✗ Out of Stock
+          <div className="absolute top-3 right-3 bg-danger text-danger-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
+            <IconX className="size-3" /> Out of Stock
           </div>
         )}
       </div>
@@ -47,18 +48,18 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardContent className="p-6">
         <div className="mb-3">
           <div className="flex items-start justify-between mb-2">
-            <h3 className="text-lg font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+            <h3 className="text-lg font-semibold text-fg line-clamp-1 group-hover:text-primary transition-colors">
               {product.name}
             </h3>
           </div>
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-1 text-xs font-medium bg-accent text-accent-foreground rounded-full">
+            <span className="px-2 py-1 text-xs font-medium bg-accent text-accent-fg rounded-full">
               {product.category}
             </span>
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-muted-fg mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
@@ -67,11 +68,11 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-2xl font-bold text-primary">
               ${product.price}
             </span>
-            <span className="text-xs text-muted-foreground">Best Price</span>
+            <span className="text-xs text-muted-fg">Best Price</span>
           </div>
           <Button
             size="sm"
-            disabled={!product.inStock}
+            isDisabled={!product.inStock}
             className="px-6 shadow-lg hover:shadow-xl transition-shadow"
           >
             {product.inStock ? "Add to Cart" : "Notify Me"}
@@ -86,24 +87,24 @@ export function ProductFilters() {
   return (
     <div className="space-y-6">
       {/* Search */}
-      <Card className="border-0 bg-gradient-to-br from-background to-muted">
+      <Card className="border-0 bg-gradient-to-br from-bg to-muted">
         <CardContent className="p-4">
           <Input placeholder="Search products..." className="w-full" />
         </CardContent>
       </Card>
 
       {/* Filters */}
-      <Card className="border-0 bg-gradient-to-br from-background to-muted/20">
+      <Card className="border-0 bg-gradient-to-br from-bg to-muted/20">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg flex items-center gap-2">
-            <span>🎯</span>
+            <IconFilter className="size-5" />
             <span>Filters</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Categories */}
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-3">
+            <label className="block text-sm font-semibold text-fg mb-3">
               Categories
             </label>
             <div className="space-y-2">
@@ -121,10 +122,10 @@ export function ProductFilters() {
                   <input
                     type="radio"
                     name="category"
-                    className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
+                    className="size-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
                     defaultChecked={category === "All Categories"}
                   />
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  <span className="text-sm text-muted-fg group-hover:text-fg transition-colors">
                     {category}
                   </span>
                 </label>
@@ -134,7 +135,7 @@ export function ProductFilters() {
 
           {/* Price Range */}
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-3">
+            <label className="block text-sm font-semibold text-fg mb-3">
               Price Range
             </label>
             <div className="space-y-2">
@@ -152,10 +153,10 @@ export function ProductFilters() {
                   <input
                     type="radio"
                     name="price"
-                    className="w-4 h-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
+                    className="size-4 text-primary border-border focus:ring-primary/20 focus:ring-2"
                     defaultChecked={price.value === "all"}
                   />
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  <span className="text-sm text-muted-fg group-hover:text-fg transition-colors">
                     {price.label}
                   </span>
                 </label>
@@ -165,22 +166,22 @@ export function ProductFilters() {
 
           {/* Stock Status */}
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-3">
+            <label className="block text-sm font-semibold text-fg mb-3">
               Availability
             </label>
             <label className="flex items-center space-x-3 cursor-pointer group">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-primary border-border rounded focus:ring-primary/20 focus:ring-2"
+                className="size-4 text-primary border-border rounded focus:ring-primary/20 focus:ring-2"
               />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+              <span className="text-sm text-muted-fg group-hover:text-fg transition-colors">
                 In Stock Only
               </span>
             </label>
           </div>
 
           {/* Clear Filters */}
-          <Button variant="outline" size="sm" className="w-full mt-4">
+          <Button intent="outline" size="sm" className="w-full mt-4">
             Clear All Filters
           </Button>
         </CardContent>

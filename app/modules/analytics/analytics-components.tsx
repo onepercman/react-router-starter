@@ -1,4 +1,13 @@
 import {
+  IconArrowUp,
+  IconChartBar,
+  IconCurrencyDollar,
+  IconEye,
+  IconPackage,
+  IconPeople,
+  IconSettings,
+} from "@intentui/icons"
+import {
   Button,
   Card,
   CardContent,
@@ -19,27 +28,27 @@ export function StatsGrid({ stats }: StatsGridProps) {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">
+                <p className="text-sm font-medium text-muted-fg">
                   {stat.label}
                 </p>
-                <p className="text-2xl font-bold text-foreground">
-                  {stat.value}
-                </p>
+                <p className="text-2xl font-bold text-fg">{stat.value}</p>
                 <p
                   className={`text-sm font-semibold ${
                     stat.changeType === "positive"
                       ? "text-success"
-                      : "text-destructive"
+                      : "text-danger"
                   }`}
                 >
                   {stat.change} from last month
                 </p>
               </div>
               <div className="text-2xl">
-                {index === 0 && "💰"}
-                {index === 1 && "👥"}
-                {index === 2 && "📈"}
-                {index === 3 && "👁️"}
+                {index === 0 && (
+                  <IconCurrencyDollar className="size-6 text-success" />
+                )}
+                {index === 1 && <IconPeople className="size-6 text-info" />}
+                {index === 2 && <IconArrowUp className="size-6 text-primary" />}
+                {index === 3 && <IconEye className="size-6 text-accent" />}
               </div>
             </div>
           </CardContent>
@@ -56,13 +65,11 @@ export function AnalyticsChart() {
         <CardTitle>Analytics Overview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px] bg-background rounded-lg flex items-center justify-center">
+        <div className="h-[400px] bg-bg rounded-lg flex items-center justify-center">
           <div className="text-center">
-            <div className="text-4xl mb-4">📊</div>
-            <p className="text-lg font-medium text-foreground">
-              Chart Placeholder
-            </p>
-            <p className="text-sm text-muted-foreground">
+            <IconChartBar className="size-12 text-muted-fg mx-auto mb-4" />
+            <p className="text-lg font-medium text-fg">Chart Placeholder</p>
+            <p className="text-sm text-muted-fg">
               Analytics chart would go here
             </p>
           </div>
@@ -90,16 +97,10 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
               className="flex items-center justify-between py-2 border-b border-border last:border-b-0"
             >
               <div>
-                <p className="text-sm font-medium text-foreground">
-                  {activity.action}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  by {activity.user}
-                </p>
+                <p className="text-sm font-medium text-fg">{activity.action}</p>
+                <p className="text-xs text-muted-fg">by {activity.user}</p>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {activity.time}
-              </span>
+              <span className="text-xs text-muted-fg">{activity.time}</span>
             </div>
           ))}
         </div>
@@ -116,20 +117,20 @@ export function QuickActions() {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 gap-y-6">
-          <Button variant="outline" className="h-20 flex-col gap-2">
-            <span className="text-2xl">📦</span>
+          <Button intent="outline" className="h-20 flex-col gap-2">
+            <IconPackage className="size-6" />
             <span>Add Product</span>
           </Button>
-          <Button variant="outline" className="h-20 flex-col gap-2">
-            <span className="text-2xl">👥</span>
+          <Button intent="outline" className="h-20 flex-col gap-2">
+            <IconPeople className="size-6" />
             <span>Manage Users</span>
           </Button>
-          <Button variant="outline" className="h-20 flex-col gap-2">
-            <span className="text-2xl">📊</span>
+          <Button intent="outline" className="h-20 flex-col gap-2">
+            <IconChartBar className="size-6" />
             <span>View Analytics</span>
           </Button>
-          <Button variant="outline" className="h-20 flex-col gap-2">
-            <span className="text-2xl">⚙️</span>
+          <Button intent="outline" className="h-20 flex-col gap-2">
+            <IconSettings className="size-6" />
             <span>Settings</span>
           </Button>
         </div>

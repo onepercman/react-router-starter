@@ -11,8 +11,8 @@ import { queryClient } from "~/shared/config/react-query-config"
 import { MainLayout } from "~/shared/layouts/main-layout"
 import "~/shared/styles/app.css"
 import type { Route } from "./+types/root"
-import { Loader } from "./shared/components/loader"
 import { ThemeProvider } from "./shared/components/theme-provider"
+import { Loader } from "./shared/components/ui"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
