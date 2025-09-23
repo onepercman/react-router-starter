@@ -11,8 +11,8 @@ import { queryClient } from "~/shared/config/react-query-config"
 import { MainLayout } from "~/shared/layouts/main-layout"
 import "~/shared/styles/app.css"
 import type { Route } from "./+types/root"
+import { AppLoader } from "./shared/components/app-loader"
 import { ThemeProvider } from "./shared/components/theme-provider"
-import { Loader } from "./shared/components/ui"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -73,8 +73,8 @@ export default function App() {
   )
 }
 
-export function HydrateFallback() {
-  return <Loader />
+export async function HydrateFallback() {
+  return <AppLoader />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
