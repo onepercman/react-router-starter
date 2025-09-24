@@ -11,7 +11,7 @@ interface KeyboardProps extends React.HTMLAttributes<HTMLElement> {
   }
 }
 
-const Keyboard = ({ keys, classNames, className, ...props }: KeyboardProps) => {
+const Keyboard = ({ keys, classNames, ...props }: KeyboardProps) => {
   return (
     <KeyboardPrimitive
       className={twMerge(
