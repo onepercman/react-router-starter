@@ -293,6 +293,146 @@ import { User, Settings, Home } from "lucide-react"
 
 **Pattern**: Always reference `iconLibrary` field in `components.json` to determine which icon package to use.
 
+## Mapping Figma Designs to Components
+
+### Using Figma MCP Server
+
+When implementing designs from Figma using the MCP server, follow this workflow:
+
+#### 1. Element-to-Component Mapping
+
+**Check existing components first**:
+- Review `~/shared/components/ui` for matching components
+- Identify the closest semantic match (not just visual similarity)
+- Prefer components from IntentUI registry over custom implementations
+
+**Common mappings**:
+```tsx
+// Figma Element      → Component Choice
+"Button"             → <Button>
+"Text Input"         → <TextField>
+"Dropdown"           → <Select> or <ComboBox>
+"Card"               → <Card>
+"Modal/Dialog"       → <Modal> or <Dialog>
+"Checkbox"           → <Checkbox>
+"Radio Group"        → <RadioGroup>
+"Toggle"             → <Switch>
+"Tab Bar"            → <Tabs>
+"Menu"               → <Menu>
+"Text/Heading"       → <Heading> or <Text>
+```
+
+#### 2. Style vs Size Differentiation
+
+**Before modifying styles, identify if difference is size or style**:
+
+```tsx
+// ✅ Size difference - Use size prop
+// Figma: Button 48px height vs existing 40px
+<Button size="lg">Action</Button>
+
+// ✅ Style difference - Update component styles
+// Figma: Button with rounded-full vs rounded-md
+const buttonVariants = tv({
+  base: "rounded-full", // Update from rounded-md
+  // ...
+})
+
+// ❌ Don't create new component for size variants
+// Use existing component with size prop instead
+```
+
+**Decision criteria**:
+- **Size**: Height, width, padding, font-size → Use `size` prop variants
+- **Style**: Colors, borders, shadows, border-radius → Update component styles
+
+#### 3. Adding Missing Components
+
+If component doesn't exist:
+
+```bash
+# Search IntentUI registry first
+npx shadcn@latest add
+
+# Add if available
+npx shadcn@latest add @intentui/[component]
+
+# Or use project script
+pnpm add-ui [component]
+```
+
+#### 4. Adapting Existing Component Styles
+
+When Figma design differs from existing component:
+
+```tsx
+// Example: Figma button has different border-radius
+
+// 1. Locate component file
+// app/shared/components/ui/button.tsx
+
+// 2. Update variants
+const buttonVariants = tv({
+  base: [
+    "rounded-full",  // Update from rounded-md to match Figma
+    // Keep other design system tokens
+    "transition-colors",
+    "focus:outline-none focus:ring-2",
+  ],
+  variants: {
+    intent: {
+      primary: "bg-primary text-primary-fg hover:bg-primary/90",
+      // ... other variants
+    },
+    size: {
+      sm: "px-3 py-1.5 text-sm",
+      default: "px-4 py-2",
+      lg: "px-6 py-3 text-lg",  // Add if Figma has larger variant
+    },
+  },
+})
+```
+
+#### 5. Workflow Checklist
+
+- [ ] Get Figma node/screenshot using MCP tools
+- [ ] Identify all unique UI elements in design
+- [ ] Map each element to existing component or find in IntentUI
+- [ ] Determine if differences are size (use props) or style (update component)
+- [ ] Add missing components from registry if available
+- [ ] Update component styles to match design using design system tokens
+- [ ] Never hardcode colors - use tokens from `app/shared/styles/app.css`
+- [ ] Test all size variants work with updated styles
+- [ ] Verify accessibility features remain intact
+
+#### 6. Token-First Styling
+
+Always use design system tokens when adapting styles:
+
+```tsx
+// ✅ Correct - Use design system tokens
+const variants = tv({
+  base: "bg-surface border border-border text-fg",
+  variants: {
+    variant: {
+      default: "bg-primary text-primary-fg",
+      danger: "bg-danger text-danger-fg",
+    },
+  },
+})
+
+// ❌ Wrong - Hardcoded colors
+const variants = tv({
+  base: "bg-white border border-gray-200 text-gray-900",
+  variants: {
+    variant: {
+      default: "bg-blue-500 text-white",
+      danger: "bg-red-500 text-white",
+    },
+  },
+})
+```
+
 ## Component Checklist
 
 Before creating/using a component:
