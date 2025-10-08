@@ -1,4 +1,3 @@
-import { QueryClientProvider } from "@tanstack/react-query"
 import {
   isRouteErrorResponse,
   Links,
@@ -7,12 +6,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router"
-import { queryClient } from "~/shared/config/react-query-config"
 import { MainLayout } from "~/shared/layouts/main-layout"
 import "~/shared/styles/app.css"
 import type { Route } from "./+types/root"
 import { AppLoader } from "./shared/components/app-loader"
-import { ThemeProvider } from "./shared/components/theme-provider"
+import QueryProvider from "./shared/providers/query-provider"
+import { ThemeProvider } from "./shared/providers/theme-provider"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -68,11 +67,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
+      <QueryProvider>
         <MainLayout>
           <Outlet />
         </MainLayout>
-      </QueryClientProvider>
+      </QueryProvider>
     </ThemeProvider>
   )
 }

@@ -4,14 +4,17 @@ Quick reference for Claude Code when working with this codebase.
 
 ## Technology Stack
 
-- **React Router v7** with file-based routing
-- **React 19** functional components only
-- **TypeScript** strict mode
-- **Tailwind CSS v4** with design system tokens
-- **React Aria Components** for accessible primitives
-- **IntentUI** component registry
-- **tailwind-variants** for component styling
-- **Zustand** for state management
+- **React Router v7** - File-based routing with SSR support
+- **React 19** - Functional components only
+- **TypeScript** - Strict mode enabled
+- **Tailwind CSS v4** - Design system tokens
+- **React Aria Components** - Accessible UI primitives
+- **IntentUI** - Component registry
+- **tailwind-variants** - Component styling variants
+- **Zustand** - State management with persist middleware
+- **React Query** - Server state management
+- **Axios** - HTTP client with interceptors
+- **next-themes** - Theme management
 
 ## Development Commands
 
@@ -35,14 +38,28 @@ pnpm add-ui [component]                       # Add using project script
 
 ```
 app/
-├── routes/       # Page composition only - import from modules
-├── modules/      # Feature-based business logic (stores, hooks, services, components)
-└── shared/       # Global utilities and UI components
-    ├── components/ui/   # IntentUI design system components
-    └── styles/          # Design system tokens
+├── routes/       # Page composition - import from modules
+├── modules/      # Feature modules
+│   ├── auth/     # Authentication (store, service, hook)
+│   ├── products/ # Products (components, types)
+│   ├── analytics/# Analytics (components, types)
+│   └── user/     # User profile (store, hook)
+└── shared/       # Global utilities and UI
+    ├── api/              # Axios base client
+    ├── components/ui/    # IntentUI design system
+    ├── layouts/          # MainLayout
+    ├── providers/        # React Query, Theme
+    └── styles/           # Design tokens
 ```
 
 **Import hierarchy**: Routes → Modules → Shared
+
+**Key Implementations**:
+- **Root**: `app/root.tsx` - App shell with providers (Theme, Query, Layout)
+- **State**: Zustand stores with localStorage persistence
+- **API**: Axios client with auth interceptors in `shared/api/base-client.ts`
+- **Data Fetching**: React Query config in `shared/providers/query-provider.tsx`
+- **Theming**: next-themes in `shared/providers/theme-provider.tsx`
 
 ## Key Principles
 
@@ -64,10 +81,11 @@ app/
 ## Detailed Documentation
 
 ### Development Guidelines
-- [.claude/architecture.md](.claude/architecture.md) - Routes, modules, file organization
+- [.claude/architecture.md](.claude/architecture.md) - Directory structure, layer responsibilities
+- [.claude/implementation.md](.claude/implementation.md) - Common patterns (API, providers, hooks, modules)
+- [.claude/coding-standards.md](.claude/coding-standards.md) - TypeScript, imports, Zustand patterns
 - [.claude/design-system.md](.claude/design-system.md) - Color tokens, styling patterns
 - [.claude/components.md](.claude/components.md) - Component rules, variants, React Aria
-- [.claude/coding-standards.md](.claude/coding-standards.md) - TypeScript, imports, comments
 - [.claude/prompts.md](.claude/prompts.md) - Common development task prompts
 
 ### Project Management

@@ -1,4 +1,9 @@
-import { QueryClient, type QueryClientConfig } from "@tanstack/react-query"
+import {
+  QueryClient,
+  QueryClientProvider,
+  type QueryClientConfig,
+} from "@tanstack/react-query"
+import type { PropsWithChildren } from "react"
 
 export const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
@@ -15,3 +20,9 @@ export const queryClientConfig: QueryClientConfig = {
 }
 
 export const queryClient = new QueryClient(queryClientConfig)
+
+export default function QueryProvider({ children }: PropsWithChildren) {
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+}

@@ -97,20 +97,26 @@ import type { DashboardData } from "~/modules/dashboard"
 
 ```tsx
 // app/modules/auth/index.ts
-export { LoginForm } from "./components/login-form"
-export { useAuth } from "./hooks/use-auth"
+export * from "./auth-service"
 export { useAuthStore } from "./auth-store"
-export type { User, AuthState } from "./auth-types"
+export type {
+  AuthCredentials,
+  AuthResponse,
+  AuthState,
+  User,
+} from "./auth-types"
+export { useAuth } from "./use-auth"
 ```
 
 **Import from barrel**:
 ```tsx
 // ✅ Correct
-import { LoginForm, useAuth, useAuthStore } from "~/modules/auth"
+import { useAuth, useAuthStore } from "~/modules/auth"
+import type { User } from "~/modules/auth"
 
 // ❌ Wrong
-import { LoginForm } from "~/modules/auth/components/login-form"
-import { useAuth } from "~/modules/auth/hooks/use-auth"
+import { useAuth } from "~/modules/auth/use-auth"
+import { useAuthStore } from "~/modules/auth/auth-store"
 ```
 
 ## State Management with Zustand
@@ -119,59 +125,56 @@ import { useAuth } from "~/modules/auth/hooks/use-auth"
 
 ```tsx
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { createJSONStorage, persist } from "zustand/middleware"
+import authService from "./auth-service"
+import type { AuthCredentials, User } from "./auth-types"
 
-interface Store {
-  // State
-  data: T | null
+interface AuthState {
+  user: User | null
+  token: string | null
   isLoading: boolean
   error: string | null
-
-  // Actions
-  fetch: () => Promise<void>
-  update: (data: Partial<T>) => void
+  login: (credentials: AuthCredentials) => Promise<void>
+  logout: () => void
   clearError: () => void
-  reset: () => void
 }
 
-const initialState = {
-  data: null,
-  isLoading: false,
-  error: null,
-}
-
-export const useStore = create<Store>()(
+export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
-      ...initialState,
+    (set) => ({
+      user: null,
+      token: null,
+      isLoading: false,
+      error: null,
 
-      fetch: async () => {
+      login: async (credentials: AuthCredentials) => {
         set({ isLoading: true, error: null })
         try {
-          const data = await api.getData()
-          set({ data, isLoading: false })
-        } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : "Unknown error",
-            isLoading: false
-          })
+          const response = await authService.login(credentials)
+          const { user, token } = response.data
+          localStorage.setItem("auth_token", token)
+          set({ user, token, isLoading: false, error: null })
+        } catch (error: any) {
+          const errorMessage = error.message || "Login failed"
+          set({ isLoading: false, error: errorMessage })
+          throw error
         }
       },
 
-      update: (updates) => {
-        const current = get().data
-        if (current) {
-          set({ data: { ...current, ...updates } })
-        }
+      logout: async () => {
+        await authService.logout()
+        set({ user: null, token: null, error: null })
       },
 
       clearError: () => set({ error: null }),
-
-      reset: () => set(initialState),
     }),
     {
-      name: "store-name",
-      partialize: (state) => ({ data: state.data }), // Only persist data
+      name: "auth-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+      }),
     }
   )
 )

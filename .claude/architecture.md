@@ -1,31 +1,40 @@
 # Architecture
 
+> **Template Structure** - This is a starter template. Directory structure will evolve based on your features.
+
 ## Directory Structure
 
 ```
 app/
 ├── routes/              # Page composition layer
 │   ├── _index.tsx       # Route files
-│   └── about.tsx
+│   └── [feature]/       # Feature routes
 │
 ├── modules/             # Feature-based business logic
-│   ├── auth/
-│   │   ├── index.ts               # Barrel exports
-│   │   ├── components/            # Feature components
-│   │   ├── hooks/                 # Custom hooks
-│   │   ├── auth-store.ts          # State management
-│   │   ├── auth-types.ts          # Type definitions
-│   │   └── auth-service.ts        # API/business logic
-│   └── [feature-name]/
+│   ├── [feature]/
+│   │   ├── index.ts             # Barrel exports
+│   │   ├── [feature]-components.tsx  # Components (flat structure)
+│   │   ├── [feature]-store.ts   # Zustand state (optional)
+│   │   ├── [feature]-types.ts   # Type definitions
+│   │   ├── [feature]-service.ts # API/business logic (optional)
+│   │   └── use-[feature].ts     # Custom hooks (optional)
+│   └── index.ts         # Central module exports
 │
 └── shared/              # Global utilities and components
+    ├── api/             # Base API client
     ├── components/
-    │   ├── ui/                    # IntentUI design system
-    │   └── [custom-components]/   # Shared custom components
-    ├── hooks/                     # Shared hooks
-    ├── lib/                       # Utility functions
-    ├── styles/                    # Design tokens
-    └── types/                     # Shared types (only if 2+ features use)
+    │   ├── ui/          # IntentUI design system
+    │   └── *.tsx        # Shared components
+    ├── layouts/         # App layouts
+    ├── providers/       # Context providers
+    ├── config/          # Environment config
+    ├── constants/       # Global constants
+    ├── hooks/           # Shared hooks
+    ├── lib/             # Utility functions
+    ├── stores/          # Global stores
+    ├── styles/          # Design tokens
+    ├── types/           # Shared types
+    └── utils/           # Helper functions
 ```
 
 ## Layer Responsibilities
@@ -72,13 +81,33 @@ export default function Dashboard() {
 - Contain route-specific code
 - Mix multiple unrelated features
 
-**Module Structure**:
+**Module Structure Options**:
+
+*Flat (recommended for simple features)*
+```
+modules/feature/
+├── index.ts                    # Barrel exports
+├── feature-components.tsx      # All components
+├── feature-types.ts            # Types
+└── feature-store.ts            # Store (optional)
+```
+
+*Nested (for complex features)*
+```
+modules/feature/
+├── components/
+├── hooks/
+├── index.ts
+└── feature-types.ts
+```
+
+**Example Barrel Export**:
 ```tsx
-// app/modules/auth/index.ts
-export { LoginForm } from "./components/login-form"
-export { useAuth } from "./hooks/use-auth"
+// modules/auth/index.ts
+export * from "./auth-service"
 export { useAuthStore } from "./auth-store"
 export type { User, AuthState } from "./auth-types"
+export { useAuth } from "./use-auth"
 ```
 
 ### Shared (`app/shared/`)
