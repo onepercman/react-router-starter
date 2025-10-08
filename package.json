@@ -13,7 +13,17 @@
     "format:check": "prettier --check .",
     "check": "pnpm typecheck && pnpm lint && pnpm format:check",
     "fix": "pnpm lint:fix && pnpm format",
-    "add-ui": "npx shadcn@latest add @intentui/"
+    "add-ui": "npx shadcn@latest add @intentui/",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@intentui/icons": "^1.11.0",
@@ -52,6 +62,8 @@
     "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.3",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "tailwindcss": "^4.1.4",
