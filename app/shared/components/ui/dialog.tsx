@@ -1,6 +1,6 @@
 "use client"
 
-import { IconX } from "@intentui/icons"
+import { X } from "lucide-react"
 import { useEffect, useRef } from "react"
 import type { HeadingProps, TextProps } from "react-aria-components"
 import {
@@ -203,7 +203,7 @@ const DialogCloseIcon = ({
         className
       )}
     >
-      <IconX className="size-4" />
+      <X className="size-4" />
     </ButtonPrimitive>
   ) : null
 }

@@ -1,4 +1,4 @@
-import { IconCheck } from "@intentui/icons"
+import { Check } from "lucide-react"
 import type {
   ListBoxItemProps,
   SectionProps,
@@ -103,7 +103,7 @@ const DropdownItem = ({ className, children, ...props }: DropdownItemProps) => {
       {composeRenderProps(children, (children, { isSelected }) => (
         <>
           {isSelected && (
-            <IconCheck className="-mx-1 mr-1.5" data-slot="check-indicator" />
+            <Check className="-mx-1 mr-1.5" data-slot="check-indicator" />
           )}
           {typeof children === "string" ? (
             <DropdownLabel>{children}</DropdownLabel>

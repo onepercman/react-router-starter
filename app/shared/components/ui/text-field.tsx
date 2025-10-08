@@ -1,6 +1,6 @@
 "use client"
 
-import { IconEye, IconEyeClosed } from "@intentui/icons"
+import { Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
 import type {
   InputProps,
@@ -78,7 +78,7 @@ const TextField = ({
                 onClick={handleTogglePasswordVisibility}
                 className="relative mr-0.5 grid shrink-0 place-content-center rounded-sm border-transparent outline-hidden *:data-[slot=icon]:text-muted-fg focus-visible:*:data-[slot=icon]:text-primary"
               >
-                {isPasswordVisible ? <IconEyeClosed /> : <IconEye />}
+                {isPasswordVisible ? <EyeOff /> : <Eye />}
               </button>
             ) : isPending ? (
               <Loader variant="spin" />

@@ -1,4 +1,4 @@
-import { IconSearch, IconX } from "@intentui/icons"
+import { Search, X } from "lucide-react"
 import type { ErrorInfo, ReactNode } from "react"
 import type { FallbackProps } from "react-error-boundary"
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary"
@@ -24,7 +24,7 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
     <div className="min-h-[400px] flex items-center justify-center p-4">
       <Card className="max-w-lg w-full">
         <div className="text-center space-y-4">
-          <IconX className="size-12 text-muted-fg mx-auto" />
+          <X className="size-12 text-muted-fg mx-auto" />
           <h2 className="text-xl font-semibold text-fg">
             Something went wrong
           </h2>
@@ -117,7 +117,7 @@ export function ModuleErrorBoundary({
     fallback ||
     (({ resetErrorBoundary }: FallbackProps) => (
       <div className="p-4 text-center">
-        <IconX className="size-12 text-warning mx-auto mb-2" />
+        <X className="size-12 text-warning mx-auto mb-2" />
         <p className="text-muted-fg mb-4">
           Error in {moduleName} module. Please try refreshing.
         </p>
@@ -141,9 +141,9 @@ export function RouteErrorBoundary({ error }: { error: unknown }) {
       <div className="min-h-[400px] flex items-center justify-center p-4">
         <Card className="max-w-lg w-full text-center space-y-4">
           {error.status === 404 ? (
-            <IconSearch className="size-12 text-muted-fg mx-auto" />
+            <Search className="size-12 text-muted-fg mx-auto" />
           ) : (
-            <IconX className="size-12 text-warning mx-auto" />
+            <X className="size-12 text-warning mx-auto" />
           )}
           <h2 className="text-xl font-semibold text-fg">
             {error.status === 404 ? "Page Not Found" : `Error ${error.status}`}

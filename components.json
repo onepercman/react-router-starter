@@ -17,6 +17,6 @@
     "lib": "~/shared/lib",
     "hooks": "~/shared/hooks"
   },
-  "iconLibrary": "@intentui/icons",
+  "iconLibrary": "lucide-react",
   "registries": { "@intentui": "https://intentui.com/r/{name}" }
 }

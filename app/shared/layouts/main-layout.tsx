@@ -1,10 +1,4 @@
-import {
-  IconChartBar,
-  IconHome,
-  IconLock,
-  IconPackage,
-  IconPerson,
-} from "@intentui/icons"
+import { BarChart3, Home, Lock, Menu, Package, User } from "lucide-react"
 import { Link, useLocation } from "react-router"
 import { ThemeToggle } from "../components/theme-toggle"
 import { Button } from "../components/ui"
@@ -17,21 +11,21 @@ export function MainLayout({ children }: MainLayoutProps) {
   const location = useLocation()
 
   const navItems = [
-    { path: "/", label: "Home", icon: <IconHome className="size-4" /> },
+    { path: "/", label: "Home", icon: <Home className="size-4" /> },
     {
       path: "/dashboard",
       label: "Dashboard",
-      icon: <IconChartBar className="size-4" />,
+      icon: <BarChart3 className="size-4" />,
     },
     {
       path: "/products",
       label: "Products",
-      icon: <IconPackage className="size-4" />,
+      icon: <Package className="size-4" />,
     },
     {
       path: "/auth/login",
       label: "Login",
-      icon: <IconLock className="size-4" />,
+      icon: <Lock className="size-4" />,
     },
   ]
 
@@ -72,24 +66,12 @@ export function MainLayout({ children }: MainLayoutProps) {
 
               {/* User Menu */}
               <Button intent="plain" size="sm">
-                <IconPerson className="size-5" />
+                <User className="size-5" />
               </Button>
 
               {/* Mobile menu button */}
               <Button intent="plain" size="sm" className="md:hidden">
-                <svg
-                  className="size-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                <Menu className="size-5" />
               </Button>
             </div>
           </div>

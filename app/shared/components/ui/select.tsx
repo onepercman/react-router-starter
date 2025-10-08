@@ -1,5 +1,5 @@
 "use client"
-import { IconChevronsY } from "@intentui/icons"
+import { ChevronsUpDown } from "lucide-react"
 import type {
   ListBoxProps,
   PopoverProps,
@@ -129,7 +129,7 @@ const SelectTrigger = ({
                   "*:data-[slot=avatar]:*:size-5 *:data-[slot=avatar]:size-5 sm:*:data-[slot=avatar]:*:size-4.5 sm:*:data-[slot=avatar]:size-4.5",
                 ])}
               />
-              <IconChevronsY
+              <ChevronsUpDown
                 data-slot="chevron"
                 className="-mr-1 shrink-0 text-muted-fg group-open/select:text-fg group-disabled/select:opacity-50 sm:mr-0"
               />

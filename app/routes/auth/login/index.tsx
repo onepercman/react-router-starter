@@ -1,12 +1,4 @@
-import {
-  IconCallIncoming,
-  IconGlobe,
-  IconKey,
-  IconLightBulb,
-  IconLock,
-  IconMail,
-  IconX,
-} from "@intentui/icons"
+import { Globe, Key, Lightbulb, Lock, Mail, Phone, X } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router"
 import type { AuthCredentials } from "~/modules/auth"
@@ -59,7 +51,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <div className="mb-4">
             <div className="size-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center text-2xl text-primary-fg mx-auto shadow-lg">
-              <IconLock className="size-6" />
+              <Lock className="size-6" />
             </div>
           </div>
           <h1 className="text-3xl font-bold text-fg mb-2">Welcome back</h1>
@@ -76,7 +68,7 @@ export default function LoginPage() {
             >
               {error && (
                 <div className="bg-gradient-to-r from-danger-subtle to-danger-subtle border border-danger/50 text-danger px-4 py-3 rounded-xl text-sm flex items-center gap-2">
-                  <IconX className="size-4" />
+                  <X className="size-4" />
                   <span>{error}</span>
                 </div>
               )}
@@ -187,13 +179,13 @@ export default function LoginPage() {
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <Button intent="outline">
                   <div className="flex items-center gap-2">
-                    <IconGlobe className="size-4" />
+                    <Globe className="size-4" />
                     <span>Google</span>
                   </div>
                 </Button>
                 <Button intent="outline">
                   <div className="flex items-center gap-2">
-                    <IconCallIncoming className="size-4" />
+                    <Phone className="size-4" />
                     <span>Apple</span>
                   </div>
                 </Button>
@@ -216,18 +208,18 @@ export default function LoginPage() {
             {/* Demo credentials */}
             <div className="mt-6 p-4 bg-gradient-to-r from-info-subtle to-info-subtle rounded-xl border border-info-subtle-fg/20">
               <div className="flex items-start gap-3">
-                <IconLightBulb className="size-5 text-info-subtle-fg" />
+                <Lightbulb className="size-5 text-info-subtle-fg" />
                 <div>
                   <p className="text-sm font-semibold text-info-subtle-fg mb-1">
                     Demo Account
                   </p>
                   <div className="text-xs text-info-subtle-fg/80 space-y-1">
                     <div className="flex items-center gap-2">
-                      <IconMail className="size-3" />
+                      <Mail className="size-3" />
                       test@example.com
                     </div>
                     <div className="flex items-center gap-2">
-                      <IconKey className="size-3" />
+                      <Key className="size-3" />
                       password
                     </div>
                   </div>

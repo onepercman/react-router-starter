@@ -1,4 +1,4 @@
-import { IconChartBar } from "@intentui/icons"
+import { BarChart3 } from "lucide-react"
 import { useState } from "react"
 import type { Product } from "~/modules/products"
 import { ProductFilters, ProductGrid } from "~/modules/products"
@@ -84,7 +84,7 @@ export default function ProductsPage() {
             <span>Add Product</span>
           </Button>
           <Button intent="outline" className="shadow-sm">
-            <IconChartBar className="size-4" />
+            <BarChart3 className="size-4" />
             <span>Export</span>
           </Button>
         </div>

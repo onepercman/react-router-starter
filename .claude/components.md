@@ -268,21 +268,30 @@ export function PageHeader({ title, description, size, className }: Props) {
 
 ## Icons
 
-### Priority
+### Icon Library Configuration
 
-1. **@intentui/icons** (primary)
-2. **lucide-react** (fallback)
+**IMPORTANT**: Always check `components.json` for the current icon library:
+
+```json
+// components.json
+{
+  "iconLibrary": "lucide-react"  // Current configured library
+}
+```
+
+Import icons from the configured library:
 
 ```tsx
-import { IconUser } from "@intentui/icons"
-import { User } from "lucide-react"
+// Check components.json first to see iconLibrary value
+// If iconLibrary is "lucide-react":
+import { User, Settings, Home } from "lucide-react"
 
-// Use IconUser from @intentui/icons when available
-<IconUser className="w-5 h-5" />
-
-// Use lucide-react as fallback
-<User className="w-5 h-5" />
+<User className="size-5" />
+<Settings className="size-4" />
+<Home className="size-6" />
 ```
+
+**Pattern**: Always reference `iconLibrary` field in `components.json` to determine which icon package to use.
 
 ## Component Checklist
 

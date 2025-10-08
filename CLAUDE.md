@@ -74,6 +74,7 @@ app/
 
 - **Colors**: Use tokens from `app/shared/styles/app.css` (e.g., `bg-primary`, `text-fg`, `text-muted-fg`)
 - **Components**: Check `~/shared/components/ui` first, add from IntentUI if missing
+- **Icons**: Check `iconLibrary` field in `components.json` to determine which icon package to use
 - **Naming**: `kebab-case` files, `PascalCase` components, `camelCase` functions
 - **Types**: `interface` for objects, `type` for unions
 - **State**: Zustand with persist middleware

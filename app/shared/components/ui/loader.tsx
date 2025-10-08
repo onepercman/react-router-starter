@@ -1,4 +1,4 @@
-import { IconLoader } from "@intentui/icons"
+import { Loader2 } from "lucide-react"
 import { ProgressBar } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 import type { VariantProps } from "tailwind-variants"
@@ -131,7 +131,7 @@ const Bars = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
     </rect>
   </svg>
 )
-const Ring = (props: React.SVGProps<SVGSVGElement>) => <IconLoader {...props} />
+const Ring = (props: React.SVGProps<SVGSVGElement>) => <Loader2 {...props} />
 const Spin = ({ className, ...props }: React.SVGProps<SVGSVGElement>) => (
   <svg
     className={twMerge("size-4", className)}

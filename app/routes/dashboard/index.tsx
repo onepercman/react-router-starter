@@ -1,4 +1,4 @@
-import { IconChartBar } from "@intentui/icons"
+import { BarChart3 } from "lucide-react"
 import type { ActivityItem, StatItem } from "~/modules/analytics"
 import {
   ActivityFeed,
@@ -72,7 +72,7 @@ export default function DashboardPage() {
       >
         <div className="flex space-x-2">
           <Button intent="primary">
-            <IconChartBar className="size-4" />
+            <BarChart3 className="size-4" />
             View Reports
           </Button>
         </div>

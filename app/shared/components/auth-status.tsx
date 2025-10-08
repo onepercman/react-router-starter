@@ -1,4 +1,4 @@
-import { IconMoon, IconSettings, IconSun } from "@intentui/icons"
+import { Moon, Settings, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useAuth } from "~/modules/auth"
 import { useUserProfile } from "~/modules/user"
@@ -64,15 +64,15 @@ export function AuthStatus() {
         aria-label="Toggle theme"
       >
         {theme === "dark" ? (
-          <IconMoon className="size-4" />
+          <Moon className="size-4" />
         ) : (
-          <IconSun className="size-4" />
+          <Sun className="size-4" />
         )}
       </Button>
 
       <div className="relative">
         <Button intent="plain" size="sm">
-          <IconSettings className="size-4" />
+          <Settings className="size-4" />
         </Button>
       </div>
 

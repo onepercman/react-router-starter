@@ -1,9 +1,4 @@
-import {
-  IconChartBar,
-  IconLock,
-  IconPackage,
-  IconRocket,
-} from "@intentui/icons"
+import { BarChart3, Lock, Package, Rocket } from "lucide-react"
 import { Link } from "react-router"
 import {
   Button,
@@ -23,7 +18,7 @@ export default function HomePage() {
         "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-primary/30 hover:border-primary/50",
       iconBg: "bg-primary",
       textColor: "text-primary",
-      icon: <IconChartBar className="size-6" />,
+      icon: <BarChart3 className="size-6" />,
     },
     {
       title: "Products",
@@ -33,7 +28,7 @@ export default function HomePage() {
         "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-chart-1/30 hover:border-chart-1/50",
       iconBg: "bg-chart-1",
       textColor: "text-chart-1",
-      icon: <IconPackage className="size-6" />,
+      icon: <Package className="size-6" />,
     },
     {
       title: "Login",
@@ -43,7 +38,7 @@ export default function HomePage() {
         "bg-gradient-to-br from-secondary to-muted hover:from-muted hover:to-muted border-chart-5/30 hover:border-chart-5/50",
       iconBg: "bg-chart-5",
       textColor: "text-chart-5",
-      icon: <IconLock className="size-6" />,
+      icon: <Lock className="size-6" />,
     },
   ]
 
@@ -92,7 +87,7 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
           <Button intent="primary" size="lg">
-            <IconRocket className="size-4" />
+            <Rocket className="size-4" />
             <span>Get Started</span>
           </Button>
           <Link to="/dashboard">

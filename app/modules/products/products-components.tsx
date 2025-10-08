@@ -1,4 +1,4 @@
-import { IconCheck, IconFilter, IconPackage, IconX } from "@intentui/icons"
+import { Check, Filter, Package, X } from "lucide-react"
 import {
   Button,
   Card,
@@ -32,15 +32,15 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-bg to-muted/30">
       <div className="relative h-56 bg-gradient-to-br from-muted to-accent flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-        <IconPackage className="size-16 text-muted-fg" />
+        <Package className="size-16 text-muted-fg" />
         {product.inStock && (
           <div className="absolute top-3 right-3 bg-success text-success-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            <IconCheck className="size-3" /> Available
+            <Check className="size-3" /> Available
           </div>
         )}
         {!product.inStock && (
           <div className="absolute top-3 right-3 bg-danger text-danger-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            <IconX className="size-3" /> Out of Stock
+            <X className="size-3" /> Out of Stock
           </div>
         )}
       </div>
@@ -97,7 +97,7 @@ export function ProductFilters() {
       <Card className="border-0 bg-gradient-to-br from-bg to-muted/20">
         <CardHeader className="pb-4">
           <CardTitle className="text-lg flex items-center gap-2">
-            <IconFilter className="size-5" />
+            <Filter className="size-5" />
             <span>Filters</span>
           </CardTitle>
         </CardHeader>
