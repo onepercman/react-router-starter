@@ -1,27 +1,12 @@
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { useAuthStore } from "./auth-store"
-import type { AuthCredentials, RegisterCredentials } from "./auth-types"
+import type { AuthCredentials } from "./auth-types"
 
 export const useAuth = () => {
-  const {
-    user,
-    token,
-    isLoading,
-    error,
-    login,
-    logout,
-    register,
-    refreshToken,
-    clearError,
-  } = useAuthStore()
+  const { user, token, isLoading, error, login, logout, clearError } =
+    useAuthStore()
 
   const isAuthenticated = !!user && !!token
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      refreshToken()
-    }
-  }, [isAuthenticated, refreshToken])
 
   const handleLogin = useCallback(
     async (credentials: AuthCredentials) => {
@@ -38,21 +23,6 @@ export const useAuth = () => {
     [login]
   )
 
-  const handleRegister = useCallback(
-    async (credentials: RegisterCredentials) => {
-      try {
-        await register(credentials)
-        return { success: true }
-      } catch (error) {
-        return {
-          success: false,
-          error: error instanceof Error ? error.message : "Registration failed",
-        }
-      }
-    },
-    [register]
-  )
-
   const handleLogout = useCallback(() => {
     logout()
   }, [logout])
@@ -65,8 +35,6 @@ export const useAuth = () => {
     isAuthenticated,
     login: handleLogin,
     logout: handleLogout,
-    register: handleRegister,
-    refreshToken,
     clearError,
   }
 }

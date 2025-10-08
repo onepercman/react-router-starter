@@ -30,7 +30,7 @@ export const useUserStore = create<UserState>()(
             `/users/${userId}/profile`
           )
           set({
-            profile: response,
+            profile: response.data,
             isLoading: false,
             error: null,
           })
@@ -54,7 +54,7 @@ export const useUserStore = create<UserState>()(
             profile
           )
           set({
-            profile: response,
+            profile: response.data,
             isLoading: false,
             error: null,
           })
@@ -78,7 +78,7 @@ export const useUserStore = create<UserState>()(
             preferences
           )
           set({
-            preferences: response,
+            preferences: response.data,
             isLoading: false,
             error: null,
           })
