@@ -5,20 +5,6 @@ export const env = {
 
   // App Environment
   NODE_ENV: import.meta.env.NODE_ENV || "development",
-
-  // Feature Flags
-  FEATURE_FLAGS: {
-    enableAnalytics: import.meta.env.VITE_ENABLE_ANALYTICS === "true",
-    enableDevTools: import.meta.env.VITE_ENABLE_DEV_TOOLS === "true",
-    enableOfflineMode: import.meta.env.VITE_ENABLE_OFFLINE === "true",
-  },
-
-  // Build Information
-  BUILD_INFO: {
-    version: import.meta.env.VITE_APP_VERSION || "1.0.0",
-    buildDate: import.meta.env.VITE_BUILD_DATE || new Date().toISOString(),
-    gitCommit: import.meta.env.VITE_GIT_COMMIT || "unknown",
-  },
 } as const
 
 // Environment helpers
