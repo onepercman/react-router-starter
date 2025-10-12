@@ -1,6 +1,6 @@
 # React Router Starter
 
-Quick reference for Claude Code when working with this codebase.
+Quick reference for Cursor when working with this codebase.
 
 ## Technology Stack
 
@@ -79,16 +79,16 @@ app/
 - **Types**: `interface` for objects, `type` for unions
 - **State**: Zustand with persist middleware
 
-## Detailed Documentation
+## Documentation
 
 ### Development Guidelines
-- [.claude/architecture.md](.claude/architecture.md) - Directory structure, layer responsibilities
-- [.claude/implementation.md](.claude/implementation.md) - Common patterns (API, providers, hooks, modules)
-- [.claude/coding-standards.md](.claude/coding-standards.md) - TypeScript, imports, Zustand patterns
-- [.claude/design-system.md](.claude/design-system.md) - Color tokens, styling patterns
-- [.claude/components.md](.claude/components.md) - Component rules, variants, React Aria
-- [.claude/prompts.md](.claude/prompts.md) - Common development task prompts
+- [architecture.md](architecture.md) - Directory structure, layer responsibilities
+- [implementation.md](implementation.md) - Common patterns (API, providers, hooks, modules)
+- [coding-standards.md](coding-standards.md) - TypeScript, imports, Zustand patterns
+- [design-system.md](design-system.md) - Color tokens, styling patterns
+- [components.md](components.md) - Component rules, variants, React Aria
+- [prompts.md](prompts.md) - Common development task prompts
 
 ### Project Management
-- [.claude/project-spec.md](.claude/project-spec.md) - Feature specs, data models, API endpoints
-- [.claude/project-plan.md](.claude/project-plan.md) - Development phases, milestones, timeline
+- [project-spec.md](project-spec.md) - Feature specs, data models, API endpoints
+- [project-plan.md](project-plan.md) - Development phases, milestones, timeline
