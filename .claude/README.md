@@ -38,21 +38,30 @@ pnpm add-ui [component]                       # Add using project script
 
 ```
 app/
-├── routes/       # Page composition - import from modules
-├── modules/      # Feature modules
-│   ├── auth/     # Authentication (store, service, hook)
-│   ├── products/ # Products (components, types)
-│   ├── analytics/# Analytics (components, types)
-│   └── user/     # User profile (store, hook)
-└── shared/       # Global utilities and UI
-    ├── api/              # Axios base client
-    ├── components/ui/    # IntentUI design system
-    ├── layouts/          # MainLayout
-    ├── providers/        # React Query, Theme
-    └── styles/           # Design tokens
+├── routes/              # Flat file-based routing (React Router v7)
+│   ├── _index.tsx       # /
+│   ├── products._index.tsx   # /products
+│   ├── products.$id.tsx      # /products/:id
+│   ├── auth.tsx              # Layout for /auth/*
+│   └── auth.login.tsx        # /auth/login
+│
+├── modules/             # Feature modules
+│   ├── auth/            # Authentication (store, service, hook)
+│   ├── products/        # Products (components, types)
+│   ├── analytics/       # Analytics (components, types)
+│   └── user/            # User profile (store, hook)
+│
+└── shared/              # Global utilities and UI
+    ├── api/             # Axios base client
+    ├── components/ui/   # IntentUI design system
+    ├── layouts/         # MainLayout
+    ├── providers/       # React Query, Theme
+    └── styles/          # Design tokens
 ```
 
 **Import hierarchy**: Routes → Modules → Shared
+
+**Routing**: Flat file structure with dot notation (`.`) for nested paths, `$` for dynamic segments
 
 **Key Implementations**:
 - **Root**: `app/root.tsx` - App shell with providers (Theme, Query, Layout)
@@ -83,6 +92,7 @@ app/
 
 ### Development Guidelines
 - [architecture.md](architecture.md) - Directory structure, layer responsibilities
+- [routing.md](routing.md) - React Router v7 file-based routing conventions ⭐
 - [implementation.md](implementation.md) - Common patterns (API, providers, hooks, modules)
 - [coding-standards.md](coding-standards.md) - TypeScript, imports, Zustand patterns
 - [design-system.md](design-system.md) - Color tokens, styling patterns

@@ -1,4 +1,5 @@
 import { Check, Filter, Package, X } from "lucide-react"
+import { Link } from "react-router"
 import {
   Button,
   Card,
@@ -29,57 +30,59 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-bg to-muted/30">
-      <div className="relative h-56 bg-gradient-to-br from-muted to-accent flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-        <Package className="size-16 text-muted-fg" />
-        {product.inStock && (
-          <div className="absolute top-3 right-3 bg-success text-success-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            <Check className="size-3" /> Available
-          </div>
-        )}
-        {!product.inStock && (
-          <div className="absolute top-3 right-3 bg-danger text-danger-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
-            <X className="size-3" /> Out of Stock
-          </div>
-        )}
-      </div>
-
-      <CardContent className="p-6">
-        <div className="mb-3">
-          <div className="flex items-start justify-between mb-2">
-            <h3 className="text-lg font-semibold text-fg line-clamp-1 group-hover:text-primary transition-colors">
-              {product.name}
-            </h3>
-          </div>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="px-2 py-1 text-xs font-medium bg-accent text-accent-fg rounded-full">
-              {product.category}
-            </span>
-          </div>
+    <Link to={`/products/${product.id}`}>
+      <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 border-0 bg-gradient-to-br from-bg to-muted/30">
+        <div className="relative h-56 bg-gradient-to-br from-muted to-accent flex items-center justify-center text-6xl group-hover:scale-105 transition-transform duration-300">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
+          <Package className="size-16 text-muted-fg" />
+          {product.inStock && (
+            <div className="absolute top-3 right-3 bg-success text-success-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
+              <Check className="size-3" /> Available
+            </div>
+          )}
+          {!product.inStock && (
+            <div className="absolute top-3 right-3 bg-danger text-danger-fg px-2 py-1 text-xs font-medium rounded-full shadow-lg">
+              <X className="size-3" /> Out of Stock
+            </div>
+          )}
         </div>
 
-        <p className="text-sm text-muted-fg mb-4 line-clamp-2 leading-relaxed">
-          {product.description}
-        </p>
-
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold text-primary">
-              ${product.price}
-            </span>
-            <span className="text-xs text-muted-fg">Best Price</span>
+        <CardContent className="p-6">
+          <div className="mb-3">
+            <div className="flex items-start justify-between mb-2">
+              <h3 className="text-lg font-semibold text-fg line-clamp-1 group-hover:text-primary transition-colors">
+                {product.name}
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-2 py-1 text-xs font-medium bg-accent text-accent-fg rounded-full">
+                {product.category}
+              </span>
+            </div>
           </div>
-          <Button
-            size="sm"
-            isDisabled={!product.inStock}
-            className="px-6 shadow-lg hover:shadow-xl transition-shadow"
-          >
-            {product.inStock ? "Add to Cart" : "Notify Me"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+
+          <p className="text-sm text-muted-fg mb-4 line-clamp-2 leading-relaxed">
+            {product.description}
+          </p>
+
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold text-primary">
+                ${product.price}
+              </span>
+              <span className="text-xs text-muted-fg">Best Price</span>
+            </div>
+            <Button
+              size="sm"
+              isDisabled={!product.inStock}
+              className="px-6 shadow-lg hover:shadow-xl transition-shadow"
+            >
+              {product.inStock ? "Add to Cart" : "Notify Me"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   )
 }
 

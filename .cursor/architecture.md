@@ -6,9 +6,13 @@
 
 ```
 app/
-├── routes/              # Page composition layer
-│   ├── _index.tsx       # Route files
-│   └── [feature]/       # Feature routes
+├── routes/              # Page composition layer (flat file structure)
+│   ├── _index.tsx       # / (root)
+│   ├── about.tsx        # /about
+│   ├── products._index.tsx   # /products
+│   ├── products.$id.tsx      # /products/:id
+│   ├── auth.tsx              # Layout for /auth/*
+│   └── auth.login.tsx        # /auth/login
 │
 ├── modules/             # Feature-based business logic
 │   ├── [feature]/
@@ -40,29 +44,65 @@ app/
 ## Layer Responsibilities
 
 ### Routes (`app/routes/`)
-**Purpose**: Page composition only
+**Purpose**: Page composition only (React Router v7 with `flatRoutes`)
+
+**Routing Conventions**:
+- Uses **flat file structure** with dot delimiters for nested routes
+- `_index.tsx` → `/` (root index)
+- `about.tsx` → `/about` (static route)
+- `products._index.tsx` → `/products` (nested index)
+- `products.$id.tsx` → `/products/:id` (dynamic segment)
+- `auth.tsx` → Layout for all `/auth/*` routes (contains `<Outlet />`)
+- `auth.login.tsx` → `/auth/login` (child route)
+
+**File-based routing powered by**:
+```tsx
+// app/routes.ts
+import { type RouteConfig } from "@react-router/dev/routes"
+import { flatRoutes } from "@react-router/fs-routes"
+export default flatRoutes() satisfies RouteConfig
+```
 
 **Should**:
 - Import and compose functionality from modules
 - Export default page components
 - Handle page-level data loading
 - Define meta and headers
+- Use flat file structure with dots (`.`) for nested paths
+- Use `$param` prefix for dynamic segments
 
 **Should NOT**:
 - Contain business logic
 - Define complex components
 - Manage state beyond page-level
 - Include API calls (delegate to modules)
+- Use nested folders like `auth/login/index.tsx` (won't work!)
 
 **Example**:
 ```tsx
-// app/routes/dashboard.tsx
+// app/routes/dashboard._index.tsx
 import { DashboardView } from "~/modules/dashboard"
 import { useAuth } from "~/modules/auth"
 
 export default function Dashboard() {
   const { user } = useAuth()
   return <DashboardView user={user} />
+}
+```
+
+**Layout Example**:
+```tsx
+// app/routes/auth.tsx - Layout for all /auth/* routes
+import { Outlet } from "react-router"
+
+export default function AuthLayout() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br">
+      <div className="container">
+        <Outlet />
+      </div>
+    </div>
+  )
 }
 ```
 
