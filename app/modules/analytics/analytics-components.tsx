@@ -8,11 +8,13 @@ import {
   Users,
 } from "lucide-react"
 import {
+  AreaChart,
   Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
+  type ChartConfig,
 } from "~/shared/components/ui"
 import type { ActivityItem, StatItem } from "./analytics-types"
 
@@ -56,6 +58,30 @@ export function StatsGrid({ stats }: StatsGridProps) {
   )
 }
 
+const chartData = [
+  { month: "January", revenue: 4200, expenses: 2400, profit: 1800 },
+  { month: "February", revenue: 3800, expenses: 2200, profit: 1600 },
+  { month: "March", revenue: 5100, expenses: 2800, profit: 2300 },
+  { month: "April", revenue: 4600, expenses: 2600, profit: 2000 },
+  { month: "May", revenue: 5400, expenses: 3000, profit: 2400 },
+  { month: "June", revenue: 6200, expenses: 3400, profit: 2800 },
+]
+
+const chartConfig = {
+  revenue: {
+    label: "Revenue",
+    color: "chart-1",
+  },
+  expenses: {
+    label: "Expenses",
+    color: "chart-2",
+  },
+  profit: {
+    label: "Profit",
+    color: "chart-3",
+  },
+} satisfies ChartConfig
+
 export function AnalyticsChart() {
   return (
     <Card>
@@ -63,15 +89,12 @@ export function AnalyticsChart() {
         <CardTitle>Analytics Overview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[400px] bg-bg rounded-lg flex items-center justify-center">
-          <div className="text-center">
-            <BarChart3 className="size-12 text-muted-fg mx-auto mb-4" />
-            <p className="text-lg font-medium text-fg">Chart Placeholder</p>
-            <p className="text-sm text-muted-fg">
-              Analytics chart would go here
-            </p>
-          </div>
-        </div>
+        <AreaChart
+          config={chartConfig}
+          data={chartData}
+          dataKey="month"
+          className="h-[400px]"
+        />
       </CardContent>
     </Card>
   )
