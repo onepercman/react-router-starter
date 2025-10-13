@@ -26,7 +26,7 @@ export default function LoginPage() {
   }
 
   return (
-    <>
+    <div className="container px-4 py-8">
       {/* Back to home */}
       <div className="mb-8">
         <Link
@@ -221,6 +221,6 @@ export default function LoginPage() {
           </div>
         </div>
       </Card>
-    </>
+    </div>
   )
 }

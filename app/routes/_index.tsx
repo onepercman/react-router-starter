@@ -76,7 +76,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="space-y-12">
+    <div className="container px-4 py-8 space-y-12">
       <div className="text-center py-12 bg-gradient-to-b from-secondary/30 to-transparent rounded-xl">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-fg mb-3">
           React Router v7 Starter

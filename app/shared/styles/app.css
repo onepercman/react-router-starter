@@ -79,6 +79,12 @@
   --animate-disclosure-collapsed: disclosure-collapsed 0.2s ease-out;
   --animate-disclosure-expanded: disclosure-expanded 0.2s ease-out;
 
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
   @keyframes disclosure-collapsed {
     from {
       height: var(--disclosure-height);
@@ -264,9 +270,7 @@
   ::file-selector-button {
     border-color: var(--border, currentColor);
   }
-}
 
-@layer base {
   * {
     text-rendering: optimizeLegibility;
     /*
@@ -292,5 +296,10 @@
   ::-webkit-scrollbar-thumb {
     background: var(--border);
     border-radius: 4px;
+  }
+
+  .container {
+    margin-left: auto;
+    margin-right: auto;
   }
 }

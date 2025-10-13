@@ -65,7 +65,7 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div>
+    <div className="container px-4 py-8">
       <PageHeader
         title="Dashboard"
         description="Welcome back! Here's what's happening with your store today."

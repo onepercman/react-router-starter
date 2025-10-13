@@ -73,7 +73,7 @@ export default function ProductsPage() {
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="container px-4 py-8 space-y-8">
       <PageHeader
         title="Products"
         description="Discover our curated collection of premium products"
