@@ -209,21 +209,33 @@ app/modules/dashboard/dashboard-store.ts
 
 ### General Rules
 
-- **English only**
-- **Minimize comments** - Prefer self-documenting code
-- Focus on "why" not "what"
-- Remove commented-out code
+- **English only** - All comments must be written in English
+- **Minimize comments** - Prefer self-documenting code over excessive commenting
+- Focus on "why" not "what" - Explain intent, not obvious behavior
+- Remove commented-out code - Use version control instead
 
 ### When to Comment
 
+Comments should only be added when:
+
+1. **Explaining complex logic** that is not immediately clear from the code
+2. **Documenting workarounds** for bugs or browser issues
+3. **Adding context** that cannot be expressed through code
+4. **Marking TODOs** or technical debt with clear actionable items
+
 **Do comment**:
 ```tsx
-// Workaround for React Router v7 SSR bug #1234
+// Workaround for React Router v7 SSR hydration mismatch (issue #1234)
 const [mounted, setMounted] = useState(false)
 
-// TODO: Replace with native Intl.DateTimeFormat when Safari supports it
+// TODO: Replace with native Intl.DateTimeFormat when Safari 16+ is minimum supported version
 function formatDate(date: Date) {
   return dayjs(date).format("YYYY-MM-DD")
+}
+
+// Binary search requires sorted array - O(log n) complexity vs O(n) for linear search
+function binarySearch(arr: number[], target: number) {
+  // implementation
 }
 ```
 
@@ -240,11 +252,14 @@ users.forEach(user => ...)
 // ❌ Better as function name
 // Check if user is admin
 if (user.role === "admin") // Better: isAdmin(user)
+
+// ❌ Commented-out code - use git instead
+// const oldImplementation = () => { ... }
 ```
 
 ### JSDoc for Public APIs
 
-Use JSDoc only for exported functions/components with complex APIs:
+Use JSDoc only for exported functions/components with complex APIs or non-obvious behavior:
 
 ```tsx
 /**
@@ -258,6 +273,24 @@ export function formatCurrency(value: number, currency = "USD"): string {
     style: "currency",
     currency,
   }).format(value)
+}
+```
+
+**Avoid JSDoc for simple, self-explanatory functions**:
+```tsx
+// ❌ Unnecessary JSDoc - function is self-documenting
+/**
+ * Gets the user name
+ * @param user - The user object
+ * @returns The user's name
+ */
+export function getUserName(user: User): string {
+  return user.name
+}
+
+// ✅ Better - no JSDoc needed
+export function getUserName(user: User): string {
+  return user.name
 }
 ```
 
@@ -391,6 +424,91 @@ const handleClick = useCallback(() => {
   // logic
 }, [deps])
 <ChildComponent onClick={handleClick} />
+```
+
+## ClassName Management
+
+### Use `cn()` for Combining Classes
+
+**Always use the `cn()` utility** instead of template strings or manual string concatenation when combining className values.
+
+```tsx
+import { cn } from "~/shared/utils/cn"
+
+// ✅ Correct - Using cn() utility
+<div className={cn("flex items-center", className)} />
+<div className={cn("px-4", isActive && "bg-primary")} />
+<div className={cn("text-base", { "font-bold": isImportant, "text-muted": !isImportant })} />
+
+// ❌ Wrong - Template strings or manual concatenation
+<div className={`flex items-center ${className}`} />
+<div className={"px-4 " + (isActive ? "bg-primary" : "")} />
+<div className={`text-base ${isImportant ? "font-bold" : "text-muted"}`} />
+```
+
+### Benefits of `cn()`
+
+- **Tailwind conflict resolution**: Automatically handles conflicting Tailwind classes (e.g., `px-2` vs `px-4`)
+- **Conditional classes**: Supports ternary operators, logical AND, and object syntax
+- **Falsy value handling**: Automatically filters out `undefined`, `null`, `false`, empty strings
+- **Array support**: Can pass arrays of class names
+- **Clean syntax**: More readable than template strings
+
+### Usage Patterns
+
+```tsx
+// String concatenation
+cn("base-class", "extra-class")
+
+// Conditional - ternary
+cn("flex", isActive ? "bg-primary" : "bg-transparent")
+
+// Conditional - logical AND
+cn("flex", isActive && "bg-primary")
+
+// Conditional - object syntax (recommended for multiple conditions)
+cn("flex", {
+  "bg-primary": isActive,
+  "bg-transparent": !isActive,
+  "font-bold": isImportant
+})
+
+// Arrays
+cn("flex", ["items-center", "justify-between"])
+
+// Mixed
+cn(
+  "base-class",
+  condition && "conditional-class",
+  { "object-class": someBoolean },
+  className // External className prop
+)
+
+// Tailwind conflict resolution
+cn("px-2 py-1", "px-4") // Result: "py-1 px-4" (px-4 overrides px-2)
+```
+
+### Component Props Pattern
+
+When accepting external `className` prop:
+
+```tsx
+interface Props {
+  className?: string
+  isActive?: boolean
+}
+
+export function MyComponent({ className, isActive }: Props) {
+  return (
+    <div className={cn(
+      "flex items-center px-4 py-2", // Base styles
+      isActive && "bg-primary text-primary-fg", // Conditional
+      className // External override
+    )}>
+      Content
+    </div>
+  )
+}
 ```
 
 ## Code Quality Checklist

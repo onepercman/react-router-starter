@@ -202,6 +202,152 @@ React Aria Components provide built-in accessibility:
 
 **Never** try to replicate these with raw HTML.
 
+## Component State Management
+
+### Uncontrolled vs Controlled Components
+
+**Prefer uncontrolled components** (using built-in component logic) over controlled state unless absolutely necessary.
+
+#### ✅ Use Uncontrolled (Recommended)
+
+```tsx
+// ✅ Let component manage its own state
+<TextField name="email" defaultValue="user@example.com" />
+<Switch defaultSelected />
+<Modal defaultOpen />
+<Popover>
+  <Button>Toggle</Button>
+  <PopoverContent>Content</PopoverContent>
+</Popover>
+
+// ✅ Use value props for display-only or simple demos
+<TextField value="Read-only value" isReadOnly />
+<Checkbox value="option1">Option 1</Checkbox>
+```
+
+#### ❌ Avoid Controlled State Unless Required
+
+```tsx
+// ❌ Unnecessary controlled state for simple UI
+const [isOpen, setIsOpen] = useState(false)
+<Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+  {/* No business logic requiring external control */}
+</Modal>
+
+// ❌ Controlled state for basic form field
+const [email, setEmail] = useState("")
+<TextField value={email} onChange={setEmail} />
+
+// ✅ Better - uncontrolled
+<TextField name="email" />
+```
+
+#### ✅ When to Use Controlled State
+
+Use controlled state **only** when you need to:
+
+1. **Implement complex business logic** that depends on the state
+2. **Synchronize with external data sources** (API, database)
+3. **Perform validation or transformation** before updating
+4. **Control multiple dependent components** with shared state
+
+```tsx
+// ✅ Controlled - Complex validation logic
+const [password, setPassword] = useState("")
+const [strength, setStrength] = useState<"weak" | "medium" | "strong">("weak")
+
+function handlePasswordChange(value: string) {
+  setPassword(value)
+  setStrength(calculatePasswordStrength(value))
+}
+
+<TextField
+  value={password}
+  onChange={handlePasswordChange}
+  description={`Strength: ${strength}`}
+/>
+
+// ✅ Controlled - Dependent components
+const [country, setCountry] = useState("")
+const [cities, setCities] = useState<string[]>([])
+
+useEffect(() => {
+  if (country) {
+    setCities(fetchCitiesByCountry(country))
+  }
+}, [country])
+
+<Select value={country} onSelectionChange={setCountry}>
+  {countries.map(c => <SelectItem key={c.code}>{c.name}</SelectItem>)}
+</Select>
+<Select value={city} onSelectionChange={setCity}>
+  {cities.map(c => <SelectItem key={c}>{c}</SelectItem>)}
+</Select>
+
+// ✅ Controlled - External state management
+const isOpen = useStore((s) => s.modalOpen)
+const setIsOpen = useStore((s) => s.setModalOpen)
+
+<Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+  {/* Business logic requires modal state in global store */}
+</Modal>
+```
+
+#### Mocking UI & Prototyping
+
+For demos, prototypes, or mocking UI without real logic:
+
+```tsx
+// ✅ Use value props and built-in logic - no state needed
+<TextField value="mock@example.com" isReadOnly />
+<Select defaultSelectedKey="option1">
+  <SelectItem key="option1">Option 1</SelectItem>
+  <SelectItem key="option2">Option 2</SelectItem>
+</Select>
+<Switch defaultSelected />
+<Checkbox defaultSelected>Remember me</Checkbox>
+
+// ✅ Let components handle their own toggle logic
+<Popover>
+  <Button>Open Menu</Button>
+  <PopoverContent>
+    <Menu>
+      <MenuItem>Action 1</MenuItem>
+      <MenuItem>Action 2</MenuItem>
+    </Menu>
+  </PopoverContent>
+</Popover>
+
+// ❌ Don't create unnecessary state for mocks
+const [checked, setChecked] = useState(false)
+<Checkbox isSelected={checked} onChange={setChecked}>Remember me</Checkbox>
+```
+
+### Decision Flowchart
+
+```
+Need component state?
+├─ Just displaying static value?
+│  └─ Use `value` prop + `isReadOnly` ✅
+├─ Need toggle/interaction without business logic?
+│  └─ Use `defaultValue`/`defaultOpen`/`defaultSelected` ✅
+├─ Complex validation or transformation?
+│  └─ Use controlled state with `value` + `onChange` ✅
+├─ Syncing with external state (store, API)?
+│  └─ Use controlled state with store selectors ✅
+└─ Simple form input?
+   └─ Use uncontrolled with `name` prop ✅
+```
+
+### Best Practices
+
+- **Default to uncontrolled** - Let components manage their own state
+- **Minimize state creation** - Avoid useState unless necessary for business logic
+- **Use value props** for static/read-only displays
+- **Use default props** for initial values without controlling
+- **Control only when needed** - Validation, sync, or dependent logic
+- **Clean code** - Fewer states = less complexity
+
 ## Component Composition
 
 ### Feature Components

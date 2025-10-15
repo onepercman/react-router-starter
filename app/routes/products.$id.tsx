@@ -19,7 +19,6 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
 
-  // Mock data - trong thực tế sẽ fetch từ API dựa trên id
   const products: Product[] = [
     {
       id: 1,
@@ -94,13 +93,12 @@ export default function ProductDetailPage() {
     )
   }
 
-  const images = [product.image, product.image, product.image] // Mock multiple images
+  const images = [product.image, product.image, product.image]
   const rating = 4.5
   const reviewCount = 128
 
   return (
     <div className="container px-4 py-8 space-y-8">
-      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-fg">
         <Link to="/products" className="hover:text-fg transition-colors">
           Products
@@ -109,7 +107,6 @@ export default function ProductDetailPage() {
         <span className="text-fg">{product.name}</span>
       </div>
 
-      {/* Back Button */}
       <Link to="/products">
         <Button intent="plain" size="sm">
           <ArrowLeft className="size-4" />
@@ -118,7 +115,6 @@ export default function ProductDetailPage() {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Product Images */}
         <div className="space-y-4">
           <Card className="overflow-hidden border-0 shadow-xl">
             <div className="aspect-square bg-muted flex items-center justify-center">
@@ -135,7 +131,6 @@ export default function ProductDetailPage() {
             </div>
           </Card>
 
-          {/* Thumbnails */}
           <div className="grid grid-cols-3 gap-4">
             {images.map((img, idx) => (
               <button
@@ -162,16 +157,13 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Product Info */}
         <div className="space-y-6">
-          {/* Header */}
           <div>
             <Badge intent="secondary" className="mb-3">
               {product.category}
             </Badge>
             <h1 className="text-4xl font-bold text-fg mb-3">{product.name}</h1>
 
-            {/* Rating */}
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
@@ -195,7 +187,6 @@ export default function ProductDetailPage() {
             </p>
           </div>
 
-          {/* Price */}
           <div className="flex items-baseline gap-3">
             <span className="text-5xl font-bold text-fg">
               ${product.price.toFixed(2)}
@@ -206,7 +197,6 @@ export default function ProductDetailPage() {
             <Badge intent="success">20% OFF</Badge>
           </div>
 
-          {/* Stock Status */}
           <div className="flex items-center gap-2">
             {product.inStock ? (
               <>
@@ -221,7 +211,6 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* Quantity Selector */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-fg">Quantity</label>
             <div className="flex items-center gap-3">
@@ -247,7 +236,6 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Actions */}
           <div className="flex gap-3">
             <Button
               intent="primary"
@@ -266,7 +254,6 @@ export default function ProductDetailPage() {
             </Button>
           </div>
 
-          {/* Shipping Info */}
           <Card className="bg-gradient-to-r from-info-subtle to-info-subtle border-info/20">
             <div className="p-4 flex items-start gap-3">
               <Truck className="size-5 text-info shrink-0 mt-1" />
@@ -282,7 +269,6 @@ export default function ProductDetailPage() {
             </div>
           </Card>
 
-          {/* Product Details */}
           <Card className="border-border">
             <div className="p-6 space-y-4">
               <h3 className="text-lg font-semibold text-fg">Product Details</h3>
@@ -313,7 +299,6 @@ export default function ProductDetailPage() {
         </div>
       </div>
 
-      {/* Related Products Section */}
       <div className="mt-16">
         <h2 className="text-2xl font-bold text-fg mb-6">You might also like</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

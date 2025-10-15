@@ -1,11 +1,9 @@
-// Base types
 export interface BaseEntity {
   id: number
   createdAt: Date
   updatedAt: Date
 }
 
-// Base user types (renamed to avoid conflict with auth User)
 export interface BaseUser extends BaseEntity {
   name: string
   email: string
@@ -15,7 +13,6 @@ export interface BaseUser extends BaseEntity {
 
 export type UserRole = "admin" | "user" | "manager"
 
-// Product types
 export interface Product extends BaseEntity {
   name: string
   description: string
@@ -26,7 +23,6 @@ export interface Product extends BaseEntity {
   isActive: boolean
 }
 
-// Order types
 export interface Order extends BaseEntity {
   userId: number
   status: OrderStatus
@@ -48,7 +44,6 @@ export interface OrderItem {
   price: number
 }
 
-// Address types
 export interface Address {
   street: string
   city: string
@@ -57,7 +52,6 @@ export interface Address {
   country: string
 }
 
-// API types
 export interface ApiResponse<T> {
   data: T
   message: string
@@ -73,13 +67,11 @@ export interface PaginatedResponse<T> extends ApiResponse<T[]> {
   }
 }
 
-// Form types
 export interface FormError {
   field: string
   message: string
 }
 
-// Navigation types
 export interface NavItem {
   path: string
   label: string
