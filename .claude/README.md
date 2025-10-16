@@ -2,6 +2,19 @@
 
 Quick reference for Claude Code when working with this codebase.
 
+## Claude Code Workflow Rules
+
+**CRITICAL - Must follow these rules:**
+
+1. **Package Manager**: ALWAYS use `pnpm` (never npm, yarn, or others)
+2. **Planning First**: ALWAYS present a plan and ask for user confirmation before implementing any solution
+3. **Documentation Style**:
+   - Keep docs generic and rule-based
+   - NEVER mention specific module/feature names in examples
+   - Use placeholders: `[feature]`, `[component]`, etc.
+   - Avoid duplication - consolidate rules under main headings
+   - When updating docs, add to existing headings rather than creating new ones
+
 ## Technology Stack
 
 - **React Router v7** - File-based routing with SSR support
@@ -38,37 +51,41 @@ pnpm add-ui [component]                       # Add using project script
 
 ```
 app/
-├── routes/              # Flat file-based routing (React Router v7)
-│   ├── _index.tsx       # /
-│   ├── products._index.tsx   # /products
-│   ├── products.$id.tsx      # /products/:id
-│   ├── auth.tsx              # Layout for /auth/*
-│   └── auth.login.tsx        # /auth/login
+├── routes/              # Flat file-based routing
+│   └── [routing files]  # See routing.md for conventions
 │
-├── modules/             # Feature modules
-│   ├── auth/            # Authentication (store, service, hook)
-│   ├── products/        # Products (components, types)
-│   ├── analytics/       # Analytics (components, types)
-│   └── user/            # User profile (store, hook)
+├── modules/             # Feature modules (NO index.ts at root)
+│   └── [feature]/       # Each module has barrel export
+│       ├── index.ts           # Barrel exports (REQUIRED)
+│       ├── [feature]-store.ts # Zustand store (optional)
+│       ├── [feature]-service.ts # API calls (optional)
+│       ├── [feature]-types.ts # Type definitions
+│       └── use-[feature].ts   # Custom hook (optional)
 │
 └── shared/              # Global utilities and UI
-    ├── api/             # Axios base client
-    ├── components/ui/   # IntentUI design system
-    ├── layouts/         # MainLayout
-    ├── providers/       # React Query, Theme
-    └── styles/          # Design tokens
+    ├── components/ui/   # IntentUI design system (has index.tsx)
+    ├── components/      # Shared components (no index)
+    ├── config/          # Environment config (no index)
+    ├── constants/       # Global constants (no index)
+    ├── hooks/           # Shared hooks (no index)
+    ├── layouts/         # App layouts (no index)
+    ├── lib/             # Core libraries: axios, primitives (no index)
+    ├── providers/       # Context providers (no index)
+    ├── stores/          # Global stores (has index.ts)
+    ├── styles/          # Design tokens (no index)
+    ├── types/           # Shared types (has index.ts)
+    └── utils/           # Utility functions (has index.ts)
 ```
 
 **Import hierarchy**: Routes → Modules → Shared
 
 **Routing**: Flat file structure with dot notation (`.`) for nested paths, `$` for dynamic segments
 
-**Key Implementations**:
-- **Root**: `app/root.tsx` - App shell with providers (Theme, Query, Layout)
-- **State**: Zustand stores with localStorage persistence
-- **API**: Axios client with auth interceptors in `shared/api/base-client.ts`
-- **Data Fetching**: React Query config in `shared/providers/query-provider.tsx`
-- **Theming**: next-themes in `shared/providers/theme-provider.tsx`
+**Key Locations**:
+- **Root**: `app/root.tsx` - App shell with providers
+- **API**: `shared/lib/axios.ts` - Axios instance
+- **Providers**: `shared/providers/` - Query, Theme providers
+- **UI**: `shared/components/ui/` - IntentUI components
 
 ## Key Principles
 
@@ -81,18 +98,24 @@ app/
 
 ## Quick Rules
 
-- **Colors**: Use tokens from `app/shared/styles/app.css` (e.g., `bg-primary`, `text-fg`, `text-muted-fg`)
+- **Package Manager**: Use `pnpm` only
+- **Workflow**: Plan → Ask user → Implement
+- **Colors**: Use design system tokens (e.g., `bg-primary`, `text-fg`)
 - **Components**: Check `~/shared/components/ui` first, add from IntentUI if missing
-- **Icons**: Check `iconLibrary` field in `components.json` to determine which icon package to use
+- **Icons**: Check `iconLibrary` field in `components.json`
 - **Naming**: `kebab-case` files, `PascalCase` components, `camelCase` functions
 - **Types**: `interface` for objects, `type` for unions
 - **State**: Zustand with persist middleware
+- **Docs**: Generic rules only, use placeholders, consolidate into existing headings
 
 ## Documentation
 
+### Essential Reading
+- **[workflow-rules.md](workflow-rules.md)** - ⭐ **READ THIS FIRST** - Package manager, workflow, documentation rules
+
 ### Development Guidelines
 - [architecture.md](architecture.md) - Directory structure, layer responsibilities
-- [routing.md](routing.md) - React Router v7 file-based routing conventions ⭐
+- [routing.md](routing.md) - React Router v7 file-based routing conventions
 - [implementation.md](implementation.md) - Common patterns (API, providers, hooks, modules)
 - [coding-standards.md](coding-standards.md) - TypeScript, imports, Zustand patterns
 - [design-system.md](design-system.md) - Color tokens, styling patterns

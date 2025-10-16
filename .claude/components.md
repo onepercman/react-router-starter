@@ -7,10 +7,13 @@
 ### Decision Flow
 
 1. **First**: Check existing UI components in `~/shared/components/ui`
-2. **Second**: Add from IntentUI registry if missing:
+   - **CRITICAL**: If component already exists, use it directly - DO NOT run add command again
+   - Check [app/shared/components/ui/](../app/shared/components/ui/) directory first
+2. **Second**: Add from IntentUI registry **ONLY if missing**:
    ```bash
    npx shadcn@latest add @intentui/[component]
    ```
+   - **WARNING**: Only run this command if the component file does NOT exist in `~/shared/components/ui`
 3. **Third**: Use React Aria Components directly if not in registry
 4. **Last resort**: Create custom wrapper around React Aria primitives
 5. **Never**: Use raw HTML elements when UI component exists
@@ -177,11 +180,20 @@ import {
 
 ### Adding New Components
 
+**IMPORTANT**: Only add components that don't exist yet!
+
+**Step 1: Check if component exists**
 ```bash
-# List available components
+# Check if component file exists
+ls app/shared/components/ui/[component].tsx
+```
+
+**Step 2: Add ONLY if missing**
+```bash
+# List available components in IntentUI registry
 npx shadcn@latest add
 
-# Add specific component
+# Add specific component (ONLY if not exists in ~/shared/components/ui)
 npx shadcn@latest add @intentui/button
 npx shadcn@latest add @intentui/text-field
 
@@ -189,6 +201,16 @@ npx shadcn@latest add @intentui/text-field
 pnpm add-ui button
 pnpm add-ui text-field
 ```
+
+**❌ DO NOT**:
+- Run add command for components that already exist in `~/shared/components/ui`
+- Re-add the same component (it will overwrite your customizations)
+- Add without checking existing components first
+
+**✅ DO**:
+- Check `~/shared/components/ui` directory first
+- Only add if component file doesn't exist
+- Import existing components directly from barrel exports
 
 ### Accessibility Features
 
@@ -494,18 +516,19 @@ const buttonVariants = tv({
 
 #### 3. Adding Missing Components
 
-If component doesn't exist:
+**CRITICAL**: Check if component exists before adding!
 
 ```bash
-# Search IntentUI registry first
-npx shadcn@latest add
+# Step 1: Verify component doesn't exist
+ls app/shared/components/ui/[component].tsx
 
-# Add if available
+# Step 2: If file NOT found, then add from registry
 npx shadcn@latest add @intentui/[component]
-
 # Or use project script
 pnpm add-ui [component]
 ```
+
+**❌ DO NOT** add if component file already exists in `~/shared/components/ui`
 
 #### 4. Adapting Existing Component Styles
 
@@ -583,8 +606,10 @@ const variants = tv({
 
 Before creating/using a component:
 
-- [ ] Check if UI component exists in `~/shared/components/ui`
-- [ ] Add from IntentUI if missing
+- [ ] **FIRST**: Check if UI component exists in `~/shared/components/ui`
+- [ ] **If exists**: Use it directly, import from barrel exports
+- [ ] **If NOT exists**: Add from IntentUI registry (`npx shadcn@latest add @intentui/[component]`)
+- [ ] **NEVER**: Run add command for components that already exist
 - [ ] Use React Aria Components, not raw HTML
 - [ ] Use `className` only for layout/positioning
 - [ ] Use component props for design system properties

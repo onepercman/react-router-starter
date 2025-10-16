@@ -1,16 +1,43 @@
 # Implementation Patterns
 
-Common implementation patterns used in this project.
-
 ## API Client Pattern
 
-### Base Client Setup
+### Axios Instance Setup
+
+**Location**: `shared/lib/axios.ts` (NOT `shared/api/`)
+
 ```tsx
-// shared/api/base-client.ts
+// shared/lib/axios.ts
 import axios from "axios"
 import { env } from "~/shared/config/environment"
 
-const api = axios.create({
+export interface ApiResponse<T = any> {
+  data: T
+  message?: string
+  success: boolean
+}
+
+export interface PaginationParams {
+  page?: number
+  limit?: number
+  sortBy?: string
+  sortOrder?: "asc" | "desc"
+}
+
+export interface PaginationMeta {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+export interface PaginatedResponse<T> {
+  data: T[]
+  meta: PaginationMeta
+}
+
+// Create axios instance
+export const axiosInstance = axios.create({
   baseURL: env.API_BASE_URL,
   timeout: 30000,
   headers: {
@@ -20,7 +47,7 @@ const api = axios.create({
 })
 
 // Request interceptor - Add auth token
-api.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("auth_token")
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -29,7 +56,7 @@ api.interceptors.request.use((config) => {
 })
 
 // Response interceptor - Handle auth errors
-api.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -39,33 +66,38 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-export { api }
 ```
 
 ### Service Layer Pattern
 ```tsx
-// modules/auth/auth-service.ts
-import type { ApiResponse } from "~/shared/api/base-client"
-import type { AuthCredentials, AuthResponse } from "./auth-types"
+// modules/[feature]/[feature]-service.ts
+import { axiosInstance } from "~/shared/lib/axios"
+import type { ApiResponse } from "~/shared/lib/axios"
+import type { Credentials, Response } from "./[feature]-types"
 
-class AuthService {
-  async login(credentials: AuthCredentials): Promise<ApiResponse<AuthResponse>> {
-    // Implementation
-    return {
-      data: { user, token },
-      message: "Login successful",
-      success: true,
-    }
+class FeatureService {
+  async action(credentials: Credentials): Promise<ApiResponse<Response>> {
+    const response = await axiosInstance.post<ApiResponse<Response>>(
+      "/api/endpoint",
+      credentials
+    )
+    return response.data
   }
 
-  async logout(): Promise<void> {
-    localStorage.removeItem("auth_token")
+  async cleanup(): Promise<void> {
+    await axiosInstance.post("/api/cleanup")
+    localStorage.removeItem("token")
   }
 }
 
-export default new AuthService()
+export default new FeatureService()
 ```
+
+**Key Points**:
+- Axios instance defined in `shared/lib/axios.ts` (not `shared/api/`)
+- API types (ApiResponse, PaginationParams, etc.) defined in same file
+- Import from `~/shared/lib/axios`
+- Service files use pattern: `[feature]-service.ts`
 
 ## Provider Pattern
 
@@ -139,27 +171,26 @@ export default function App() {
 
 ### Simple Hook
 ```tsx
-// modules/auth/use-auth.ts
-import { useAuthStore } from "./auth-store"
-import type { AuthCredentials } from "./auth-types"
+// modules/[feature]/use-[feature].ts
+import { useFeatureStore } from "./[feature]-store"
 
-export function useAuth() {
-  const user = useAuthStore((s) => s.user)
-  const isLoading = useAuthStore((s) => s.isLoading)
-  const error = useAuthStore((s) => s.error)
-  const login = useAuthStore((s) => s.login)
-  const logout = useAuthStore((s) => s.logout)
-  const clearError = useAuthStore((s) => s.clearError)
+export function useFeature() {
+  const data = useFeatureStore((s) => s.data)
+  const isLoading = useFeatureStore((s) => s.isLoading)
+  const error = useFeatureStore((s) => s.error)
+  const action = useFeatureStore((s) => s.action)
+  const reset = useFeatureStore((s) => s.reset)
+  const clearError = useFeatureStore((s) => s.clearError)
 
-  const isAuthenticated = !!user
+  const isReady = !!data
 
   return {
-    user,
-    isAuthenticated,
+    data,
+    isReady,
     isLoading,
     error,
-    login,
-    logout,
+    action,
+    reset,
     clearError,
   }
 }
@@ -167,53 +198,73 @@ export function useAuth() {
 
 ### React Query Hook
 ```tsx
-// modules/user/use-user-profile.ts
+// modules/[feature]/use-[feature]-data.ts
 import { useQuery } from "@tanstack/react-query"
-import type { User } from "./user-types"
+import type { DataType } from "./[feature]-types"
 
-async function fetchUserProfile(userId: string): Promise<User> {
+async function fetchData(id: string): Promise<DataType> {
   // Implementation
 }
 
-export function useUserProfile(userId: string) {
+export function useFeatureData(id: string) {
   return useQuery({
-    queryKey: ["user-profile", userId],
-    queryFn: () => fetchUserProfile(userId),
-    enabled: !!userId,
+    queryKey: ["feature-data", id],
+    queryFn: () => fetchData(id),
+    enabled: !!id,
   })
 }
 ```
 
 ## Module Organization
 
-### Flat Structure (Simple Features)
+**IMPORTANT**: Every module MUST have `index.ts` for barrel exports
+
+### Flat Structure (Recommended)
 ```
-modules/products/
-├── index.ts                      # Barrel exports
-├── products-components.tsx       # All components
-└── products-types.ts             # Type definitions
+modules/[feature]/
+├── index.ts              # Barrel exports (REQUIRED)
+├── [feature]-store.ts    # Zustand store (optional)
+├── [feature]-service.ts  # API calls (optional)
+├── [feature]-types.ts    # Type definitions
+├── [feature]-components.tsx   # Components (optional)
+└── use-[feature].ts      # Custom hook (optional)
+```
+
+**Barrel Export Example**:
+```tsx
+// modules/[feature]/index.ts (REQUIRED for each module)
+export * from "./[feature]-service"
+export { useFeatureStore } from "./[feature]-store"
+export type { FeatureState, FeatureData } from "./[feature]-types"
+export { useFeature } from "./use-[feature]"
+```
+
+**Import Usage**:
+```tsx
+// ✅ Correct - Import from module
+import { useFeature, useFeatureStore } from "~/modules/[feature]"
+
+// ❌ Wrong - No modules/index.ts exists
+import { useFeature } from "~/modules"
+```
+
+### Simple Module (No State)
+```
+modules/[feature]/
+├── index.ts                      # Barrel exports (REQUIRED)
+├── [feature]-components.tsx      # Components
+└── [feature]-types.ts            # Types
 ```
 
 **Example**:
 ```tsx
-// modules/products/index.ts
-export * from "./products-components"
-export * from "./products-types"
+// modules/[feature]/index.ts
+export * from "./[feature]-components"
+export type * from "./[feature]-types"
 
-// modules/products/products-components.tsx
-export function ProductGrid({ products }: Props) { }
-export function ProductFilters() { }
-export function ProductCard({ product }: Props) { }
-```
-
-### With State Management
-```
-modules/auth/
-├── index.ts              # Barrel exports
-├── auth-store.ts         # Zustand store
-├── auth-service.ts       # API service
-├── auth-types.ts         # Type definitions
-└── use-auth.ts           # Custom hook
+// modules/[feature]/[feature]-components.tsx
+export function FeatureGrid({ items }: Props) { }
+export function FeatureCard({ item }: Props) { }
 ```
 
 ## Route Composition Pattern
@@ -238,24 +289,24 @@ export default function HomePage() {
 
 ### Route with Module Integration
 ```tsx
-// routes/products/index.tsx
+// routes/[page]._index.tsx
 import { useState } from "react"
-import type { Product } from "~/modules/products"
-import { ProductFilters, ProductGrid } from "~/modules/products"
+import type { DataType } from "~/modules/[feature]"
+import { FeatureFilters, FeatureGrid } from "~/modules/[feature]"
 import { PageHeader } from "~/shared/components/page-header"
 import { Button } from "~/shared/components/ui"
 
-export default function ProductsPage() {
+export default function FeaturePage() {
   const [selectedSort, setSelectedSort] = useState("newest")
 
   return (
     <div>
-      <PageHeader title="Products" description="Product catalog">
-        <Button intent="primary">Add Product</Button>
+      <PageHeader title="Feature" description="Feature description">
+        <Button intent="primary">Add Item</Button>
       </PageHeader>
 
-      <ProductFilters />
-      <ProductGrid products={products} />
+      <FeatureFilters />
+      <FeatureGrid items={items} />
     </div>
   )
 }
@@ -326,8 +377,11 @@ export function PageHeader({ title, description, children }: PageHeaderProps) {
 ## Type Definition Pattern
 
 ### API Types
+
+**Location**: `shared/lib/axios.ts` (NOT `shared/api/` or `shared/types/`)
+
 ```tsx
-// shared/api/base-client.ts
+// shared/lib/axios.ts
 export interface ApiResponse<T = any> {
   data: T
   message?: string
@@ -354,43 +408,38 @@ export interface PaginatedResponse<T> {
 }
 ```
 
+**Import pattern**:
+```tsx
+import { axiosInstance, type ApiResponse } from "~/shared/lib/axios"
+```
+
 ### Feature Types
 ```tsx
-// modules/auth/auth-types.ts
-export type UserRole = "admin" | "user" | "guest"
+// modules/[feature]/[feature]-types.ts
+export type Status = "idle" | "loading" | "success" | "error"
 
-export interface User {
+export interface DataItem {
   id: string
-  email: string
   name: string
-  role: UserRole
-  avatar?: string
+  description?: string
   createdAt: string
   updatedAt: string
 }
 
-export interface AuthCredentials {
-  email: string
-  password: string
-}
-
-export interface AuthResponse {
-  user: User
-  token: string
-}
-
-export interface AuthState {
-  user: User | null
-  token: string | null
+export interface FeatureState {
+  data: DataItem | null
+  status: Status
   isLoading: boolean
   error: string | null
-  login: (credentials: AuthCredentials) => Promise<void>
-  logout: () => void
+  fetchData: (id: string) => Promise<void>
+  reset: () => void
   clearError: () => void
 }
 ```
 
 ## Environment Configuration
+
+**Location**: `shared/config/environment.ts` (no index.ts)
 
 ```tsx
 // shared/config/environment.ts
@@ -410,3 +459,42 @@ export const env = {
   isProduction: import.meta.env.PROD,
 } as const
 ```
+
+**Import pattern** (direct import, no barrel):
+```tsx
+import { env } from "~/shared/config/environment"
+```
+
+## Shared Directory Import Patterns
+
+### With Barrel Exports (has index.ts/tsx)
+```tsx
+// ✅ Use barrel exports
+import { Button, TextField } from "~/shared/components/ui"
+import { cn, formatDate } from "~/shared/utils"
+import type { ApiResponse, User } from "~/shared/types"
+```
+
+### Without Barrel Exports (NO index)
+```tsx
+// ✅ Direct imports
+import { axiosInstance } from "~/shared/lib/axios"
+import { env } from "~/shared/config/environment"
+import { APP_NAME } from "~/shared/constants/app-constants"
+import { ThemeProvider } from "~/shared/providers/theme-provider"
+import { QueryProvider } from "~/shared/providers/query-provider"
+import { MainLayout } from "~/shared/layouts/main-layout"
+import { PageHeader } from "~/shared/components/page-header"
+import { useLocalStorage } from "~/shared/hooks/use-local-storage"
+```
+
+## Key Rules Summary
+
+1. **Modules**: Each module MUST have `index.ts` for barrel exports
+2. **NO** `modules/index.ts` at root level
+3. **Import from modules**: `from "~/modules/[feature]"` (not `from "~/modules"`)
+4. **Axios**: Located in `shared/lib/axios.ts` (NOT `shared/api/`)
+5. **API Types**: Defined in `shared/lib/axios.ts` alongside axios instance
+6. **Shared directories with index**: `components/ui/`, `utils/`, `types/`, `stores/`
+7. **Shared directories WITHOUT index**: `lib/`, `config/`, `constants/`, `providers/`, `layouts/`, `components/`, `hooks/`
+8. **Import pattern**: Use barrel exports where available, direct imports otherwise

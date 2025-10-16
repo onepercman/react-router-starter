@@ -19,7 +19,7 @@ export default flatRoutes() satisfies RouteConfig
 | File | URL | Description |
 |------|-----|-------------|
 | `_index.tsx` | `/` | Root index route |
-| `about.tsx` | `/about` | Static route |
+| `[page].tsx` | `/[page]` | Static route |
 
 ### 2. Nested Routes (Dot Delimiter)
 
@@ -27,10 +27,8 @@ Use **dot notation** (`.`) to create nested URL paths:
 
 | File | URL | Description |
 |------|-----|-------------|
-| `products._index.tsx` | `/products` | Nested index route |
-| `products.new.tsx` | `/products/new` | Nested static route |
-| `auth.login.tsx` | `/auth/login` | Nested route |
-| `auth.register.tsx` | `/auth/register` | Nested route |
+| `[page]._index.tsx` | `/[page]` | Nested index route |
+| `[page].[subpage].tsx` | `/[page]/[subpage]` | Nested static route |
 
 ### 3. Dynamic Segments
 
@@ -38,18 +36,17 @@ Use **dollar sign** (`$`) prefix for dynamic parameters:
 
 | File | URL | Params |
 |------|-----|--------|
-| `products.$id.tsx` | `/products/123` | `{ id: "123" }` |
-| `blog.$slug.tsx` | `/blog/hello-world` | `{ slug: "hello-world" }` |
-| `users.$userId.posts.$postId.tsx` | `/users/1/posts/5` | `{ userId: "1", postId: "5" }` |
+| `[page].$id.tsx` | `/[page]/123` | `{ id: "123" }` |
+| `[page].$slug.tsx` | `/[page]/item-name` | `{ slug: "item-name" }` |
+| `[page].$id.[sub].$subId.tsx` | `/[page]/1/[sub]/5` | Multiple params |
 
 **Accessing params in component**:
 ```tsx
 import { useParams } from "react-router"
 
-export default function ProductDetail() {
+export default function DetailPage() {
   const { id } = useParams()
-  // id is available as string
-  return <div>Product ID: {id}</div>
+  return <div>Item ID: {id}</div>
 }
 ```
 
@@ -60,21 +57,20 @@ Parent layouts wrap child routes using `<Outlet />`:
 **File structure**:
 ```
 routes/
-├── auth.tsx           # Layout for /auth/*
-├── auth.login.tsx     # /auth/login
-└── auth.register.tsx  # /auth/register
+├── [layout].tsx           # Layout for /[layout]/*
+├── [layout].[page].tsx    # /[layout]/[page]
+└── [layout].[other].tsx   # /[layout]/[other]
 ```
 
 **Layout implementation**:
 ```tsx
-// app/routes/auth.tsx
+// app/routes/[layout].tsx
 import { Outlet } from "react-router"
 
-export default function AuthLayout() {
+export default function Layout() {
   return (
-    <div className="min-h-screen bg-gradient-to-br">
+    <div className="min-h-screen">
       <div className="container">
-        {/* All child routes render here */}
         <Outlet />
       </div>
     </div>
@@ -84,100 +80,97 @@ export default function AuthLayout() {
 
 **Child route**:
 ```tsx
-// app/routes/auth.login.tsx
-export default function LoginPage() {
-  return <div>Login form here</div>
+// app/routes/[layout].[page].tsx
+export default function Page() {
+  return <div>Page content</div>
 }
-// This renders INSIDE the AuthLayout's <Outlet />
+// Renders inside Layout's <Outlet />
 ```
 
 ### 5. Special Conventions
 
-| Pattern | Purpose | Example |
-|---------|---------|---------|
-| `_layout.tsx` | Pathless layout (wraps children without URL change) | Shared UI without affecting URL |
-| `$.tsx` | Catch-all route (404 handler) | Matches any unmatched routes |
-| `($optional).tsx` | Optional route segment | `/products` and `/products/featured` both valid |
-| `[bracket].tsx` | Escape special characters | File named `[blog].tsx` → `/blog` route |
+| Pattern | Purpose | Description |
+|---------|---------|-------------|
+| `_layout.tsx` | Pathless layout | Wraps children without URL change |
+| `$.tsx` | Catch-all route | 404 handler for unmatched routes |
+| `($optional).tsx` | Optional segment | Multiple URL patterns valid |
+| `[bracket].tsx` | Escape special chars | Literal bracket in route name |
 
-## Current Project Structure
+## Example Route Structure
 
 ```
 app/routes/
 ├── _index.tsx              # /
-├── dashboard._index.tsx    # /dashboard
-├── products._index.tsx     # /products
-├── products.$id.tsx        # /products/:id
-├── auth.tsx                # Layout for /auth/*
-└── auth.login.tsx          # /auth/login
+├── [page]._index.tsx       # /[page]
+├── [page].$id.tsx          # /[page]/:id
+├── [layout].tsx            # Layout for /[layout]/*
+└── [layout].[page].tsx     # /[layout]/[page]
 ```
 
 ## Rules and Best Practices
 
 ### ✅ DO
 
-- Use **flat file structure** with dot notation for nested routes
+- Use flat file structure with dot notation
 - Use `_index.tsx` for index routes
-- Use `$param` prefix for dynamic segments
-- Create parent layout files without `_index` suffix (e.g., `auth.tsx`)
-- Name files in `kebab-case` (e.g., `user-profile.tsx`)
-- Keep route components thin - delegate to modules for business logic
+- Use `$param` for dynamic segments
+- Name files in `kebab-case`
+- Keep routes thin - delegate to modules
 
 ### ❌ DON'T
 
-- Use nested folders like `auth/login/index.tsx` - **it won't work!**
-- Add `_index` to parent layout names (use `auth.tsx`, not `auth._index.tsx`)
-- Put business logic directly in route files
-- Mix concerns - routes should only compose from modules
+- Use nested folders (won't work with flatRoutes)
+- Add `_index` to parent layout names
+- Put business logic in route files
+- Mix concerns - routes compose from modules only
 
 ## Common Patterns
 
 ### Loading Data
 
 ```tsx
-// app/routes/products.$id.tsx
+// app/routes/[page].$id.tsx
 import { useParams } from "react-router"
-import { useProduct } from "~/modules/products"
+import { useData } from "~/modules/[feature]"
 
-export default function ProductDetail() {
+export default function DetailPage() {
   const { id } = useParams()
-  const { data: product, isLoading } = useProduct(id)
+  const { data, isLoading } = useData(id)
 
   if (isLoading) return <div>Loading...</div>
-  if (!product) return <div>Not found</div>
+  if (!data) return <div>Not found</div>
 
-  return <ProductView product={product} />
+  return <DataView data={data} />
 }
 ```
 
 ### Protected Routes
 
 ```tsx
-// app/routes/dashboard._index.tsx
+// app/routes/[protected]._index.tsx
 import { Navigate } from "react-router"
-import { useAuth } from "~/modules/auth"
-import { DashboardView } from "~/modules/dashboard"
+import { useFeature } from "~/modules/[feature]"
 
-export default function Dashboard() {
-  const { user, isLoading } = useAuth()
+export default function ProtectedPage() {
+  const { user, isLoading } = useFeature()
 
   if (isLoading) return <div>Loading...</div>
-  if (!user) return <Navigate to="/auth/login" replace />
+  if (!user) return <Navigate to="/[login]" replace />
 
-  return <DashboardView user={user} />
+  return <PageView user={user} />
 }
 ```
 
 ### Nested Layouts
 
 ```tsx
-// Multiple levels of layouts
+// Multiple layout levels
 routes/
-├── admin.tsx                    # /admin layout
-├── admin._index.tsx             # /admin
-├── admin.users.tsx              # /admin/users layout
-├── admin.users._index.tsx       # /admin/users
-└── admin.users.$id.tsx          # /admin/users/:id
+├── [layout].tsx                    # Layout
+├── [layout]._index.tsx             # Index
+├── [layout].[sub].tsx              # Sub layout
+├── [layout].[sub]._index.tsx       # Sub index
+└── [layout].[sub].$id.tsx          # Detail
 ```
 
 ### Catch-All Route (404)
@@ -194,25 +187,6 @@ export default function NotFound() {
     </div>
   )
 }
-```
-
-## Migration from Old Pattern
-
-If you have old nested folder structure:
-
-**Before (doesn't work with flatRoutes)**:
-```
-routes/
-└── auth/
-    └── login/
-        └── index.tsx
-```
-
-**After (correct)**:
-```
-routes/
-├── auth.tsx         # Layout
-└── auth.login.tsx   # Page
 ```
 
 ## References

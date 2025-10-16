@@ -1,7 +1,5 @@
 # Architecture
 
-> **Template Structure** - This is a starter template. Directory structure will evolve based on your features.
-
 ## Directory Structure
 
 ```
@@ -14,31 +12,29 @@ app/
 │   ├── auth.tsx              # Layout for /auth/*
 │   └── auth.login.tsx        # /auth/login
 │
-├── modules/             # Feature-based business logic
-│   ├── [feature]/
-│   │   ├── index.ts             # Barrel exports
-│   │   ├── [feature]-components.tsx  # Components (flat structure)
-│   │   ├── [feature]-store.ts   # Zustand state (optional)
-│   │   ├── [feature]-types.ts   # Type definitions
-│   │   ├── [feature]-service.ts # API/business logic (optional)
-│   │   └── use-[feature].ts     # Custom hooks (optional)
-│   └── index.ts         # Central module exports
+├── modules/             # Feature-based business logic (NO index.ts at root)
+│   └── [feature]/
+│       ├── index.ts             # Barrel exports (REQUIRED for each module)
+│       ├── [feature]-store.ts   # Zustand state (optional)
+│       ├── [feature]-service.ts # API/business logic (optional)
+│       ├── [feature]-types.ts   # Type definitions
+│       ├── [feature]-components.tsx  # Components (optional)
+│       └── use-[feature].ts     # Custom hooks (optional)
 │
 └── shared/              # Global utilities and components
-    ├── api/             # Base API client
     ├── components/
-    │   ├── ui/          # IntentUI design system
-    │   └── *.tsx        # Shared components
-    ├── layouts/         # App layouts
-    ├── providers/       # Context providers
-    ├── config/          # Environment config
-    ├── constants/       # Global constants
-    ├── hooks/           # Shared hooks
-    ├── lib/             # Utility functions
-    ├── stores/          # Global stores
-    ├── styles/          # Design tokens
-    ├── types/           # Shared types
-    └── utils/           # Helper functions
+    │   ├── ui/          # IntentUI design system (has index.tsx)
+    │   └── *.tsx        # Shared components (no index)
+    ├── config/          # Environment config (no index)
+    ├── constants/       # Global constants (no index)
+    ├── hooks/           # Shared hooks (no index)
+    ├── layouts/         # App layouts (no index)
+    ├── lib/             # Core libraries: axios, primitives (no index)
+    ├── providers/       # Context providers (no index)
+    ├── stores/          # Global stores (has index.ts)
+    ├── styles/          # Design tokens (no index)
+    ├── types/           # Shared types (has index.ts)
+    └── utils/           # Utility functions: cn, formatters (has index.ts)
 ```
 
 ## Layer Responsibilities
@@ -112,7 +108,7 @@ export default function AuthLayout() {
 **Should**:
 - Organize by feature/domain (auth, dashboard, products, etc.)
 - Contain stores, hooks, services, components for that feature
-- Export via barrel exports (index.ts)
+- **ALWAYS have index.ts for barrel exports**
 - Be reusable across multiple routes
 - Encapsulate feature-specific logic
 
@@ -121,48 +117,65 @@ export default function AuthLayout() {
 - Contain route-specific code
 - Mix multiple unrelated features
 
-**Module Structure Options**:
-
-*Flat (recommended for simple features)*
+**Module Structure (Flat - Recommended)**:
 ```
 modules/feature/
-├── index.ts                    # Barrel exports
-├── feature-components.tsx      # All components
-├── feature-types.ts            # Types
-└── feature-store.ts            # Store (optional)
+├── index.ts                    # Barrel exports (REQUIRED)
+├── feature-store.ts            # Zustand store (optional)
+├── feature-service.ts          # API calls (optional)
+├── feature-types.ts            # Type definitions
+├── feature-components.tsx      # Components (optional)
+└── use-feature.ts              # Custom hooks (optional)
 ```
 
-*Nested (for complex features)*
-```
-modules/feature/
-├── components/
-├── hooks/
-├── index.ts
-└── feature-types.ts
-```
-
-**Example Barrel Export**:
+**Example Barrel Export** (Required for every module):
 ```tsx
-// modules/auth/index.ts
-export * from "./auth-service"
-export { useAuthStore } from "./auth-store"
-export type { User, AuthState } from "./auth-types"
-export { useAuth } from "./use-auth"
+// modules/[feature]/index.ts
+export * from "./[feature]-service"
+export { use[Feature]Store } from "./[feature]-store"
+export type { [Feature]State } from "./[feature]-types"
+export { use[Feature] } from "./use-[feature]"
 ```
+
+**Key Rules**:
+- Every module MUST have `index.ts` for barrel exports
+- NO `modules/index.ts` at root level
+- Import pattern: `from "~/modules/[feature]"` (not `from "~/modules"`)
 
 ### Shared (`app/shared/`)
 **Purpose**: Global utilities and UI components
 
-**Should**:
-- `components/ui/` - IntentUI design system components
-- `components/` - Custom shared components used by 2+ features
-- `lib/` - Utility functions (cx, formatters, etc.)
-- `styles/` - Design system tokens and global styles
-- `types/` - Types shared across 2+ features
+**Structure and barrel exports**:
+- `components/ui/` - IntentUI design system (has `index.tsx`)
+- `components/` - Shared components used by 2+ features (NO index)
+- `config/` - Environment configuration (NO index)
+- `constants/` - Global constants (NO index)
+- `hooks/` - Shared hooks (NO index)
+- `layouts/` - App layouts (NO index)
+- `lib/` - Core libraries: axios instance, primitives (NO index)
+- `providers/` - Context providers: Query, Theme (NO index)
+- `stores/` - Global stores (has `index.ts`)
+- `styles/` - Design system tokens and global CSS (NO index)
+- `types/` - Shared types (has `index.ts`)
+- `utils/` - Utility functions: cn, formatters (has `index.ts`)
+
+**Import patterns**:
+```tsx
+// ✅ With barrel exports
+import { Button } from "~/shared/components/ui"
+import { cn } from "~/shared/utils"
+import type { ApiResponse } from "~/shared/types"
+
+// ✅ Direct imports (no barrel export)
+import { axios } from "~/shared/lib/axios"
+import { env } from "~/shared/config/environment"
+import { ThemeProvider } from "~/shared/providers/theme-provider"
+import { PageHeader } from "~/shared/components/page-header"
+```
 
 **Should NOT**:
 - Contain feature-specific logic
-- Have deep nesting (keep flat)
+- Create barrel exports for directories marked "NO index"
 - Include one-off utilities (keep in feature module)
 
 ## Import Flow
@@ -180,61 +193,76 @@ Routes → Modules → Shared
 **Examples**:
 ```tsx
 // ✅ Correct
-// In app/routes/dashboard.tsx
-import { DashboardView } from "~/modules/dashboard"
+// In app/routes/[page].tsx
+import { FeatureView } from "~/modules/[feature]"
 import { Button } from "~/shared/components/ui"
 
-// In app/modules/dashboard/components/dashboard-view.tsx
-import { useAuthStore } from "~/modules/auth"
+// In app/modules/[feature]/[feature]-components.tsx
+import { useOtherFeatureStore } from "~/modules/[other-feature]"
 import { Card } from "~/shared/components/ui"
 
-// In app/shared/components/custom-header.tsx
+// In app/shared/components/custom-component.tsx
 import { Button } from "~/shared/components/ui"
-import { cx } from "~/shared/lib/primitive"
+import { cn } from "~/shared/utils"
 
 // ❌ Wrong
 // In app/shared/components/something.tsx
-import { useAuth } from "~/modules/auth"  // Shared importing module
+import { useFeature } from "~/modules/[feature]"  // Shared importing module
 
-// In app/modules/auth/index.ts
-import { Dashboard } from "~/routes/dashboard"  // Module importing route
+// In app/modules/[feature]/index.ts
+import { Page } from "~/routes/page"  // Module importing route
+
+// In any file
+import { something } from "~/modules"  // NO modules/index.ts exists
 ```
 
 ## File Naming Conventions
 
 ### Folders
 - Always `kebab-case`
-- Feature-based names (auth, user-profile, order-management)
+- Feature-based names (e.g., `user-profile`, `order-management`)
 
 ### Files
 - Component files: `kebab-case.tsx` (e.g., `login-form.tsx`)
-- Hook files: `use-feature.ts` (e.g., `use-auth.ts`)
-- Store files: `feature-store.ts` (e.g., `auth-store.ts`)
-- Type files: `feature-types.ts` (e.g., `auth-types.ts`)
-- Service files: `feature-service.ts` (e.g., `auth-service.ts`)
+- Hook files: `use-[feature].ts` (e.g., `use-local-storage.ts`)
+- Store files: `[feature]-store.ts` (e.g., `user-store.ts`)
+- Type files: `[feature]-types.ts` (e.g., `user-types.ts`)
+- Service files: `[feature]-service.ts` (e.g., `api-service.ts`)
 - Utility files: `kebab-case.ts` (e.g., `format-date.ts`)
 
 ### Component Names
 - Always `PascalCase`
-- Descriptive names (LoginForm, UserProfileCard, OrderList)
+- Descriptive names (e.g., `UserProfileCard`, `OrderList`)
 
 ### Function Names
 - Always `camelCase`
-- Verb-based for actions (fetchUser, validateEmail, formatCurrency)
-- `use` prefix for hooks (useAuth, useUserProfile)
+- Verb-based for actions (e.g., `fetchData`, `validateEmail`, `formatCurrency`)
+- `use` prefix for hooks (e.g., `useLocalStorage`, `useUserProfile`)
 
 ## Module Creation Checklist
 
 When creating a new module:
 
 1. Create feature directory: `app/modules/[feature-name]/`
-2. Add `index.ts` for barrel exports
-3. Create subdirectories as needed:
-   - `components/` - Feature-specific components
-   - `hooks/` - Custom hooks
-   - Optional: `[feature]-store.ts`, `[feature]-types.ts`, `[feature]-service.ts`
+2. **REQUIRED**: Add `index.ts` for barrel exports
+3. Create files as needed:
+   - `[feature]-types.ts` - Type definitions (recommended)
+   - `[feature]-store.ts` - Zustand store (optional)
+   - `[feature]-service.ts` - API calls (optional)
+   - `[feature]-components.tsx` - Components (optional)
+   - `use-[feature].ts` - Custom hooks (optional)
 4. Export public API through `index.ts`
 5. Keep internal implementation private
+
+**Example**:
+```bash
+# Creating new module
+mkdir app/modules/[feature-name]
+touch app/modules/[feature-name]/index.ts
+touch app/modules/[feature-name]/[feature-name]-types.ts
+touch app/modules/[feature-name]/[feature-name]-store.ts
+touch app/modules/[feature-name]/[feature-name]-service.ts
+```
 
 ## Migration from Routes to Modules
 

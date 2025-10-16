@@ -1,4 +1,4 @@
-import type { ApiResponse } from "~/shared/api/base-client"
+import type { ApiResponse } from "~/shared/lib/axios"
 import type { AuthCredentials, AuthResponse } from "./auth-types"
 
 const mockUsers = [
