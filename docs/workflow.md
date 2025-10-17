@@ -64,24 +64,29 @@ Would you like me to proceed with this approach?
 
 **Always follow this sequence:**
 
-1. **Check** if component exists in `~/shared/components/ui`
-2. **If exists** → Use it directly (DO NOT add again)
-3. **If NOT exists** → Ask user → Add from IntentUI
-4. **Use `pnpm`** for installation
+1. **Check config**: `cat components.json | grep -A1 "registries"`
+2. **Check exists**: `ls app/shared/components/ui/[component].tsx`
+3. **If exists** → Use it directly (DO NOT add again)
+4. **If NOT exists** → Ask user → Add from configured registry
+5. **Use `pnpm`** for installation
 
 ```bash
-# Step 1: Check first
+# Step 1: Check registry config
+cat components.json | grep -A1 "registries"
+
+# Step 2: Check if exists
 ls app/shared/components/ui/button.tsx
 
-# Step 2: If not exists, ask user, then:
+# Step 3: If not exists, ask user, then:
+npx shadcn@latest add @[registry]/button
+# or use project alias (check package.json)
 pnpm add-ui button
-# or
-npx shadcn@latest add @intentui/button
 ```
 
 **❌ DON'T**:
 - Add components that already exist
 - Re-add same component (overwrites customizations)
+- Guess registry name without checking config
 - Skip checking existing components
 
 ## Module Creation

@@ -1,20 +1,29 @@
 # Components
 
-## Component Priority
+## shadcn/ui Registry System
 
-**CRITICAL**: Always check `~/shared/components/ui` before adding components.
+**This project uses shadcn CLI** to add components from registries.
 
-### Decision Flow
+### Configuration
+
+**Check `components.json`** for project setup:
+- `registries`: Available UI registries (e.g., `@intentui`, `@shadcn`)
+- `iconLibrary`: Icon library to use (e.g., `lucide-react`)
+- `aliases`: Component import paths
+
+### Component Priority
+
+**CRITICAL**: Always check `~/shared/components/ui` before adding.
 
 1. **First**: Check existing in `~/shared/components/ui`
    - If exists, use directly - DON'T add again
-2. **Second**: Add from IntentUI **ONLY if missing**:
+2. **Second**: Add from configured registry **ONLY if missing**:
    ```bash
-   npx shadcn@latest add @intentui/[component]
-   # or
+   npx shadcn@latest add @[registry]/[component]
+   # or use project alias (check package.json scripts)
    pnpm add-ui [component]
    ```
-3. **Third**: Use React Aria directly
+3. **Third**: Use base unstyled library directly (check registry docs)
 4. **Last**: Create custom wrapper
 5. **Never**: Use raw HTML when UI component exists
 
@@ -112,23 +121,16 @@ export function Component({ intent, size, className, ...props }: Props) {
 }
 ```
 
-## IntentUI Components
+## Registry Components
 
-Check these first:
+**Check available components** in `~/shared/components/ui`:
 
 ```tsx
 import {
   Button,
   TextField,
   Form,
-  Select,
-  ComboBox,
-  Dialog,
-  Modal,
-  Popover,
-  Menu,
-  Table,
-  Tabs,
+  // ... other installed components
 } from "~/shared/components/ui"
 ```
 
@@ -141,19 +143,27 @@ import {
 ls app/shared/components/ui/[component].tsx
 ```
 
-**Step 2: Add ONLY if missing**
+**Step 2: Check configured registry**
 ```bash
-npx shadcn@latest add @intentui/button
-# or
-pnpm add-ui button
+# View components.json to see registries
+cat components.json | grep -A1 "registries"
+```
+
+**Step 3: Add ONLY if missing**
+```bash
+npx shadcn@latest add @[registry]/[component]
+# or use project alias (defined in package.json)
+pnpm add-ui [component]
 ```
 
 **❌ DON'T**:
 - Add components that already exist
 - Re-add same component (overwrites customizations)
+- Guess registry name without checking config
 
 **✅ DO**:
 - Check directory first
+- Verify registry in `components.json`
 - Add only if doesn't exist
 - Import existing directly
 
@@ -289,31 +299,33 @@ export function PageHeader({ title, description, size, className }: Props) {
 
 ## Icons
 
-**Check `components.json`** for icon library:
+**Check `components.json`** for configured icon library:
 
-```json
-{
-  "iconLibrary": "lucide-react"
-}
+```bash
+# Check icon library
+cat components.json | grep "iconLibrary"
 ```
 
 Import from configured library:
 
 ```tsx
-// If iconLibrary is "lucide-react":
+// Example: if iconLibrary is "lucide-react"
 import { User, Settings, Home } from "lucide-react"
 
 <User className="size-5" />
 <Settings className="size-4" />
+
+// For other libraries, adjust import accordingly
 ```
 
 ## Checklist
 
-- [ ] **FIRST**: Check if exists in `~/shared/components/ui`
+- [ ] **FIRST**: Check `components.json` for registry config
+- [ ] **Check exists**: `ls app/shared/components/ui/[component].tsx`
 - [ ] **If exists**: Use directly, import from barrel
-- [ ] **If NOT exists**: Add from IntentUI
-- [ ] **NEVER**: Re-add existing components
-- [ ] Use React Aria, not raw HTML
+- [ ] **If NOT exists**: Add from configured registry
+- [ ] **NEVER**: Re-add existing components or guess registry
+- [ ] Use base unstyled lib (from registry docs), not raw HTML
 - [ ] `className` only for layout/positioning
 - [ ] Component props for design system
 - [ ] Design system tokens for colors

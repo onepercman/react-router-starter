@@ -17,6 +17,7 @@ Comprehensive development guide for React Router Starter.
 ### Core Architecture
 - **[architecture.md](architecture.md)** - 3-layer system, module organization, import hierarchy
 - **[routing.md](routing.md)** - React Router v7 file-based routing conventions
+- **[rendering.md](rendering.md)** - Rendering modes (CSR/SSR/SSG), configuration, patterns
 
 ### Development Standards
 - **[coding-standards.md](coding-standards.md)** - TypeScript, naming, imports, patterns

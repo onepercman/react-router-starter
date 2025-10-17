@@ -4,17 +4,19 @@ Quick reference for Claude Code. Full docs in [docs/](docs/).
 
 ## Tech Stack
 
-- **React 19** + **React Router v7** (file-based, SSR off)
+- **React 19** + **React Router v7** (file-based routing)
 - **TypeScript** (strict) + **Vite** + **pnpm**
-- **Tailwind CSS v4** + **React Aria** + **IntentUI**
+- **Tailwind CSS v4** + **shadcn/ui** (registry-based)
 - **Zustand** + **React Query** + **Axios**
+
+**⚠️ Check `components.json` for UI registry, icons, rendering mode (CSR/SSR/SSG)**
 
 ## Critical Rules (MUST FOLLOW)
 
 1. **Package Manager**: ALWAYS use `pnpm` - Never npm/yarn/bun
 2. **Workflow**: Plan → Present → Confirm → Implement (never skip confirmation)
 3. **Design tokens only** - Never hardcoded colors (`bg-primary` not `bg-blue-500`)
-4. **UI components first** - Check `~/shared/components/ui`, use IntentUI before custom
+4. **UI components first** - Check `components.json` registry → Check `~/shared/components/ui` → Add from registry
    - **CRITICAL**: If component exists, use it - DON'T run add command again
 5. **Feature-first** - Group by domain in `modules/`, not file type
 6. **Routes compose from modules** - Routes are thin, modules contain logic
@@ -38,6 +40,17 @@ app/
 
 **Import hierarchy**: Routes → Modules → Shared
 
+## Component System
+
+**Check `components.json` for:**
+- UI registries (e.g., `@intentui`, `@shadcn`)
+- Icon library (e.g., `lucide-react`)
+- Component paths and aliases
+
+**Before adding components:**
+1. Check existing: `ls app/shared/components/ui/[component].tsx`
+2. If missing, add from configured registry via shadcn CLI
+
 ## Documentation
 
 ### Quick Access
@@ -49,10 +62,11 @@ app/
 ### Full Docs
 - [docs/README.md](docs/README.md) - Documentation index
 - [docs/architecture.md](docs/architecture.md) - 3-layer system, module patterns
+- [docs/rendering.md](docs/rendering.md) - CSR/SSR/SSG modes, configuration
 - [docs/coding-standards.md](docs/coding-standards.md) - TypeScript, naming, imports
 - [docs/api-design.md](docs/api-design.md) - HTTP client, stores, hooks
 - [docs/design-system.md](docs/design-system.md) - Color tokens, styling patterns
-- [docs/components.md](docs/components.md) - IntentUI, variants, composition
+- [docs/components.md](docs/components.md) - shadcn registry, variants, composition
 - [docs/routing.md](docs/routing.md) - React Router v7 conventions
 
 ## Common Patterns
