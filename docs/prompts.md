@@ -55,7 +55,7 @@ Create Zustand store for [feature]:
 - Include data, isLoading, error states
 - Add persist middleware
 - Type all state and actions
-- Follow store pattern from docs/api-design.md
+- Follow store pattern from docs/patterns.md
 ```
 
 ### Extract Logic to Module
@@ -200,6 +200,36 @@ Create service for [feature] in modules/[feature]/[feature]-service.ts:
 - Export as singleton: export default new FeatureService()
 ```
 
+## Error Recovery
+
+### Fix Build Errors
+```
+Analyze build error in [file]:
+1. Read full error stack trace
+2. Check recent changes: git diff [file]
+3. Verify dependencies: pnpm list [package]
+4. Check types: pnpm typecheck
+5. Apply fix + verify no regression
+```
+
+### Fix Type Errors
+```
+Resolve TypeScript error in [file]:
+1. Identify error type (missing prop, wrong type, etc)
+2. Check type definitions in [feature]-types.ts
+3. Update types or fix usage
+4. Run typecheck to verify
+```
+
+### Fix Import Errors
+```
+Resolve import error in [file]:
+1. Check file exists at import path
+2. Verify export exists in source file
+3. Check barrel exports (index.ts)
+4. Fix import path or add export
+```
+
 ## Common Fixes
 
 ### Fix All Design Violations
@@ -238,7 +268,6 @@ Audit modules/[module] for compliance:
 
 - Workflow: [docs/workflow.md](workflow.md)
 - Architecture: [docs/architecture.md](architecture.md)
-- Coding Standards: [docs/coding-standards.md](coding-standards.md)
-- API Design: [docs/api-design.md](api-design.md)
-- Design System: [docs/design-system.md](design-system.md)
-- Components: [docs/components.md](components.md)
+- Code Patterns: [docs/patterns.md](patterns.md)
+- UI Guide: [docs/ui-guide.md](ui-guide.md)
+- React Router: [docs/react-router.md](react-router.md)

@@ -16,19 +16,17 @@ Comprehensive development guide for React Router Starter.
 
 ### Core Architecture
 - **[architecture.md](architecture.md)** - 3-layer system, module organization, import hierarchy
-- **[routing.md](routing.md)** - React Router v7 file-based routing conventions
-- **[rendering.md](rendering.md)** - Rendering modes (CSR/SSR/SSG), configuration, patterns
+- **[react-router.md](react-router.md)** - Routing conventions, rendering modes (CSR/SSR/SSG)
 
 ### Development Standards
-- **[coding-standards.md](coding-standards.md)** - TypeScript, naming, imports, patterns
-- **[api-design.md](api-design.md)** - HTTP client, stores, React Query, hooks
+- **[patterns.md](patterns.md)** - TypeScript, imports, API design, stores, hooks, services
 
 ### UI & Design
-- **[design-system.md](design-system.md)** - Color tokens, theme system, styling patterns
-- **[components.md](components.md)** - IntentUI components, variants, composition rules
+- **[ui-guide.md](ui-guide.md)** - Components, design tokens, styling, variants, composition
 
 ### Development Aids
 - **[prompts.md](prompts.md)** - Common development task prompts
+- **[common-mistakes.md](common-mistakes.md)** - ⚠️ Prevention guide for frequent errors
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - ⚠️ Documentation rules & token limits
 
 ### Domain-Specific (Optional)
@@ -43,8 +41,8 @@ Comprehensive development guide for React Router Starter.
 Use slash commands to load specific context:
 ```
 /arch       - Load architecture documentation
-/standards  - Load coding standards
-/api        - Load API design patterns
+/patterns   - Load code patterns (TypeScript, API, stores)
+/ui         - Load UI guide (components, design system)
 /review     - Run code review checklist
 ```
 
@@ -53,7 +51,7 @@ Use slash commands to load specific context:
 2. Review [workflow.md](workflow.md) for development rules
 3. Deep dive into specific topics as needed
 4. Reference [architecture.md](architecture.md) when adding features
-5. Check [components.md](components.md) before creating UI
+5. Check [ui-guide.md](ui-guide.md) before creating UI
 
 ### For Contributors
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Documentation guidelines, token limits, writing standards

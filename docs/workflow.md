@@ -21,7 +21,15 @@ bun install
 
 ## Development Workflow
 
-**ALWAYS follow this sequence:**
+**Assess complexity first, then choose path:**
+
+### Simple Tasks (<3 steps)
+Execute directly + notify user of actions taken.
+
+**Examples**: Fix import, add type, format code, rename file
+
+### Complex Tasks (≥3 steps)
+Follow structured workflow:
 
 1. **Analyze** - Understand the request fully
 2. **Plan** - Create clear implementation plan
@@ -29,33 +37,31 @@ bun install
 4. **Confirm** - Wait for user approval
 5. **Implement** - Execute only after confirmation
 
-**Never skip step 4** - Always wait for user confirmation before implementing.
+**Examples**: New feature module, refactor architecture, API integration
 
-### Example Workflow
+### Example: Complex Task
 
 ```
 User: "Add authentication to the app"
 
-Claude:
-I'll help you add authentication. Here's my plan:
+Claude: This is a complex task. Here's my plan:
 
-1. Create auth module with:
-   - auth-types.ts (User, AuthState interfaces)
-   - auth-store.ts (Zustand store with login/logout)
-   - auth-service.ts (API calls)
-   - use-auth.ts (custom hook)
-   - index.ts (barrel exports)
-
-2. Add login route:
-   - routes/login.tsx
-
-3. Create LoginForm component in auth module
-
+1. Create auth module with types, store, service, hooks
+2. Add login route
+3. Create LoginForm component
 4. Add protected route wrapper
 
-Would you like me to proceed with this approach?
+Proceed? [WAIT FOR USER RESPONSE]
+```
 
-[WAIT FOR USER RESPONSE]
+### Example: Simple Task
+
+```
+User: "Fix the import order in dashboard.tsx"
+
+Claude: [Reads file, fixes imports, responds]
+Fixed import order in dashboard.tsx following the hierarchy:
+React/external → modules → shared → types
 ```
 
 ## Component Development

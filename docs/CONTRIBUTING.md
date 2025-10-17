@@ -11,7 +11,8 @@ Guidelines for maintaining and extending project documentation.
 | File Type | Max Tokens | Max Words | Purpose |
 |-----------|------------|-----------|---------|
 | **CLAUDE.md** | 600 tokens | ~450 words | Quick reference only |
-| **Core Docs** | 1,500 tokens | ~1,125 words | Main documentation files |
+| **Core Docs** | 1,500 tokens | ~1,125 words | Standard documentation |
+| **Extended Docs** | 2,500-3,000 tokens | ~1,875-2,250 words | Complex topics (patterns, UI) |
 | **Domain Docs** | 1,000 tokens | ~750 words | Domain-specific rules |
 | **README files** | 400 tokens | ~300 words | Index/navigation only |
 | **Slash Commands** | 200 tokens | ~150 words | Command instructions |
@@ -24,12 +25,11 @@ These are the main docs in `docs/`:
 docs/
 ├── workflow.md          (max 1,500 tokens)
 ├── architecture.md      (max 1,500 tokens)
-├── coding-standards.md  (max 1,500 tokens)
-├── api-design.md        (max 1,500 tokens)
-├── routing.md           (max 1,000 tokens)
-├── design-system.md     (max 1,000 tokens)
-├── components.md        (max 1,500 tokens)
+├── patterns.md          (max 3,000 tokens) - TypeScript, API, stores
+├── ui-guide.md          (max 2,500 tokens) - Components, design system
+├── react-router.md      (max 1,500 tokens) - Routing, rendering
 ├── prompts.md           (max 1,500 tokens)
+├── common-mistakes.md   (max 1,000 tokens)
 └── testing.md           (max 1,000 tokens)
 ```
 

@@ -14,14 +14,13 @@ Quick reference for Claude Code. Full docs in [docs/](docs/).
 ## Critical Rules (MUST FOLLOW)
 
 1. **Package Manager**: ALWAYS use `pnpm` - Never npm/yarn/bun
-2. **Workflow**: Plan → Present → Confirm → Implement (never skip confirmation)
-3. **Design tokens only** - Never hardcoded colors (`bg-primary` not `bg-blue-500`)
-4. **UI components first** - Check `components.json` registry → Check `~/shared/components/ui` → Add from registry
-   - **CRITICAL**: If component exists, use it - DON'T run add command again
+2. **Workflow**: Simple task (<3 steps) → Execute + notify | Complex → Plan + confirm
+3. **Design tokens only** - `bg-primary` not `bg-blue-500` (ensures theme consistency)
+4. **UI components first** - Check existing → Use → Compose
+   - ❌ DON'T: Re-add existing components, override design props, create same-name wrappers
 5. **Feature-first** - Group by domain in `modules/`, not file type
 6. **Routes compose from modules** - Routes are thin, modules contain logic
 7. **No index.ts at module root** - Each module has its own `index.ts`, no barrel at `modules/`
-8. **Documentation**: Use generic terms (`[feature]`), consolidate into existing headings
 
 ## File Structure
 
@@ -40,6 +39,22 @@ app/
 
 **Import hierarchy**: Routes → Modules → Shared
 
+## Quick Decision Tree
+
+**New task?**
+├─ Simple (<3 steps)? → Execute + notify
+└─ Complex (≥3 steps)? → Plan + confirm
+
+**Add UI?**
+├─ Exists in `~/shared/components/ui`? → Use it
+├─ Exists in module? → Reuse or extract to shared
+└─ Missing? → Check `components.json` → Add from registry
+
+**Style component?**
+├─ Layout/spacing? → `className` OK
+├─ Design props? → Use component props (`intent`, `size`)
+└─ Custom styling? → Extend with `tailwind-variants`
+
 ## Component System
 
 **Check `components.json` for:**
@@ -54,54 +69,28 @@ app/
 ## Documentation
 
 ### Quick Access
-- `/arch` - Load architecture details
-- `/standards` - Load coding standards
-- `/api` - Load API design patterns
+- `/arch` - Load architecture (3-layer system)
+- `/patterns` - Load code patterns (TypeScript, API, stores)
+- `/ui` - Load UI guide (components, design system)
+- `/router` - Load React Router (routing, rendering modes)
 - `/review` - Code review checklist
+- [Common Mistakes](docs/common-mistakes.md) - Avoid frequent errors
 
 ### Full Docs
 - [docs/README.md](docs/README.md) - Documentation index
-- [docs/architecture.md](docs/architecture.md) - 3-layer system, module patterns
-- [docs/rendering.md](docs/rendering.md) - CSR/SSR/SSG modes, configuration
-- [docs/coding-standards.md](docs/coding-standards.md) - TypeScript, naming, imports
-- [docs/api-design.md](docs/api-design.md) - HTTP client, stores, hooks
-- [docs/design-system.md](docs/design-system.md) - Color tokens, styling patterns
-- [docs/components.md](docs/components.md) - shadcn registry, variants, composition
-- [docs/routing.md](docs/routing.md) - React Router v7 conventions
+- [docs/architecture.md](docs/architecture.md) - 3-layer system, module organization
+- [docs/patterns.md](docs/patterns.md) - TypeScript, imports, API, stores, hooks
+- [docs/ui-guide.md](docs/ui-guide.md) - Components, design tokens, styling
+- [docs/react-router.md](docs/react-router.md) - Routing, rendering modes (CSR/SSR/SSG)
 
 ## Common Patterns
 
-### Module Structure
-```ts
-// modules/auth/index.ts
-export { LoginForm, SignupForm } from './auth-forms'
-export { useAuth } from './use-auth'
-export type { User, AuthState } from './auth-types'
-```
-
-### API Call + Store
-```ts
-// modules/user/user-service.ts
-export const userService = {
-  getProfile: () => axios.get<User>('/user/profile')
-}
-
-// modules/user/user-store.ts
-export const useUserStore = create<UserState>()(
-  persist((set) => ({ user: null, setUser: (u) => set({ user: u }) }),
-  { name: 'user-storage' })
-)
-```
-
-### Design Tokens
-```tsx
-// ✅ Correct
-<Button intent="primary" size="lg">Submit</Button>
-<div className="bg-primary text-fg">Content</div>
-
-// ❌ Never
-<button className="bg-blue-500 text-white">Submit</button>
-```
+See [docs/patterns.md](docs/patterns.md) for complete examples:
+- Module structure & barrel exports
+- Service layer & API integration
+- Zustand stores with persistence
+- React Query hooks
+- Design tokens & component variants
 
 ## Quick Commands
 
