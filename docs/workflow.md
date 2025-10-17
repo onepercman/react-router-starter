@@ -1,0 +1,151 @@
+# Development Workflow
+
+**CRITICAL**: These rules MUST be followed at all times.
+
+## Package Manager
+
+**ALWAYS use `pnpm`** - Never npm, yarn, bun, or others
+
+```bash
+# ✅ Correct
+pnpm install
+pnpm add axios
+pnpm dev
+pnpm build
+
+# ❌ Wrong
+npm install
+yarn add axios
+bun install
+```
+
+## Development Workflow
+
+**ALWAYS follow this sequence:**
+
+1. **Analyze** - Understand the request fully
+2. **Plan** - Create clear implementation plan
+3. **Present** - Show plan to user with details
+4. **Confirm** - Wait for user approval
+5. **Implement** - Execute only after confirmation
+
+**Never skip step 4** - Always wait for user confirmation before implementing.
+
+### Example Workflow
+
+```
+User: "Add authentication to the app"
+
+Claude:
+I'll help you add authentication. Here's my plan:
+
+1. Create auth module with:
+   - auth-types.ts (User, AuthState interfaces)
+   - auth-store.ts (Zustand store with login/logout)
+   - auth-service.ts (API calls)
+   - use-auth.ts (custom hook)
+   - index.ts (barrel exports)
+
+2. Add login route:
+   - routes/login.tsx
+
+3. Create LoginForm component in auth module
+
+4. Add protected route wrapper
+
+Would you like me to proceed with this approach?
+
+[WAIT FOR USER RESPONSE]
+```
+
+## Component Development
+
+### Adding Components
+
+**Always follow this sequence:**
+
+1. **Check** if component exists in `~/shared/components/ui`
+2. **If exists** → Use it directly (DO NOT add again)
+3. **If NOT exists** → Ask user → Add from IntentUI
+4. **Use `pnpm`** for installation
+
+```bash
+# Step 1: Check first
+ls app/shared/components/ui/button.tsx
+
+# Step 2: If not exists, ask user, then:
+pnpm add-ui button
+# or
+npx shadcn@latest add @intentui/button
+```
+
+**❌ DON'T**:
+- Add components that already exist
+- Re-add same component (overwrites customizations)
+- Skip checking existing components
+
+## Module Creation
+
+**Every module MUST have:**
+- `index.ts` for barrel exports
+- Generic naming: `[feature]-store.ts`, `[feature]-types.ts`
+- NO `modules/index.ts` at root level
+
+**Import pattern:**
+```tsx
+// ✅ Correct
+import { useFeature } from "~/modules/[feature]"
+
+// ❌ Wrong
+import { useFeature } from "~/modules"
+```
+
+## Documentation Standards
+
+When updating documentation:
+
+### Keep It Generic
+- Use placeholders: `[feature]`, `[component]`, `[module]`
+- Never mention specific names like "auth", "products", "users"
+- Focus on patterns and rules, not specific cases
+
+### Consolidate, Don't Duplicate
+- Add new content to existing headings
+- Don't create new headings for similar topics
+- Keep docs concise and scannable
+
+### Examples
+
+```tsx
+// ✅ Generic - Good
+// modules/[feature]/[feature]-store.ts
+export const useFeatureStore = create<FeatureState>(...)
+
+// ❌ Specific - Bad
+// modules/auth/auth-store.ts
+export const useAuthStore = create<AuthState>(...)
+```
+
+## Code Quality Checklist
+
+Before implementing:
+
+- [ ] Is this a new feature/module? → Plan first, ask user
+- [ ] Am I adding a component? → Check if exists first
+- [ ] Am I installing packages? → Use `pnpm`
+- [ ] Am I updating docs? → Use generic terms, consolidate headings
+- [ ] Am I importing from modules? → Use `~/modules/[feature]` pattern
+- [ ] Design system tokens only? → No hardcoded colors
+- [ ] Comments necessary? → Minimize, explain "why" not "what"
+
+## Quick Rules Summary
+
+**The Golden Rules:**
+
+1. **`pnpm` only** - No exceptions
+2. **Plan → Confirm → Implement** - Never skip confirmation
+3. **Generic docs** - Use placeholders, consolidate headings
+4. **Check before adding** - Components, packages, imports
+5. **Design tokens** - Never hardcoded colors
+6. **Routes are thin** - Delegate to modules
+7. **Module index.ts** - Required for each module, not at root

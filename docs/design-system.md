@@ -1,70 +1,69 @@
 # Design System
 
+**CRITICAL**: Never hardcoded colors. Always use tokens from `app/shared/styles/app.css`.
+
 ## Color Tokens
 
-**CRITICAL**: Never use hardcoded colors. Always use design system tokens from `app/shared/styles/app.css`.
-
-### Available Tokens
-
-#### Base Colors
+### Base
 ```
 bg              # Main background
-fg              # Main foreground/text
+fg              # Main text
 muted           # Muted background
-muted-fg        # Muted foreground/text
-border          # Border color
-input           # Input field background
-ring            # Focus ring color
+muted-fg        # Muted text
+border          # Borders
+input           # Input background
+ring            # Focus ring
 ```
 
-#### Brand Colors
+### Brand
 ```
-primary         # Primary brand color
-primary-fg      # Primary foreground (text on primary bg)
-secondary       # Secondary brand color
-secondary-fg    # Secondary foreground
+primary         # Primary color
+primary-fg      # Text on primary
+secondary       # Secondary color
+secondary-fg    # Text on secondary
 accent          # Accent color
-accent-fg       # Accent foreground
+accent-fg       # Text on accent
 ```
 
-#### Status Colors
+### Status
 ```
 success         # Success state
-success-fg      # Success foreground
-danger          # Error/danger state
-danger-fg       # Danger foreground
+success-fg      # Text on success
+danger          # Error/danger
+danger-fg       # Text on danger
 warning         # Warning state
-warning-fg      # Warning foreground
+warning-fg      # Text on warning
 ```
 
-#### Subtle Variants
+### Subtle Variants
 ```
-primary-subtle       # Subtle primary background
+primary-subtle       # Subtle primary bg
 primary-subtle-fg    # Text on subtle primary
-success-subtle       # Subtle success background
+success-subtle       # Subtle success bg
 success-subtle-fg    # Text on subtle success
-danger-subtle        # Subtle danger background
+danger-subtle        # Subtle danger bg
 danger-subtle-fg     # Text on subtle danger
 ```
 
-#### Layout Colors
+### Layout
 ```
-sidebar         # Sidebar background
+sidebar         # Sidebar bg
 sidebar-fg      # Sidebar text
-navbar          # Navigation bar background
-navbar-fg       # Navigation bar text
-overlay         # Overlay/modal background
+navbar          # Navbar bg
+navbar-fg       # Navbar text
+overlay         # Modal/overlay bg
 overlay-fg      # Overlay text
 ```
 
-#### Chart Colors
+### Charts
 ```
-chart-1 through chart-5    # Chart data colors
+chart-1 through chart-5    # Chart colors
 ```
 
 ## Usage Rules
 
-### 1. Always Use Tokens
+### Always Use Tokens
+
 ```tsx
 // ✅ Correct
 className="bg-primary text-primary-fg"
@@ -77,8 +76,9 @@ className="bg-[#ffffff] text-[#000000]"
 className="text-gray-600"
 ```
 
-### 2. Pair Correctly
-Always pair background colors with their corresponding foreground colors:
+### Pair Correctly
+
+Always pair bg/fg colors:
 
 ```tsx
 // ✅ Correct
@@ -91,8 +91,9 @@ className="bg-primary text-white"
 className="bg-danger text-fg"
 ```
 
-### 3. Secondary Text
-Use `text-muted-fg` for secondary text, NOT `text-secondary`:
+### Secondary Text
+
+Use `text-muted-fg` for secondary text:
 
 ```tsx
 // ✅ Correct
@@ -103,8 +104,9 @@ Use `text-muted-fg` for secondary text, NOT `text-secondary`:
 <p className="text-secondary">Secondary text</p>
 ```
 
-### 4. Error States
-Use `danger` tokens for error states, NOT `destructive`:
+### Error States
+
+Use `danger` tokens for errors:
 
 ```tsx
 // ✅ Correct
@@ -116,9 +118,6 @@ className="text-destructive"
 className="text-red-500"
 ```
 
-### 5. Check Available Tokens
-Before using any color, verify it exists in `app/shared/styles/app.css`.
-
 ## Common Patterns
 
 ### Main Content
@@ -126,7 +125,7 @@ Before using any color, verify it exists in `app/shared/styles/app.css`.
 className="bg-bg text-fg"
 ```
 
-### Secondary/Muted Content
+### Secondary/Muted
 ```tsx
 className="bg-muted text-muted-fg"
 ```
@@ -139,18 +138,13 @@ className="bg-primary text-primary-fg hover:bg-primary/90"
 ### Success States
 ```tsx
 className="bg-success text-success-fg"
-className="bg-success-subtle text-success-subtle-fg"  // More subtle
+className="bg-success-subtle text-success-subtle-fg"  // Subtle
 ```
 
-### Error/Danger States
+### Error/Danger
 ```tsx
 className="text-danger"
 className="bg-danger-subtle border-danger text-danger-subtle-fg"
-```
-
-### Warning States
-```tsx
-className="bg-warning text-warning-fg"
 ```
 
 ### Borders
@@ -163,12 +157,12 @@ className="border border-border"
 className="bg-input border-border text-fg"
 ```
 
-### Focus States
+### Focus
 ```tsx
 className="ring-ring focus:ring-2"
 ```
 
-### Cards/Containers
+### Cards
 ```tsx
 className="bg-bg border border-border rounded-lg"
 className="bg-muted"  // For differentiation
@@ -176,21 +170,13 @@ className="bg-muted"  // For differentiation
 
 ### Navigation
 ```tsx
-// Sidebar
-className="bg-sidebar text-sidebar-fg"
-
-// Navbar
-className="bg-navbar text-navbar-fg"
-```
-
-### Modals/Overlays
-```tsx
-className="bg-overlay text-overlay-fg"
+className="bg-sidebar text-sidebar-fg"  // Sidebar
+className="bg-navbar text-navbar-fg"    // Navbar
 ```
 
 ## Opacity Modifiers
 
-Use Tailwind opacity modifiers with tokens:
+Use Tailwind opacity with tokens:
 
 ```tsx
 className="bg-primary/90"     // 90% opacity
@@ -200,14 +186,14 @@ className="text-fg/70"        // 70% opacity
 
 ## Dark Mode
 
-Tokens automatically adapt to dark mode. Never hardcode dark mode variants:
+Tokens auto-adapt. Never hardcode dark mode:
 
 ```tsx
 // ✅ Correct
 className="bg-bg text-fg"
 
 // ❌ Wrong
-className="bg-white dark:bg-black text-black dark:text-white"
+className="bg-white dark:bg-black"
 ```
 
 ## Hover/Active States
@@ -225,12 +211,10 @@ className="bg-danger text-danger-fg hover:bg-danger/90"
 
 ## Validation Checklist
 
-Before committing component styles:
-
-- [ ] No hardcoded colors (no `blue-500`, `red-600`, etc.)
-- [ ] All colors use design system tokens
-- [ ] Background and foreground pairs match (`bg-primary` with `text-primary-fg`)
+- [ ] No hardcoded colors
+- [ ] All colors use tokens
+- [ ] Bg/fg pairs match
 - [ ] Secondary text uses `text-muted-fg`
-- [ ] Error states use `danger` tokens
-- [ ] No dark mode variants (tokens handle this)
+- [ ] Errors use `danger` tokens
+- [ ] No dark mode variants
 - [ ] All tokens exist in `app/shared/styles/app.css`

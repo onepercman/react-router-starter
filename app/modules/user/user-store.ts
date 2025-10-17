@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import { api } from "~/shared/api/base-client"
+import { api } from "~/shared/lib/axios"
 import type { UserPreferences, UserProfile } from "./user-types"
 
 interface UserState {

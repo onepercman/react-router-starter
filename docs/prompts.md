@@ -1,6 +1,6 @@
 # Common Development Prompts
 
-Quick prompts for common tasks. Always refer to detailed docs for context.
+Quick reference prompts for common tasks. Refer to detailed docs for context.
 
 ## Component Development
 
@@ -14,23 +14,24 @@ Create a new route at /[path]:
 
 ### Create Module Component
 ```
-Create [ComponentName] in modules/[module]/components:
+Create [ComponentName] in modules/[module]/[feature]-components.tsx:
 - Use tailwind-variants for styling
 - Use design system tokens only
 - Use React Aria components from ~/shared/components/ui
 - Add proper TypeScript types
 ```
 
-### Add UI Component from Registry
+### Add UI Component
 ```
-Add [component-name] from IntentUI:
-npx shadcn@latest add @intentui/[component-name]
+Check if [component] exists in ~/shared/components/ui first.
+If NOT exists, add from IntentUI:
+pnpm add-ui [component]
 ```
 
 ### Create Custom Component with Variants
 ```
 Create [ComponentName] with variants:
-- variant: [list variants]
+- intent: [list variants]
 - size: [list sizes]
 Use tailwind-variants and design tokens
 ```
@@ -40,9 +41,12 @@ Use tailwind-variants and design tokens
 ### Create New Module
 ```
 Create module for [feature] in app/modules/[feature]:
-- Structure: index.ts, components/, hooks/, [feature]-store.ts, [feature]-types.ts
-- Add barrel exports
-- Follow architecture pattern
+- [feature]-types.ts (type definitions)
+- [feature]-store.ts (Zustand store, optional)
+- [feature]-service.ts (API calls, optional)
+- [feature]-components.tsx (components, optional)
+- use-[feature].ts (custom hook, optional)
+- index.ts (barrel exports - REQUIRED)
 ```
 
 ### Create Zustand Store
@@ -51,7 +55,7 @@ Create Zustand store for [feature]:
 - Include data, isLoading, error states
 - Add persist middleware
 - Type all state and actions
-- Follow store pattern
+- Follow store pattern from docs/api-design.md
 ```
 
 ### Extract Logic to Module
@@ -59,7 +63,7 @@ Create Zustand store for [feature]:
 Move [logic/component] from routes/[route] to modules/[module]:
 - Extract business logic
 - Keep route as composition layer
-- Add barrel exports
+- Add barrel exports to module/index.ts
 ```
 
 ## Styling & Design System
@@ -68,9 +72,9 @@ Move [logic/component] from routes/[route] to modules/[module]:
 ```
 Audit [file] for design system violations:
 - Replace hardcoded colors with tokens
-- Fix incorrect token usage
+- Fix incorrect token usage (text-muted-fg not text-secondary)
 - Verify bg/fg pairings
-- Use danger tokens for errors
+- Use danger tokens for errors (not destructive/red-500)
 ```
 
 ### Apply Design Tokens
@@ -97,7 +101,7 @@ Replace HTML elements in [file]:
 - input → TextField
 - form → Form
 - select → Select
-Use className only for layout
+Use className only for layout (w-*, m-*, flex, etc)
 ```
 
 ## Code Quality
@@ -105,7 +109,7 @@ Use className only for layout
 ### Fix Import Order
 ```
 Organize imports in [file]:
-1. React and external
+1. React and external libraries
 2. Modules (~/modules/...)
 3. Shared (~/shared/...)
 4. Type imports
@@ -113,7 +117,7 @@ Organize imports in [file]:
 
 ### Extract Types
 ```
-Extract types from [file] to [module]-types.ts:
+Extract types from [file] to [feature]-types.ts:
 - interface for objects
 - type for unions
 - Export shared types only
@@ -131,18 +135,18 @@ Add proper TypeScript types to [file]:
 
 ### Refactor Component to Module
 ```
-Refactor [component] from [route] to module:
-- Move to modules/[module]/components
-- Extract business logic
-- Update imports
-- Add barrel export
+Refactor [component] from routes/[route] to module:
+- Move to modules/[module]/[feature]-components.tsx
+- Extract business logic to store/service
+- Update imports in route
+- Add barrel export to modules/[module]/index.ts
 ```
 
 ### Create Barrel Exports
 ```
-Create barrel exports for modules/[module]:
+Create barrel exports for modules/[module]/index.ts:
 - Export components, hooks, stores
-- Export types
+- Export types (using export type)
 - Keep internal files private
 ```
 
@@ -168,70 +172,73 @@ Add loading/error states to [component]:
 ### Implement Form Handling
 ```
 Create form handling for [feature]:
-- Use Form component
+- Use Form component from ~/shared/components/ui
 - Add validation
 - Handle submit/errors
-- Use TextField components
+- Use TextField/Select components
 ```
 
-## Architecture
+## Architecture Review
 
-### Review Architecture
+### Review Module Architecture
 ```
 Review architecture of modules/[module]:
-- Check layer separation
+- Check layer separation (routes → modules → shared)
 - Verify import hierarchy
 - Validate file organization
-- Check barrel exports
+- Check barrel exports (index.ts exists)
+- No modules/index.ts at root
 ```
 
 ### Create Service Layer
 ```
-Create service for [feature]:
-- API calls
+Create service for [feature] in modules/[feature]/[feature]-service.ts:
+- API calls using axiosInstance from ~/shared/lib/axios
 - Business logic
 - Error handling
 - Type safety
+- Export as singleton: export default new FeatureService()
 ```
 
 ## Common Fixes
 
-### Fix All Design Violations in File
+### Fix All Design Violations
 ```
 Fix all design system violations in [file]:
-1. Replace hardcoded colors
-2. Use correct tokens
-3. Fix bg/fg pairs
+1. Replace hardcoded colors (bg-blue-500 → bg-primary)
+2. Use correct tokens (text-gray-600 → text-muted-fg)
+3. Fix bg/fg pairs (bg-primary + text-primary-fg)
 4. Use text-muted-fg for secondary
-5. Use danger for errors
+5. Use danger for errors (not destructive/red-500)
 ```
 
 ### Fix All Component Issues
 ```
 Fix component issues in [file]:
 1. Replace HTML with UI components
-2. Remove style overrides
-3. Use design tokens
+2. Remove style overrides from className
+3. Use design tokens only
 4. Add proper types
-5. Fix imports
+5. Fix import order
+6. Use cn() for className management
 ```
 
-### Audit Module
+### Audit Module Compliance
 ```
 Audit modules/[module] for compliance:
-- Architecture patterns
-- Design system usage
-- Component priorities
-- TypeScript types
-- Import patterns
-- File naming
+- Architecture patterns (3-layer system)
+- Design system usage (tokens only)
+- Component priorities (UI components over HTML)
+- TypeScript types (interface/type usage)
+- Import patterns (barrel exports)
+- File naming (kebab-case)
 ```
 
----
+## Quick Reference Links
 
-## Reference Quick Links
-
-- Architecture: [.claude/architecture.md](.claude/architecture.md)
-- Design System: [.claude/design-system.md](.claude/design-system.md)
-- Components: [.claude/components.md](.claude/components.md)
-- Coding Standards: [.claude/coding-standards.md](.claude/coding-standards.md)
+- Workflow: [docs/workflow.md](workflow.md)
+- Architecture: [docs/architecture.md](architecture.md)
+- Coding Standards: [docs/coding-standards.md](coding-standards.md)
+- API Design: [docs/api-design.md](api-design.md)
+- Design System: [docs/design-system.md](design-system.md)
+- Components: [docs/components.md](components.md)

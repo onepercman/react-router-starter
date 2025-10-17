@@ -6,36 +6,35 @@
 
 **Use `interface` for object shapes**:
 ```tsx
-interface DataItem {
+interface User {
   id: string
   name: string
   email: string
 }
 
 interface FeatureState {
-  data: DataItem | null
+  user: User | null
   isReady: boolean
-  action: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<void>
 }
 ```
 
-**Use `type` for unions and computed types**:
+**Use `type` for unions/computed types**:
 ```tsx
 type Status = "idle" | "loading" | "success" | "error"
-
 type Role = "admin" | "user" | "guest"
 
 type Action =
-  | { type: "update"; payload: DataItem }
+  | { type: "update"; payload: User }
   | { type: "delete"; payload: string }
   | { type: "reset" }
 ```
 
 ### Type Organization
 
-**Feature-specific types** in `[feature]-types.ts`:
+**Feature-specific** in `[feature]-types.ts`:
 ```tsx
-// app/modules/[feature]/[feature]-types.ts
+// modules/[feature]/[feature]-types.ts
 export interface DataItem {
   id: string
   name: string
@@ -46,9 +45,9 @@ export interface FeatureState {
 }
 ```
 
-**Shared types** only if used by 2+ features:
+**Shared types** (used by 2+ features):
 ```tsx
-// app/shared/types/common.ts
+// shared/types/common.ts
 export interface ApiResponse<T> {
   data: T
   message: string
@@ -63,9 +62,9 @@ export type AsyncState<T> = {
 
 ### Type Imports
 
-Always use `type` import for type-only imports:
+Use `type` import for type-only:
 ```tsx
-import type { DataItem } from "~/modules/[feature]"
+import type { User } from "~/modules/auth"
 import type { VariantProps } from "tailwind-variants"
 ```
 
@@ -74,58 +73,53 @@ import type { VariantProps } from "tailwind-variants"
 ### Import Order
 
 ```tsx
-// 1. React and external libraries
+// 1. React & external
 import { useState, useEffect } from "react"
 import { tv, type VariantProps } from "tailwind-variants"
 
-// 2. Module imports
-import { useFeature } from "~/modules/[feature]"
-import { useOtherFeature } from "~/modules/[other-feature]"
+// 2. Modules
+import { useAuth } from "~/modules/auth"
+import { useProducts } from "~/modules/products"
 
-// 3. Shared imports
+// 3. Shared
 import { Button, TextField } from "~/shared/components/ui"
 import { cn } from "~/shared/utils"
 
-// 4. Type imports
-import type { DataItem } from "~/modules/[feature]"
-import type { OtherData } from "~/modules/[other-feature]"
+// 4. Types
+import type { User } from "~/modules/auth"
+import type { Product } from "~/modules/products"
 ```
 
 ### Barrel Exports
 
-**Always create barrel exports** for each module:
-
+**Always create for each module**:
 ```tsx
-// app/modules/[feature]/index.ts
+// modules/[feature]/index.ts
 export * from "./[feature]-service"
-export { useFeatureStore } from "./[feature]-store"
-export type {
-  FeatureState,
-  DataItem,
-} from "./[feature]-types"
-export { useFeature } from "./use-[feature]"
+export { use[Feature]Store } from "./[feature]-store"
+export type { FeatureState, DataItem } from "./[feature]-types"
+export { use[Feature] } from "./use-[feature]"
 ```
 
 **Import from barrel**:
 ```tsx
 // ✅ Correct
-import { useFeature, useFeatureStore } from "~/modules/[feature]"
-import type { DataItem } from "~/modules/[feature]"
+import { useAuth, useAuthStore } from "~/modules/auth"
+import type { User } from "~/modules/auth"
 
 // ❌ Wrong
-import { useFeature } from "~/modules/[feature]/use-[feature]"
-import { useFeatureStore } from "~/modules/[feature]/[feature]-store"
-import { something } from "~/modules"  // NO modules/index.ts exists
+import { useAuth } from "~/modules/auth/use-auth"
+import { something } from "~/modules"  // NO modules/index.ts
 ```
 
-## State Management with Zustand
+## Zustand Store Pattern
 
-### Store Pattern
+### Store Structure
 
 ```tsx
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import featureService from "./[feature]-service"
+import service from "./[feature]-service"
 import type { DataItem } from "./[feature]-types"
 
 interface FeatureState {
@@ -149,19 +143,19 @@ export const useFeatureStore = create<FeatureState>()(
       action: async (params: any) => {
         set({ isLoading: true, error: null })
         try {
-          const response = await featureService.action(params)
+          const response = await service.action(params)
           const { data, token } = response.data
           localStorage.setItem("token", token)
-          set({ data, token, isLoading: false, error: null })
+          set({ data, token, isLoading: false })
         } catch (error: any) {
-          const errorMessage = error.message || "Action failed"
-          set({ isLoading: false, error: errorMessage })
+          const msg = error.message || "Action failed"
+          set({ isLoading: false, error: msg })
           throw error
         }
       },
 
       reset: async () => {
-        await featureService.cleanup()
+        await service.cleanup()
         set({ data: null, token: null, error: null })
       },
 
@@ -182,24 +176,18 @@ export const useFeatureStore = create<FeatureState>()(
 ### Store Usage
 
 ```tsx
-// Select specific values (recommended)
+// ✅ Select specific (recommended)
 const data = useFeatureStore((s) => s.data)
 const action = useFeatureStore((s) => s.action)
 
-// Select multiple values
+// ✅ Select multiple
 const { data, isLoading } = useFeatureStore((s) => ({
   data: s.data,
   isLoading: s.isLoading
 }))
 
-// ❌ Avoid selecting entire store
+// ❌ Avoid entire store
 const store = useFeatureStore()  // Causes unnecessary re-renders
-```
-
-### Store File Naming
-
-```
-app/modules/[feature]/[feature]-store.ts
 ```
 
 ## Comments
@@ -213,7 +201,7 @@ app/modules/[feature]/[feature]-store.ts
 **When to comment**:
 - Complex logic not clear from code
 - Workarounds for bugs/browser issues
-- Context that cannot be expressed in code
+- Context not expressible in code
 - TODOs with clear actionable items
 
 **Examples**:
@@ -222,7 +210,7 @@ app/modules/[feature]/[feature]-store.ts
 // Workaround for SSR hydration mismatch
 const [mounted, setMounted] = useState(false)
 
-// ❌ Bad - obvious from code
+// ❌ Bad - obvious
 // Set user to null
 setUser(null)
 ```
@@ -233,10 +221,10 @@ setUser(null)
 
 ```
 kebab-case.tsx          # Components
-use-feature.ts          # Hooks
-feature-store.ts        # Stores
-feature-types.ts        # Types
-feature-service.ts      # Services
+use-[feature].ts        # Hooks
+[feature]-store.ts      # Stores
+[feature]-types.ts      # Types
+[feature]-service.ts    # Services
 index.ts                # Barrel exports
 ```
 
@@ -248,7 +236,7 @@ import { useState } from "react"
 import { tv, type VariantProps } from "tailwind-variants"
 import { Button } from "~/shared/components/ui"
 
-// 2. Types/Interfaces
+// 2. Types
 interface Props extends VariantProps<typeof variants> {
   title: string
   onSubmit: () => void
@@ -277,29 +265,29 @@ export function MyComponent({ title, onSubmit, ...props }: Props) {
 
 **Functions**:
 ```tsx
-// ✅ Verb-based, descriptive
+// ✅ Verb-based
 function fetchData() { }
 function validateInput(value: string) { }
 
 // Hooks: 'use' prefix
-function useFeature() { }
+function useAuth() { }
 
-// Event handlers: 'handle' prefix
+// Handlers: 'handle' prefix
 function handleSubmit() { }
 
-// Boolean: 'is/has/should'
+// Booleans: 'is/has/should'
 function isValid() { }
 function hasPermission() { }
 ```
 
 ## React Patterns
 
-**Functional components only** (no class components)
+**Functional components only** (no classes)
 
 **Hooks rules**:
 - Top level only
 - Never conditional
-- Always in same order
+- Same order always
 
 **Event handlers**:
 ```tsx
@@ -320,7 +308,7 @@ const handleClick = useCallback(() => {}, [deps])
 
 ## ClassName Management
 
-**ALWAYS use `cn()` utility** (never template strings)
+**ALWAYS use `cn()` utility** (never template strings):
 
 ```tsx
 import { cn } from "~/shared/utils"
@@ -355,9 +343,7 @@ export function Component({ className, isActive }: Props) {
 }
 ```
 
-## Checklist
-
-Before committing:
+## Pre-Commit Checklist
 
 - [ ] No hardcoded values
 - [ ] No commented-out code
