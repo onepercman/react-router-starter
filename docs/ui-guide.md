@@ -80,8 +80,8 @@ className="bg-bg border border-border rounded-lg"
 ### Registry Configuration
 
 **Check `components.json`** for:
-- `registries`: Available UI registries (e.g., `@intentui`, `@shadcn`)
-- `iconLibrary`: Icon library (e.g., `lucide-react`)
+- `registries`: Available UI registries
+- `iconLibrary`: Icon library
 - `aliases`: Import paths
 
 ### Component Priority
@@ -92,8 +92,8 @@ className="bg-bg border border-border rounded-lg"
    - If exists → Use it (DON'T add again)
 2. **Second**: Add from registry if missing:
    ```bash
-   pnpm add-ui [component]
-   # or: npx shadcn@latest add @[registry]/[component]
+   pnpm dlx shadcn@latest add @[registry]/[component]
+   # Check components.json for configured registry
    ```
 3. **Never**: Use raw HTML when UI component exists
 
@@ -335,7 +335,7 @@ import { User, Settings, Home } from "lucide-react"
 
 3. **Add if missing:**
    ```bash
-   pnpm add-ui [component]
+   pnpm dlx shadcn@latest add @[registry]/[component]
    ```
 
 **❌ DON'T:**

@@ -84,9 +84,8 @@ cat components.json | grep -A1 "registries"
 ls app/shared/components/ui/button.tsx
 
 # Step 3: If not exists, ask user, then:
-npx shadcn@latest add @[registry]/button
-# or use project alias (check package.json)
-pnpm add-ui button
+pnpm dlx shadcn@latest add @[registry]/button
+# Check components.json for configured registry
 ```
 
 **❌ DON'T**:

@@ -24,8 +24,8 @@ Create [ComponentName] in modules/[module]/[feature]-components.tsx:
 ### Add UI Component
 ```
 Check if [component] exists in ~/shared/components/ui first.
-If NOT exists, add from IntentUI:
-pnpm add-ui [component]
+If NOT exists, add from configured registry (check components.json):
+pnpm dlx shadcn@latest add @[registry]/[component]
 ```
 
 ### Create Custom Component with Variants

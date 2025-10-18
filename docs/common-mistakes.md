@@ -7,7 +7,7 @@ Prevention guide for frequent errors. Refer to detailed docs for full context.
 ### 1. Adding Existing Component
 ```bash
 # ❌ Wrong - Overwrites customizations
-pnpm add-ui button  # Button already exists
+pnpm dlx shadcn@latest add @[registry]/button  # Button already exists
 
 # ✅ Correct - Check first
 ls app/shared/components/ui/button.tsx  # Exists? Use it

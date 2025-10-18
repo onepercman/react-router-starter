@@ -11,6 +11,20 @@ Quick reference for Claude Code. Full docs in [docs/](docs/).
 
 **⚠️ Check `components.json` for UI registry, icons, rendering mode (CSR/SSR/SSG)**
 
+## Context Management (Token Optimization)
+
+**Project size:** 2803 TS/TSX files (medium-large)
+**Strategy:** Targeted reads > broad searches
+
+**Before searching:**
+- Check docs first (offline, no tokens)
+- Use Glob for file location → Read specific file
+- Avoid `find` in Bash (use Glob tool)
+- Use `/arch`, `/patterns` shortcuts vs reading full docs
+
+**Multi-step tasks:**
+- Use TodoWrite to track (prevents re-explaining context)
+
 ## Critical Rules (MUST FOLLOW)
 
 1. **Package Manager**: ALWAYS use `pnpm` - Never npm/yarn/bun
@@ -58,13 +72,14 @@ app/
 ## Component System
 
 **Check `components.json` for:**
-- UI registries (e.g., `@intentui`, `@shadcn`)
-- Icon library (e.g., `lucide-react`)
+- UI registries (configured in `registries` field)
+- Icon library (configured in `iconLibrary` field)
 - Component paths and aliases
 
 **Before adding components:**
 1. Check existing: `ls app/shared/components/ui/[component].tsx`
-2. If missing, add from configured registry via shadcn CLI
+2. If missing, add from registry: `pnpm dlx shadcn@latest add @[registry]/[component]`
+   - Replace `[registry]` with key from `components.json` registries
 
 ## Documentation
 
@@ -100,5 +115,7 @@ pnpm build        # Build production
 pnpm typecheck    # TypeScript check
 pnpm check        # All checks
 pnpm fix          # Auto-fix lint/format
-pnpm add-ui       # Add IntentUI component
+
+# Add UI component (check components.json for registry)
+pnpm dlx shadcn@latest add @[registry]/[component]
 ```
