@@ -11,7 +11,7 @@ export default function LoginPage() {
 
   const { control, handleSubmit, setError, clearErrors } =
     useForm<AuthCredentials>({
-      defaultValues: { email: "", password: "" },
+      defaultValues: { email: "admin@example.com", password: "admin123" },
     })
 
   const onSubmit = async (data: AuthCredentials) => {
@@ -209,11 +209,11 @@ export default function LoginPage() {
                 <div className="text-xs text-info-subtle-fg/80 space-y-1">
                   <div className="flex items-center gap-2">
                     <Mail className="size-3" />
-                    test@example.com
+                    admin@example.com
                   </div>
                   <div className="flex items-center gap-2">
                     <Key className="size-3" />
-                    password
+                    admin123
                   </div>
                 </div>
               </div>

@@ -1,49 +1,56 @@
-import type { ApiResponse } from "~/shared/lib/axios"
-import type { AuthCredentials, AuthResponse } from "./auth-types"
-
-const mockUsers = [
-  {
-    id: "1",
-    email: "admin@example.com",
-    name: "Admin User",
-    role: "admin" as const,
-    avatar: "https://i.pravatar.cc/150?img=1",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    email: "user@example.com",
-    name: "John Doe",
-    role: "user" as const,
-    avatar: "https://i.pravatar.cc/150?img=2",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-]
+import type { LoginRequest, LoginResponse } from "~/shared/types/auth-types"
+import type { AuthCredentials, AuthResponse, User } from "./auth-types"
 
 class AuthService {
   async login(
     credentials: AuthCredentials
   ): Promise<ApiResponse<AuthResponse>> {
-    const user = mockUsers.find((u) => u.email === credentials.email)
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: credentials.email.split("@")[0],
+          password: credentials.password,
+        } as LoginRequest),
+      })
 
-    if (!user || credentials.password !== "password") {
-      throw new Error("Invalid credentials")
-    }
+      const result: LoginResponse = await response.json()
 
-    const token = `mock_token_${user.id}_${Date.now()}`
+      if (!result.success || !result.user || !result.token) {
+        throw new Error(result.message || "Login failed")
+      }
 
-    return {
-      data: { user, token },
-      message: "Login successful",
-      success: true,
+      const user: User = {
+        id: result.user.id,
+        email: `${result.user.username}@example.com`,
+        name: result.user.name,
+        role: "admin",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+
+      return {
+        data: { user, token: result.token },
+        message: result.message,
+        success: true,
+      }
+    } catch (error) {
+      throw new Error(
+        error instanceof Error ? error.message : "Invalid credentials"
+      )
     }
   }
 
   async logout(): Promise<void> {
     localStorage.removeItem("auth_token")
   }
+}
+
+interface ApiResponse<T = any> {
+  data: T
+  message?: string
+  success: boolean
 }
 
 export default new AuthService()
