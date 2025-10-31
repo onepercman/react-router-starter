@@ -13,13 +13,18 @@ Always: `import type { ... }` for type imports
 
 3-layer: Entry → Modules → Shared
 
-Each module MUST have `index.ts` barrel export
-NEVER create root `modules/index.ts`
-Import: `from "~/modules/[feature]"` ✓ NOT `from "~/modules"` ✗
+**Barrel export rules:**
+- Each feature/folder MUST have `index.ts` barrel export
+- ONLY EXCEPTION: root `modules/index.ts` NEVER exists
+- Import: `from "~/modules/[feature]"` ✓ NOT `from "~/modules"` ✗
 
-Shared organization:
-- **With barrel (`index.ts`):** types, utils, stores, components/ui
-- **Direct import (NO barrel):** config, lib, hooks, layouts, providers
+All subdirectories have barrel exports:
+- `modules/user/index.ts` ✓
+- `shared/types/index.ts` ✓
+- `shared/utils/index.ts` ✓
+- `shared/stores/index.ts` ✓
+- `shared/components/ui/index.ts` ✓
+- But `modules/index.ts` NEVER exists ✗
 
 ## File Naming
 
