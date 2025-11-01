@@ -1,33 +1,43 @@
 # React Project Conventions
 
-## Package Manager
+## Quick Reference (Critical Rules)
+- **Package Manager:** ALWAYS `pnpm`
+- **Type Imports:** `import type { ... }`
+- **Barrel Exports:** Every folder has `index.ts` EXCEPT `modules/index.ts`
+- **Styling:** ALWAYS `cn()` + tokens only, NEVER hardcode colors
+- **State:** Select fields `useStore(s => s.field)` NOT `useStore()`
+- **Imports:** `~/modules/[feature]` ✓ NOT `~/modules` ✗
 
+## Package Manager
 ALWAYS `pnpm` - Never npm, yarn, bun
 
 ## TypeScript
-
 Always: `import type { ... }` for type imports
 `interface` for objects, `type` for unions/primitives
 
 ## Architecture
-
-3-layer: Entry → Modules → Shared
+```
+app/                    # Entry (routes only)
+modules/                # Features (NO index.ts here)
+  ├─ user/
+  │  └─ index.ts ✓      # Barrel export
+  └─ auth/
+     └─ index.ts ✓
+shared/                 # Cross-feature code
+  ├─ components/
+  │  ├─ ui/
+  │  │  └─ index.ts ✓
+  │  └─ index.ts ✓
+  ├─ utils/index.ts ✓
+  └─ stores/index.ts ✓
+```
 
 **Barrel export rules:**
-- Each feature/folder MUST have `index.ts` barrel export
-- ONLY EXCEPTION: root `modules/index.ts` NEVER exists
-- Import: `from "~/modules/[feature]"` ✓ NOT `from "~/modules"` ✗
-
-All subdirectories have barrel exports:
-- `modules/user/index.ts` ✓
-- `shared/types/index.ts` ✓
-- `shared/utils/index.ts` ✓
-- `shared/stores/index.ts` ✓
-- `shared/components/ui/index.ts` ✓
-- But `modules/index.ts` NEVER exists ✗
+- Every feature/folder has `index.ts` ✓
+- EXCEPT `modules/index.ts` NEVER exists ✗
+- Import: `~/modules/[feature]` ✓ NOT `~/modules` ✗
 
 ## File Naming
-
 Files: `kebab-case`
 Hooks: `use-[feature].ts`
 Stores: `[feature]-store.ts`
@@ -35,27 +45,7 @@ Services: `[feature]-service.ts`
 Types: `[feature]-types.ts`
 Components: `[feature]-components.tsx`
 
-## SSR Safety
-
-Browser APIs: `typeof window !== "undefined"` check
-Hydration: `useState` + `useEffect` pattern for browser-only state
-
-## Styling
-
-ALWAYS use tokens - NEVER hardcode colors
-Tokens: `bg`, `fg`, `primary`, `secondary`, `success`, `danger`, `muted`, `border`
-Secondary text: `text-muted-fg` NOT `text-secondary`
-Pair bg/fg: `bg-primary text-primary-fg`
-
-className for LAYOUT ONLY (`w-*`, `h-*`, `m-*`, `p-*`, `flex`, `grid`, `gap-*`)
-Design via props: `intent="primary"`, `size="lg"`
-NEVER: `className="bg-blue-500 px-8"`
-
-**ALWAYS use `cn()`:** `import { cn } from "~/shared/utils"`
-Never template literals for className
-
 ## Components
-
 Check exists FIRST: `ls shared/components/ui/[name].tsx`
 If missing: `pnpm dlx shadcn@latest add @[registry]/[name]`
 Never re-add existing components
@@ -63,21 +53,32 @@ Never re-add existing components
 Feature components: `modules/[feature]/components/`
 Shared components: `shared/components/` (reused 2+ times)
 
-## Forms
+## Styling
+**Tokens:** `bg`, `fg`, `primary`, `secondary`, `success`, `danger`, `muted`, `border`
+- ✓ `text-muted-fg` | ✗ `text-secondary`
+- ✓ `bg-primary text-primary-fg` (pair bg/fg)
+- ✗ NEVER hardcode: `bg-blue-500`
 
-Default: Uncontrolled with `name` attributes
-Extract: `new FormData(e.currentTarget)`
-Controlled only for: complex validation, store sync, dependent fields
+**className:** Layout ONLY (`w-*`, `h-*`, `m-*`, `p-*`, `flex`, `grid`, `gap-*`)
+- ✓ Design via props: `intent="primary"` `size="lg"`
+- ✗ `className="bg-blue-500 px-8"`
+
+**cn():** `import { cn } from "~/shared/utils"`
+- ✓ `cn("base", condition && "extra")`
+- ✗ Template literals: `` `${base} ${extra}` ``
 
 ## Routing
-
 Keep routes thin - delegate to modules
 Flat files with dots: `products._index.tsx` → `/products`
 Dynamic: `products.$id.tsx` → `/products/:id`
 Layout: `auth.tsx` + `<Outlet />` wraps `auth.login.tsx`
 
-## State Management
+## Forms
+Default: Uncontrolled with `name` attributes
+Extract: `new FormData(e.currentTarget)`
+Controlled only for: complex validation, store sync, dependent fields
 
+## State Management
 **Zustand:** 
 - Select fields: `useStore((s) => s.data)` ✓ NOT `useStore()` ✗
 - Error handling: `error: string | null` in state
@@ -93,8 +94,11 @@ Layout: `auth.tsx` + `<Outlet />` wraps `auth.login.tsx`
 - Location: `modules/[feature]/[feature]-service.ts`
 
 ## API/Config
-
 Axios: `shared/lib/axios.ts` (NOT `shared/api/`)
 API types: Define in same axios file
 Environment: `shared/config/environment.ts`
 Direct imports: `import { axiosInstance } from "~/shared/lib/axios"`
+
+## SSR Safety
+Browser APIs: `typeof window !== "undefined"` check
+Hydration: `useState` + `useEffect` pattern for browser-only state
