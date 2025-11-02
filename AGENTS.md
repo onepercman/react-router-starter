@@ -68,10 +68,20 @@ Shared components: `shared/components/` (reused 2+ times)
 - ✗ Template literals: `` `${base} ${extra}` ``
 
 ## Routing
+Setup: `flatRoutes()` in `app/routes.ts`
 Keep routes thin - delegate to modules
-Flat files with dots: `products._index.tsx` → `/products`
-Dynamic: `products.$id.tsx` → `/products/:id`
-Layout: `auth.tsx` + `<Outlet />` wraps `auth.login.tsx`
+
+**File Conventions:**
+- Index: `_index.tsx` → `/`
+- Dot delimiter: `concerts.trending.tsx` → `/concerts/trending`
+- Dynamic: `products.$id.tsx` → `/products/:id` (access via `params.id`)
+- Layout nesting: `auth.tsx` + `<Outlet />` wraps `auth.login.tsx`
+- Pathless layout: `_auth.login.tsx` → `/login` (renders in `_auth.tsx`)
+- Skip nesting: `concerts_.mine.tsx` → `/concerts/mine` (skips `concerts.tsx`)
+- Optional: `($lang).about.tsx` → `/about` or `/en/about`
+- Splat: `files.$.tsx` → `/files/any/path` (access via `params["*"]`)
+- Escape: `sitemap[.]xml.tsx` → `/sitemap.xml`
+- Folders: `auth.login/route.tsx` (co-locate files)
 
 ## Forms
 Default: Uncontrolled with `name` attributes
