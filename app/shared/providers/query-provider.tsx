@@ -10,11 +10,11 @@ export const queryClientConfig: QueryClientConfig = {
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 1000 * 60, // 1 phút
-      // Thêm các config mặc định khác nếu cần
+      staleTime: 1000 * 60, // 1 minute
+      // Add other default configs if needed
     },
     mutations: {
-      // mutation options nếu cần
+      // mutation options if needed
     },
   },
 }
