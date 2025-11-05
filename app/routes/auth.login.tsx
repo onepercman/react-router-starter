@@ -1,29 +1,37 @@
+import { useForm } from "@tanstack/react-form"
 import { Globe, Key, Lightbulb, Lock, Mail, Phone, X } from "lucide-react"
-import { Controller, useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router"
-import type { AuthCredentials } from "~/modules/auth"
+import { z } from "zod"
 import { useAuth } from "~/modules/auth"
-import { Button, Card, Form, TextField } from "~/shared/components/ui"
+import { Button, Card, TextField } from "~/shared/components/ui"
+
+const loginSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
+})
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const { login, isLoading, error, clearError } = useAuth()
 
-  const { control, handleSubmit, setError, clearErrors } =
-    useForm<AuthCredentials>({
-      defaultValues: { email: "", password: "" },
-    })
-
-  const onSubmit = async (data: AuthCredentials) => {
-    clearError()
-    clearErrors()
-    try {
-      await login(data)
-      navigate("/dashboard")
-    } catch {
-      setError("email", { type: "manual", message: " " })
-    }
-  }
+  const form = useForm({
+    defaultValues: { email: "", password: "" },
+    validators: {
+      onBlur: loginSchema,
+    },
+    onSubmit: async ({ value }) => {
+      clearError()
+      try {
+        await login(value)
+        navigate("/dashboard")
+      } catch {
+        // The form error will be displayed through the error prop from useAuth
+      }
+    },
+  })
 
   return (
     <div className="container px-4 py-8">
@@ -54,10 +62,12 @@ export default function LoginPage() {
       {/* Login Form */}
       <Card className="border-0 shadow-2xl bg-gradient-to-br from-bg to-muted/20 backdrop-blur-sm">
         <div className="p-8">
-          <Form
-            onSubmit={handleSubmit(onSubmit)}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
             className="space-y-6"
-            validationBehavior="aria"
           >
             {error && (
               <div className="bg-gradient-to-r from-danger-subtle to-danger-subtle border border-danger/50 text-danger px-4 py-3 rounded-xl text-sm flex items-center gap-2">
@@ -67,33 +77,28 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-4">
-              <Controller
-                name="email"
-                control={control}
-                rules={{
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Invalid email address",
-                  },
+              <form.Field name="email">
+                {(field) => {
+                  return (
+                    <TextField
+                      label="Email address"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="name@company.com"
+                      className="w-full"
+                      value={field.state.value}
+                      onChange={(value) => field.handleChange(value)}
+                      onBlur={field.handleBlur}
+                      name={field.name}
+                      isRequired
+                      isInvalid={!field.state.meta.isValid}
+                      errorMessage={field.state.meta.errors
+                        .map((e) => e?.message)
+                        .join(", ")}
+                    />
+                  )
                 }}
-                render={({ field, fieldState }) => (
-                  <TextField
-                    label="Email address"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="name@company.com"
-                    className="w-full"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    isRequired
-                    isInvalid={!!fieldState.error}
-                    errorMessage={fieldState.error?.message}
-                  />
-                )}
-              />
+              </form.Field>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -106,33 +111,26 @@ export default function LoginPage() {
                     Forgot password?
                   </a>
                 </div>
-                <Controller
-                  name="password"
-                  control={control}
-                  rules={{
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  }}
-                  render={({ field, fieldState }) => (
+                <form.Field name="password">
+                  {(field) => (
                     <TextField
                       label="Password"
                       type="password"
                       autoComplete="current-password"
                       placeholder="Enter your password"
                       className="w-full"
-                      value={field.value}
-                      onChange={field.onChange}
-                      onBlur={field.onBlur}
+                      value={field.state.value}
+                      onChange={(value) => field.handleChange(value)}
+                      onBlur={field.handleBlur}
                       name={field.name}
                       isRequired
-                      isInvalid={!!fieldState.error}
-                      errorMessage={fieldState.error?.message}
+                      isInvalid={!field.state.meta.isValid}
+                      errorMessage={field.state.meta.errors
+                        .map((e) => e?.message)
+                        .join(", ")}
                     />
                   )}
-                />
+                </form.Field>
               </div>
             </div>
 
@@ -154,7 +152,7 @@ export default function LoginPage() {
                 </div>
               )}
             </Button>
-          </Form>
+          </form>
 
           {/* Social Login Options */}
           <div className="mt-8">
