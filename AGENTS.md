@@ -1,6 +1,8 @@
 # React Project Conventions
 
 ## Quick Reference (Critical Rules)
+- **Language:** ALWAYS English for code and documentation
+- **Documentation:** NEVER create markdown files unless explicitly requested or confirm if necessary
 - **Package Manager:** ALWAYS `pnpm`
 - **Type Imports:** `import type { ... }`
 - **Barrel Exports:** Every folder has `index.ts` EXCEPT `modules/index.ts`
