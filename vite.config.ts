@@ -5,11 +5,11 @@ import devtoolsJson from "vite-plugin-devtools-json"
 import tsconfigPaths from "vite-tsconfig-paths"
 
 export default defineConfig(({ mode }) => ({
-  plugins: [
-    tailwindcss(),
-    reactRouter(),
-    tsconfigPaths(),
-    ...(mode === "development" ? [devtoolsJson()] : []),
-  ],
-  server: { port: 3000 },
+	plugins: [
+		tailwindcss(),
+		reactRouter(),
+		tsconfigPaths(),
+		...(mode === "development" ? [devtoolsJson()] : []),
+	],
+	server: { port: 3000 },
 }))
