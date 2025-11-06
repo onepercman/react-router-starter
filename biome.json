@@ -8,9 +8,7 @@
 	"files": {
 		"includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"]
 	},
-	"formatter": {
-		"indentWidth": 2
-	},
+	"formatter": {},
 	"javascript": {
 		"formatter": {
 			"semicolons": "asNeeded"
