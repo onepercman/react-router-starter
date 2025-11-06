@@ -1,5 +1,3 @@
-"use client"
-
 import { type ComponentProps, Fragment, useId } from "react"
 import { Area, AreaChart as AreaChartPrimitive } from "recharts"
 import type {

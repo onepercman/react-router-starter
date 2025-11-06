@@ -1,5 +1,3 @@
-"use client"
-
 import { Keyboard as KeyboardPrimitive } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 
