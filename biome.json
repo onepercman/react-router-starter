@@ -43,12 +43,15 @@
 				"noParameterAssign": "off",
 				"useTemplate": "warn",
 				"noNonNullAssertion": "off",
-				"useImportType": "error"
+				"useImportType": "error",
+				"useShorthandAssign": "error",
+				"useAsConstAssertion": "error"
 			},
 			"suspicious": {
 				"noArrayIndexKey": "off",
 				"noExplicitAny": "off",
-				"noConsole": "off"
+				"noConsole": "off",
+				"noMisleadingCharacterClass": "error"
 			},
 			"nursery": {
 				"useSortedClasses": {
