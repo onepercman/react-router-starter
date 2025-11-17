@@ -11,5 +11,4 @@ export default defineConfig(({ mode }) => ({
 		tsconfigPaths(),
 		...(mode === "development" ? [devtoolsJson()] : []),
 	],
-	server: { port: 3000 },
 }))
