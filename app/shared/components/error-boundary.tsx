@@ -20,8 +20,11 @@ function logError(error: Error, errorInfo: ErrorInfo & { module?: string }) {
 function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 	const isDevelopment = import.meta.env.NODE_ENV === "development"
 
+	// Type guard to ensure error is an Error object
+	const errorObj = error instanceof Error ? error : new Error(String(error))
+
 	return (
-		<div className="flex min-h-[400px] items-center justify-center p-4">
+		<div className="flex min-h-100 items-center justify-center p-4">
 			<Card className="w-full max-w-lg">
 				<div className="space-y-4 text-center">
 					<X className="mx-auto size-12 text-muted-fg" />
@@ -32,14 +35,15 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 						We're sorry, but something unexpected happened. Please try again.
 					</p>
 
-					{isDevelopment && error && (
+					{isDevelopment && (
 						<details className="text-left text-sm">
 							<summary className="mb-2 cursor-pointer font-medium text-danger">
 								Error Details (Development Only)
 							</summary>
 							<pre className="max-h-40 overflow-auto rounded bg-danger-subtle p-3 text-danger">
-								{error.message}
-								{error.stack}
+								{errorObj.message}
+								{"\n"}
+								{errorObj.stack}
 							</pre>
 						</details>
 					)}
@@ -72,9 +76,10 @@ export function ErrorBoundary({
 	onError,
 	resetKeys,
 }: ErrorBoundaryProps) {
-	const handleError = (error: Error, errorInfo: ErrorInfo) => {
-		logError(error, errorInfo)
-		onError?.(error, errorInfo)
+	const handleError = (error: unknown, errorInfo: ErrorInfo) => {
+		const errorObj = error instanceof Error ? error : new Error(String(error))
+		logError(errorObj, errorInfo)
+		onError?.(errorObj, errorInfo)
 	}
 
 	return (
@@ -138,7 +143,7 @@ export function ModuleErrorBoundary({
 export function RouteErrorBoundary({ error }: { error: unknown }) {
 	if (isRouteErrorResponse(error)) {
 		return (
-			<div className="flex min-h-[400px] items-center justify-center p-4">
+			<div className="flex min-h-100 items-center justify-center p-4">
 				<Card className="w-full max-w-lg space-y-4 text-center">
 					{error.status === 404 ? (
 						<Search className="mx-auto size-12 text-muted-fg" />
